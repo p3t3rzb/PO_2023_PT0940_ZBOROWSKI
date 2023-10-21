@@ -9,15 +9,20 @@ public class OptionsParser {
         for(int i=0, j=0; i<args.length; i++, j++) {
             switch(args[i]) {
                 case "f":
-                    result[i] = MoveDirection.FORWARD;
+                    result[j] = MoveDirection.FORWARD;
+                    break;
                 case "b":
-                    result[i] = MoveDirection.BACKWARD;
+                    result[j] = MoveDirection.BACKWARD;
+                    break;
                 case "r":
-                    result[i] = MoveDirection.RIGHT;
+                    result[j] = MoveDirection.RIGHT;
+                    break;
                 case "l":
-                    result[i] = MoveDirection.LEFT;
+                    result[j] = MoveDirection.LEFT;
+                    break;
                 default:
                     j--;
+                    break;
             }
         }
 

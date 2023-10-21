@@ -8,6 +8,9 @@ public class World {
     public static void run(MoveDirection[] args) {
         System.out.println("Start");
         for(MoveDirection arg: args) {
+            if(arg == null) {
+                break;
+            }
             switch(arg) {
                 case FORWARD:
                     System.out.println("Zwierzak idzie do przodu");
