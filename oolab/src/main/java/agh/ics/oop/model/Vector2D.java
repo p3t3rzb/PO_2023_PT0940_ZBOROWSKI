@@ -24,7 +24,7 @@ public class Vector2D {
         return new Vector2D(other.getX()+x,other.getY()+y);
     }
 
-    public Vector2D substract(Vector2D other) {
+    public Vector2D subtract(Vector2D other) {
         return new Vector2D(x-other.getX(),y-other.getY());
     }
 
