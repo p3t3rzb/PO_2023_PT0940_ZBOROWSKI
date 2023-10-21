@@ -13,11 +13,11 @@ public class Vector2D {
     }
 
     public boolean precedes(Vector2D other) {
-        return other.getX() <= x && other.getY() <= y;
+        return x <= other.getX() && y <= other.getY();
     }
 
     public boolean follows(Vector2D other) {
-        return other.getX() >= x && other.getY() >= y;
+        return x >= other.getX() && other.getY() >= y;
     }
 
     public Vector2D add(Vector2D other) {
