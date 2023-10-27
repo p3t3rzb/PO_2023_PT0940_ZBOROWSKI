@@ -2,8 +2,6 @@ package agh.ics.oop.model;
 
 import agh.ics.oop.OptionsParser;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import static agh.ics.oop.model.MoveDirection.*;
