@@ -8,6 +8,7 @@ public class Vector2DTest {
     @Test
     public void equalsTest() {
         assertTrue(new Vector2D(-1,2).equals(new Vector2D(-1,2)));
+        assertFalse(new Vector2D(-1,2).equals(new Vector2D(-1,-1)));
     }
 
     @Test
