@@ -33,7 +33,7 @@ public class World {
         System.out.println("Stop");
     }
     public static void main(String[] args) {
-        System.out.println("System wystartował");
+        /*System.out.println("System wystartował");
         run(OptionsParser.parse(args));
         System.out.println("System zakończył działanie");
 
@@ -54,6 +54,11 @@ public class World {
         testAnimal.move(FORWARD);
         testAnimal.move(RIGHT);
         testAnimal.move(BACKWARD);
-        System.out.println(testAnimal.toString());
+        System.out.println(testAnimal.toString());*/
+
+        List<MoveDirection> directions = OptionsParser.parse(args);
+        List<Vector2D> positions = List.of(new Vector2D(2,2), new Vector2D(3,4));
+        Simulation simulation = new Simulation(directions, positions);
+        simulation.run();
     }
 }
