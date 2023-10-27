@@ -6,6 +6,8 @@ import static agh.ics.oop.model.MoveDirection.*;
 public class Animal {
     private MapDirection orientation;
     private Vector2D position;
+    private final Vector2D mapStart = new Vector2D(0,0);
+    private final Vector2D mapEnd = new Vector2D(4,4);
 
     public Animal() {
         position = new Vector2D(2,2);
@@ -17,6 +19,13 @@ public class Animal {
         orientation = NORTH;
     }
 
+    private boolean isOnTheMap(Vector2D position) {
+        if(position.precedes(mapEnd) && position.follows(mapStart)) {
+            return true;
+        }
+        return false;
+    }
+
     public String toString() {
         return position.toString() + ' ' + orientation.toString();
     }
@@ -26,7 +35,7 @@ public class Animal {
     }
 
     public void move(MoveDirection direction) {
-        Vector2D temp = position.add(orientation.toUnitVector());
+        Vector2D temp;
 
         switch(direction) {
             case RIGHT:
@@ -36,12 +45,14 @@ public class Animal {
                 orientation = orientation.previous();
                 break;
             case FORWARD:
-                if(temp.precedes(new Vector2D(4,4)) && temp.follows(new Vector2D(0,0))) {
+                temp = position.add(orientation.toUnitVector());
+                if(isOnTheMap(temp)) {
                     position = temp;
                 }
                 break;
             case BACKWARD:
-                if(temp.precedes(new Vector2D(4,4)) && temp.follows(new Vector2D(0,0))) {
+                temp = position.add(orientation.toUnitVector().opposite());
+                if(isOnTheMap(temp)) {
                     position = temp;
                 }
                 break;

@@ -5,13 +5,15 @@ import agh.ics.oop.model.MapDirection;
 import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2D;
 
+import java.util.List;
+
+import static agh.ics.oop.model.MapDirection.*;
+import static agh.ics.oop.model.MoveDirection.*;
+
 public class World {
-    public static void run(MoveDirection[] args) {
+    public static void run(List<MoveDirection> args) {
         System.out.println("Start");
         for(MoveDirection arg: args) {
-            if(arg == null) {
-                break;
-            }
             switch(arg) {
                 case FORWARD:
                     System.out.println("Zwierzak idzie do przodu");
@@ -41,12 +43,17 @@ public class World {
         System.out.println(position2);
         System.out.println(position1.add(position2));
 
-        MapDirection direction1 = MapDirection.EAST;
+        MapDirection direction1 = EAST;
         System.out.println(direction1.next().toString());
         System.out.println(direction1.previous().toString());
         System.out.println(direction1.toUnitVector().toString());
 
-        Animal testAnimal = new Animal(new Vector2D(2,3));
+        System.out.println("");
+        Animal testAnimal = new Animal(new Vector2D(1,1));
+        testAnimal.move(RIGHT);
+        testAnimal.move(FORWARD);
+        testAnimal.move(RIGHT);
+        testAnimal.move(BACKWARD);
         System.out.println(testAnimal.toString());
     }
 }

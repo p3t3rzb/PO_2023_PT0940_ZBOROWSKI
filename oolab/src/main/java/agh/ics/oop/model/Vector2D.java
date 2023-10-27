@@ -17,7 +17,7 @@ public class Vector2D {
     }
 
     public boolean follows(Vector2D other) {
-        return x >= other.getX() && other.getY() >= y;
+        return x >= other.getX() && y >= other.getY();
     }
 
     public Vector2D add(Vector2D other) {
