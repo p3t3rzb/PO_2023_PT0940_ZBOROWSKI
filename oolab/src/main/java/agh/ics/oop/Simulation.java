@@ -7,6 +7,8 @@ import agh.ics.oop.model.Vector2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.unmodifiableList;
+
 public class Simulation {
     private final List<MoveDirection> moves;
     private List<Animal> animals = new ArrayList<>();
@@ -28,6 +30,6 @@ public class Simulation {
     }
 
     public List<Animal> getAnimals() {
-        return animals;
+        return unmodifiableList(animals);
     }
 }
