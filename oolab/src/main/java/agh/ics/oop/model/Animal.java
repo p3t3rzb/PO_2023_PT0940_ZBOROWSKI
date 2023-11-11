@@ -6,8 +6,8 @@ import static agh.ics.oop.model.MoveDirection.*;
 public class Animal {
     private MapDirection orientation;
     private Vector2D position;
-    private final Vector2D mapStart = new Vector2D(0,0);
-    private final Vector2D mapEnd = new Vector2D(4,4);
+    //private final Vector2D mapStart = new Vector2D(0,0);
+    //private final Vector2D mapEnd = new Vector2D(4,4);
 
     public Animal() {
         position = new Vector2D(2,2);
@@ -19,22 +19,20 @@ public class Animal {
         orientation = NORTH;
     }
 
-    private boolean isOnTheMap(Vector2D position) {
-        if(position.precedes(mapEnd) && position.follows(mapStart)) {
-            return true;
-        }
-        return false;
-    }
-
     public String toString() {
-        return position.toString() + ' ' + orientation.toString();
+        return switch(orientation) {
+            case NORTH -> "^";
+            case EAST -> ">";
+            case SOUTH -> "V";
+            case WEST -> "<";
+        };
     }
 
     public boolean isAt(Vector2D position) {
         return this.position.equals(position);
     }
 
-    public void move(MoveDirection direction) {
+    public void move(MoveDirection direction, MoveValidator validator) {
         Vector2D temp;
 
         switch(direction) {
@@ -46,13 +44,13 @@ public class Animal {
                 break;
             case FORWARD:
                 temp = position.add(orientation.toUnitVector());
-                if(isOnTheMap(temp)) {
+                if(validator.canMoveTo(temp)) {
                     position = temp;
                 }
                 break;
             case BACKWARD:
                 temp = position.add(orientation.toUnitVector().opposite());
-                if(isOnTheMap(temp)) {
+                if(validator.canMoveTo(temp)) {
                     position = temp;
                 }
                 break;
@@ -60,7 +58,19 @@ public class Animal {
 
     }
 
+    public MapDirection getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(MapDirection orientation) {
+        this.orientation = orientation;
+    }
+
     public Vector2D getPosition() {
         return position;
+    }
+
+    public void setPosition(Vector2D position) {
+        this.position = position;
     }
 }
