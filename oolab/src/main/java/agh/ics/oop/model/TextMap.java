@@ -11,10 +11,10 @@ import static agh.ics.oop.model.MoveDirection.*;
 
 public class TextMap implements WorldMap<String,Integer> {
     private Map<Integer, Text> map = new HashMap<>();
-    private int N;
+    private int n;
 
     public TextMap() {
-        N = 0;
+        n = 0;
     }
 
     private Entry<Integer,Text> getText(String word) {
@@ -28,28 +28,33 @@ public class TextMap implements WorldMap<String,Integer> {
 
     @Override
     public boolean place(String word) {
-        map.put(N,new Text(word,EAST));
-        N++;
+        map.put(n,new Text(word,EAST));
+        n++;
         return true;
     }
 
     @Override
     public void move(String word, MoveDirection direction) {
         Entry<Integer,Text> text = getText(word);
+        if(text == null) {
+            return;
+        }
+
         MapDirection orientation = text.getValue().getOrientation();
-        Integer newKey = text.getKey();
+        Integer newKey = text.getKey(), temp = text.getKey();
         map.remove(text.getKey());
 
         if((direction == FORWARD && orientation == EAST) || (direction == BACKWARD && orientation == WEST)) {
-            Integer temp = Integer.valueOf(newKey.intValue()+1);
-            if(canMoveTo(temp)) {
-                newKey = temp;
-            }
+            temp = Integer.valueOf(newKey.intValue()+1);
+
         } else if((direction == FORWARD && orientation == WEST) || (direction == BACKWARD && orientation == EAST)) {
-            Integer temp = Integer.valueOf(newKey.intValue()-1);
-            if(canMoveTo(temp)) {
-                newKey = temp;
-            }
+            temp = Integer.valueOf(newKey.intValue()-1);
+        }
+
+        if(canMoveTo(temp)) {
+            map.remove(newKey);
+            map.put(newKey,map.get(temp));
+            newKey = temp;
         }
 
         map.put(newKey,text.getValue());
@@ -57,7 +62,7 @@ public class TextMap implements WorldMap<String,Integer> {
 
     @Override
     public boolean isOccupied(Integer position) {
-        return position.intValue() < N;
+        return canMoveTo(position);
     }
 
     @Override
@@ -67,11 +72,21 @@ public class TextMap implements WorldMap<String,Integer> {
 
     @Override
     public boolean canMoveTo(Integer position) {
-        return position.intValue() >= 0 && position.intValue() < N;
+        return position.intValue() >= 0 && position.intValue() < n;
     }
 
     public void changeOrientation(String word, MapDirection orientation) {
         Text text = getText(word).getValue();
         text.setOrientation(orientation);
+    }
+
+    @Override
+    public String toString() {
+        String[] result = new String[n];
+        for(int i=0; i<n; i++) {
+            result[i] = map.get(Integer.valueOf(i)).getWord();
+        }
+
+        return String.join(" ",result);
     }
 }
