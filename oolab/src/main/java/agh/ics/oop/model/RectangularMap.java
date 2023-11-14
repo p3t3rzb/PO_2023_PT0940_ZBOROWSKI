@@ -31,6 +31,9 @@ public class RectangularMap implements WorldMap<Animal,Vector2D> {
 
     @Override
     public void move(Animal animal, MoveDirection direction) {
+        if(isOccupied(animal.getPosition()) == false) {
+            return;
+        }
         animals.remove(animal.getPosition());
         animal.move(direction,this);
         animals.put(animal.getPosition(),animal);

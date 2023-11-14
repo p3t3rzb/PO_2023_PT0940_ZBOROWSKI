@@ -67,7 +67,10 @@ public class TextMap implements WorldMap<String,Integer> {
 
     @Override
     public String objectAt(Integer position) {
-        return map.get(position).getWord();
+        if(isOccupied(position)) {
+            return map.get(position).getWord();
+        }
+        return null;
     }
 
     @Override
@@ -77,6 +80,9 @@ public class TextMap implements WorldMap<String,Integer> {
 
     public void changeOrientation(String word, MapDirection orientation) {
         Text text = getText(word).getValue();
+        if(text == null) {
+            return;
+        }
         text.setOrientation(orientation);
     }
 
