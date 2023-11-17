@@ -10,7 +10,7 @@ import static agh.ics.oop.model.MapDirection.*;
 import static agh.ics.oop.model.MoveDirection.*;
 
 public class TextMap implements WorldMap<String,Integer> {
-    private Map<Integer, Text> map = new HashMap<>();
+    private final Map<Integer, Text> map = new HashMap<>();
     private int n;
 
     public TextMap() {
@@ -28,6 +28,9 @@ public class TextMap implements WorldMap<String,Integer> {
 
     @Override
     public boolean place(String word) {
+        if(getText(word) != null) {
+            return false;
+        }
         map.put(n,new Text(word,EAST));
         n++;
         return true;
