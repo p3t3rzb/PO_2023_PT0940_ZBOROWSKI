@@ -60,11 +60,17 @@ public class GrassField implements WorldMap<Animal,Vector2D> {
     }
 
     private void mapCheck(Vector2D position) {
-        if(position.precedes(mapStart)) {
-            mapStart = position;
+        if(position.getX() < mapStart.getX()) {
+            mapStart = new Vector2D(position.getX(),mapStart.getY());
         }
-        if(position.follows(mapEnd)) {
-            mapEnd = position;
+        if(position.getY() < mapStart.getY()) {
+            mapStart = new Vector2D(mapStart.getX(),position.getY());
+        }
+        if(position.getX() > mapEnd.getX()) {
+            mapEnd = new Vector2D(position.getX(),mapEnd.getY());
+        }
+        if(position.getY() > mapEnd.getY()) {
+            mapEnd = new Vector2D(mapEnd.getX(),position.getY());
         }
     }
 

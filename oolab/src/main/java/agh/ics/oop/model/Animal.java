@@ -64,10 +64,6 @@ public class Animal implements WorldElement {
         return orientation;
     }
 
-    public void setOrientation(MapDirection orientation) {
-        this.orientation = orientation;
-    }
-
     @Override
     public Vector2D getPosition() {
         return position;

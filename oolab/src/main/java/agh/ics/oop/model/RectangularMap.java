@@ -9,13 +9,10 @@ import java.util.Map;
 
 public class RectangularMap implements WorldMap<Animal,Vector2D> {
     private final Map<Vector2D,Animal> animals = new HashMap<>();
-    private final int width, height;
     private final Vector2D mapStart = new Vector2D(0,0);
     private final Vector2D mapEnd;
 
     public RectangularMap(int width, int height) {
-        this.width = width;
-        this.height = height;
         mapEnd = new Vector2D(width-1,height-1);
     }
 

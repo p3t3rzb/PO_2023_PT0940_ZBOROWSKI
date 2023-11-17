@@ -11,7 +11,7 @@ public class Grass implements WorldElement {
     }
 
     public String toString() {
-        return position.toString();
+        return "*";
     }
 
     public boolean isAt(Vector2D position) {

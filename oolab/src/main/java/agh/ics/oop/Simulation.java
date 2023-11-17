@@ -20,7 +20,7 @@ public class Simulation {
         this.map = map;
 
         for(Vector2D position: positions) {
-            if(map.place(new Animal(position)) == true) {
+            if(map.place(new Animal(position))) {
                 animals.add(new Animal(position));
             }
         }
