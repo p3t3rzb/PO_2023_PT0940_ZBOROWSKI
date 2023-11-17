@@ -1,44 +1,53 @@
 package agh.ics.oop.model;
 
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.css.Rect;
+
 import static agh.ics.oop.model.MoveDirection.*;
 import static agh.ics.oop.model.MoveDirection.FORWARD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AnimalTest {
+    RectangularMap map = new RectangularMap(3,3);
     @Test
     public void orientationTest() {
         Animal temp = new Animal();
-        temp.move(RIGHT);
-        assertEquals(temp.toString(), "(2,2) Wschód");
-        temp.move(LEFT);
-        temp.move(LEFT);
-        assertEquals(temp.toString(), "(2,2) Zachód");
+        temp.move(RIGHT,map);
+        assertEquals(temp.toString(), ">");
+        assertEquals(temp.getPosition().toString(),"(2,2)");
+        temp.move(LEFT,map);
+        temp.move(LEFT,map);
+        assertEquals(temp.toString(), "<");
+        assertEquals(temp.getPosition().toString(),"(2,2)");
     }
 
     @Test
     public void positionTest() {
         Animal temp = new Animal();
-        temp.move(RIGHT);
-        temp.move(FORWARD);
-        temp.move(FORWARD);
-        assertEquals(temp.toString(), "(4,2) Wschód");
-        temp.move(RIGHT);
-        temp.move(FORWARD);
-        assertEquals(temp.toString(), "(4,1) Południe");
+        temp.move(RIGHT,map);
+        temp.move(FORWARD,map);
+        temp.move(FORWARD,map);
+        assertEquals(temp.toString(), ">");
+        assertEquals(temp.getPosition().toString(), "(2,2)");
+        temp.move(RIGHT,map);
+        temp.move(FORWARD,map);
+        assertEquals(temp.toString(), "V");
+        assertEquals(temp.getPosition().toString(), "(2,1)");
     }
 
     @Test
     public void mapBoundariesTest() {
         Animal temp = new Animal();
-        temp.move(FORWARD);
-        temp.move(FORWARD);
-        temp.move(FORWARD);
-        assertEquals(temp.toString(), "(2,4) Północ");
-        temp.move(LEFT);
-        temp.move(FORWARD);
-        temp.move(FORWARD);
-        temp.move(FORWARD);
-        assertEquals(temp.toString(), "(0,4) Zachód");
+        temp.move(FORWARD,map);
+        temp.move(FORWARD,map);
+        temp.move(FORWARD,map);
+        assertEquals(temp.toString(), "^");
+        assertEquals(temp.getPosition().toString(), "(2,2)");
+        temp.move(LEFT,map);
+        temp.move(FORWARD,map);
+        temp.move(FORWARD,map);
+        temp.move(FORWARD,map);
+        assertEquals(temp.toString(), "<");
+        assertEquals(temp.getPosition().toString(), "(0,2)");
     }
 }
