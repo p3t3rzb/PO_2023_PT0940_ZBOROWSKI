@@ -7,33 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class RectangularMap implements WorldMap<Animal,Vector2D> {
+public class RectangularMap extends AbstractWorldMap {
     private final Map<Vector2D,Animal> animals = new HashMap<>();
     private final Vector2D mapStart = new Vector2D(0,0);
     private final Vector2D mapEnd;
 
     public RectangularMap(int width, int height) {
         mapEnd = new Vector2D(width-1,height-1);
-    }
-
-    @Override
-    public boolean place(Animal animal) {
-        if(canMoveTo(animal.getPosition()) == false) {
-            return false;
-        }
-
-        animals.put(animal.getPosition(),animal);
-        return true;
-    }
-
-    @Override
-    public void move(Animal animal, MoveDirection direction) {
-        if(isOccupied(animal.getPosition()) == false) {
-            return;
-        }
-        animals.remove(animal.getPosition());
-        animal.move(direction,this);
-        animals.put(animal.getPosition(),animal);
     }
 
     @Override

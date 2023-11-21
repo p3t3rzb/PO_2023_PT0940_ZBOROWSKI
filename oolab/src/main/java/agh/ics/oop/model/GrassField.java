@@ -7,16 +7,14 @@ import java.util.*;
 import static java.lang.Math.round;
 import static java.lang.Math.sqrt;
 
-public class GrassField implements WorldMap<Animal,Vector2D> {
-    private final int nGrass;
+public class GrassField extends AbstractWorldMap {
+    private static final Vector2D BASEVECTOR = new Vector2D(0,0);
     private Vector2D mapStart, mapEnd;
-    private final Map<Vector2D,Animal> animals = new HashMap<>();
     private final Map<Vector2D,Grass> grasses = new HashMap<>();
 
     public GrassField(int n) {
-        this.nGrass = n;
-        mapStart = new Vector2D(0,0);
-        mapEnd = mapStart;
+        mapStart = BASEVECTOR;
+        mapEnd = BASEVECTOR;
         int count = 0;
         int maxMap = (int)sqrt(n*10);
 
@@ -44,21 +42,6 @@ public class GrassField implements WorldMap<Animal,Vector2D> {
         return null;
     }
 
-    @Override
-    public boolean isOccupied(Vector2D position) {
-        return (objectAt(position) != null);
-    }
-
-    @Override
-    public void move(Animal animal, MoveDirection direction) {
-        if(isOccupied(animal.getPosition()) == false) {
-            return;
-        }
-        animals.remove(animal.getPosition());
-        animal.move(direction,this);
-        animals.put(animal.getPosition(),animal);
-    }
-
     private void mapCheck(Vector2D position) {
         if(position.getX() < mapStart.getX()) {
             mapStart = new Vector2D(position.getX(),mapStart.getY());
@@ -75,22 +58,14 @@ public class GrassField implements WorldMap<Animal,Vector2D> {
     }
 
     private void updateMapSize() {
+        mapStart = BASEVECTOR;
+        mapEnd = BASEVECTOR;
         for(Vector2D position : animals.keySet()) {
             mapCheck(position);
         }
         for(Vector2D position : grasses.keySet()) {
             mapCheck(position);
         }
-    }
-
-    @Override
-    public boolean place(Animal animal) {
-        if(canMoveTo(animal.getPosition()) == false) {
-            return false;
-        }
-
-        animals.put(animal.getPosition(),animal);
-        return true;
     }
 
     @Override
