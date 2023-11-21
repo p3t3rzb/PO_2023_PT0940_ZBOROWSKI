@@ -80,4 +80,15 @@ public class GrassField extends AbstractWorldMap {
         updateMapSize();
         return new MapVisualizer(this).draw(mapStart,mapEnd);
     }
+
+    @Override
+    public List<WorldElement> getElements() {
+        List<WorldElement> result = super.getElements();
+
+        for(Grass grass : grasses.values()) {
+            result.add(grass);
+        }
+
+        return result;
+    }
 }
