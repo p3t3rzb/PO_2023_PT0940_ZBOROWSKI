@@ -7,7 +7,7 @@ import static agh.ics.oop.model.MoveDirection.RIGHT;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GrassFieldTest {
-    private WorldMap<Animal,Vector2D> map = new GrassField(5);
+    private WorldMap map = new GrassField(5);
     private static final Vector2D SAMPLEVECTOR = new Vector2D(2,2);
 
     @Test

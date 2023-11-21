@@ -7,7 +7,6 @@ import java.util.Map;
 
 
 public class RectangularMap extends AbstractWorldMap {
-    private final Map<Vector2D,Animal> animals = new HashMap<>();
     private final Vector2D mapStart = new Vector2D(0,0);
     private final Vector2D mapEnd;
 

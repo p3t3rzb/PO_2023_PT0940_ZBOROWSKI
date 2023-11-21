@@ -6,7 +6,7 @@ import static agh.ics.oop.model.MoveDirection.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RectangularMapTest {
-    private WorldMap<Animal,Vector2D> map = new RectangularMap(5,5);
+    private WorldMap map = new RectangularMap(5,5);
     private static final Vector2D SAMPLEVECTOR = new Vector2D(2,2);
 
     @Test

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractWorldMap implements WorldMap<Animal,Vector2D> {
+public abstract class AbstractWorldMap implements WorldMap {
     protected final Map<Vector2D,Animal> animals = new HashMap<>();
 
     @Override

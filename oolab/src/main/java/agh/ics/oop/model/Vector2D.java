@@ -40,12 +40,12 @@ public class Vector2D {
         return new Vector2D(-x,-y);
     }
 
+    @Override
     public int hashCode() {
-        int result = 1;
-        result = 31*result+x;
-        result = 31*result+y;
-        return result;
+        return 1000*x+y;
     }
+
+    @Override
     public boolean equals(Object other) {
         if (this == other)
             return true;
