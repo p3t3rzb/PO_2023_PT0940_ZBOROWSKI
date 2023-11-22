@@ -7,13 +7,12 @@ import java.util.*;
 import static java.lang.Math.*;
 
 public class GrassField extends AbstractWorldMap {
-    private static final Vector2D BASEVECTOR = new Vector2D(0,0);
     private Vector2D mapStart, mapEnd;
     private final Map<Vector2D,Grass> grasses = new HashMap<>();
 
     public GrassField(int n) {
-        mapStart = BASEVECTOR;
-        mapEnd = BASEVECTOR;
+        mapStart = new Vector2D(Integer.MAX_VALUE,Integer.MAX_VALUE);
+        mapEnd = new Vector2D(Integer.MIN_VALUE,Integer.MIN_VALUE);
         //int count = 0;
         int maxMap = (int)sqrt(n*10);
 
@@ -65,8 +64,6 @@ public class GrassField extends AbstractWorldMap {
         for(Vector2D position : grasses.keySet()) {
             mapCheck(position);
         }
-        System.out.println(mapStart);
-        System.out.println(mapEnd);
     }
 
     @Override
