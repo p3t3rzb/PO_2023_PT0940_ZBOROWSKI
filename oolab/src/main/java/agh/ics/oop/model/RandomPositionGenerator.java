@@ -30,7 +30,7 @@ class CustomIterator implements Iterator<Vector2D> {
     }
 }
 public class RandomPositionGenerator implements Iterable<Vector2D> {
-    private List<Vector2D> positions = new ArrayList<>();
+    private List<Vector2D> positions;
 
     public List<Vector2D> getPositions() {
         return Collections.unmodifiableList(positions);
@@ -56,6 +56,7 @@ public class RandomPositionGenerator implements Iterable<Vector2D> {
     }
 
     public RandomPositionGenerator(int maxWidth, int maxHeight, int grassCount) {
+        positions = new ArrayList<>(grassCount);
         List<Vector2D> temp = randomPermutation(maxWidth,maxHeight);
 
         for(int i=0; i<grassCount; i++) {
