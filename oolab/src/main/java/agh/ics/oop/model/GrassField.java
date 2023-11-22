@@ -4,8 +4,7 @@ import agh.ics.oop.model.util.MapVisualizer;
 
 import java.util.*;
 
-import static java.lang.Math.round;
-import static java.lang.Math.sqrt;
+import static java.lang.Math.*;
 
 public class GrassField extends AbstractWorldMap {
     private static final Vector2D BASEVECTOR = new Vector2D(0,0);
@@ -15,17 +14,27 @@ public class GrassField extends AbstractWorldMap {
     public GrassField(int n) {
         mapStart = BASEVECTOR;
         mapEnd = BASEVECTOR;
-        int count = 0;
+        //int count = 0;
         int maxMap = (int)sqrt(n*10);
 
-        while(count < n) {
+        RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(maxMap,maxMap,n);
+        Iterator<Vector2D> positionsIterator = randomPositionGenerator.iterator();
+
+        while(positionsIterator.hasNext()) {
+            Vector2D grassPosition = positionsIterator.next();
+            grasses.put(grassPosition, new Grass(grassPosition));
+        }
+
+        /*while(count < n) {
             Random rn = new Random();
             Vector2D randomPosition = new Vector2D(rn.nextInt()%maxMap,rn.nextInt()%maxMap);
             if(grasses.containsKey(randomPosition) == false) {
                 grasses.put(randomPosition,new Grass(randomPosition));
                 count++;
             }
-        }
+
+
+        }*/
     }
     @Override
     public WorldElement objectAt(Vector2D position) {
@@ -43,18 +52,8 @@ public class GrassField extends AbstractWorldMap {
     }
 
     private void mapCheck(Vector2D position) {
-        if(position.getX() < mapStart.getX()) {
-            mapStart = new Vector2D(position.getX(),mapStart.getY());
-        }
-        if(position.getY() < mapStart.getY()) {
-            mapStart = new Vector2D(mapStart.getX(),position.getY());
-        }
-        if(position.getX() > mapEnd.getX()) {
-            mapEnd = new Vector2D(position.getX(),mapEnd.getY());
-        }
-        if(position.getY() > mapEnd.getY()) {
-            mapEnd = new Vector2D(mapEnd.getX(),position.getY());
-        }
+        mapStart = new Vector2D(min(position.getX(),mapStart.getX()),min(position.getY(),mapStart.getY()));
+        mapEnd = new Vector2D(max(position.getX(),mapEnd.getX()),max(position.getY(),mapEnd.getY()));
     }
 
     private void updateMapSize() {
