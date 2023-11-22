@@ -13,7 +13,6 @@ public class GrassField extends AbstractWorldMap {
     public GrassField(int n) {
         mapStart = new Vector2D(Integer.MAX_VALUE,Integer.MAX_VALUE);
         mapEnd = new Vector2D(Integer.MIN_VALUE,Integer.MIN_VALUE);
-        //int count = 0;
         int maxMap = (int)sqrt(n*10);
 
         RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(maxMap,maxMap,n);
@@ -23,18 +22,8 @@ public class GrassField extends AbstractWorldMap {
             Vector2D grassPosition = positionsIterator.next();
             grasses.put(grassPosition, new Grass(grassPosition));
         }
-
-        /*while(count < n) {
-            Random rn = new Random();
-            Vector2D randomPosition = new Vector2D(rn.nextInt()%maxMap,rn.nextInt()%maxMap);
-            if(grasses.containsKey(randomPosition) == false) {
-                grasses.put(randomPosition,new Grass(randomPosition));
-                count++;
-            }
-
-
-        }*/
     }
+
     @Override
     public WorldElement objectAt(Vector2D position) {
         WorldElement result = animals.get(position);
