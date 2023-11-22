@@ -14,17 +14,27 @@ public class GrassField extends AbstractWorldMap {
     public GrassField(int n) {
         mapStart = BASEVECTOR;
         mapEnd = BASEVECTOR;
-        int count = 0;
+        //int count = 0;
         int maxMap = (int)sqrt(n*10);
 
-        while(count < n) {
+        RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(maxMap,maxMap,n);
+        Iterator<Vector2D> positionsIterator = randomPositionGenerator.iterator();
+
+        while(positionsIterator.hasNext()) {
+            Vector2D grassPosition = positionsIterator.next();
+            grasses.put(grassPosition, new Grass(grassPosition));
+        }
+
+        /*while(count < n) {
             Random rn = new Random();
             Vector2D randomPosition = new Vector2D(rn.nextInt()%maxMap,rn.nextInt()%maxMap);
             if(grasses.containsKey(randomPosition) == false) {
                 grasses.put(randomPosition,new Grass(randomPosition));
                 count++;
             }
-        }
+
+
+        }*/
     }
     @Override
     public WorldElement objectAt(Vector2D position) {
