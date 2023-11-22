@@ -57,14 +57,16 @@ public class GrassField extends AbstractWorldMap {
     }
 
     private void updateMapSize() {
-        mapStart = BASEVECTOR;
-        mapEnd = BASEVECTOR;
+        mapStart = new Vector2D(Integer.MAX_VALUE,Integer.MAX_VALUE);
+        mapEnd = new Vector2D(Integer.MIN_VALUE,Integer.MIN_VALUE);
         for(Vector2D position : animals.keySet()) {
             mapCheck(position);
         }
         for(Vector2D position : grasses.keySet()) {
             mapCheck(position);
         }
+        System.out.println(mapStart);
+        System.out.println(mapEnd);
     }
 
     @Override
