@@ -40,8 +40,8 @@ public class GrassField extends AbstractWorldMap {
     }
 
     private void mapCheck(Vector2D position) {
-        mapStart = new Vector2D(min(position.getX(),mapStart.getX()),min(position.getY(),mapStart.getY()));
-        mapEnd = new Vector2D(max(position.getX(),mapEnd.getX()),max(position.getY(),mapEnd.getY()));
+        mapStart = mapStart.lowerLeft(position);
+        mapEnd = mapEnd.upperRight(position);
     }
 
     private void updateMapSize() {
