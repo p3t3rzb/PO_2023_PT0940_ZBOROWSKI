@@ -10,7 +10,7 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     @Override
     public boolean place(Animal animal) {
-        if(canMoveTo(animal.getPosition()) == false) {
+        if(! canMoveTo(animal.getPosition())) {
             return false;
         }
 
@@ -43,9 +43,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     public List<WorldElement> getElements() {
         List<WorldElement> result = new ArrayList<>();
 
-        for(Animal animal : animals.values()) {
-            result.add(animal);
-        }
+        result.addAll(animals.values());
 
         return result;
     }

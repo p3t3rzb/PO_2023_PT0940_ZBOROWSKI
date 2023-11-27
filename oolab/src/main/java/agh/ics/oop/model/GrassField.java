@@ -7,19 +7,17 @@ import java.util.*;
 import static java.lang.Math.*;
 
 public class GrassField extends AbstractWorldMap {
-    private Vector2D mapStart, mapEnd;
+    private Vector2D mapVisibleLowerLeft, mapVisibleUpperRight;
     private final Map<Vector2D,Grass> grasses = new HashMap<>();
+    private final MapVisualizer visualizer = new MapVisualizer(this);
 
     public GrassField(int n) {
-        mapStart = new Vector2D(Integer.MAX_VALUE,Integer.MAX_VALUE);
-        mapEnd = new Vector2D(Integer.MIN_VALUE,Integer.MIN_VALUE);
+        mapVisibleLowerLeft = new Vector2D(Integer.MAX_VALUE,Integer.MAX_VALUE);
+        mapVisibleUpperRight = new Vector2D(Integer.MIN_VALUE,Integer.MIN_VALUE);
         int maxMap = (int)sqrt(n*10);
 
         RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(maxMap,maxMap,n);
-        Iterator<Vector2D> positionsIterator = randomPositionGenerator.iterator();
-
-        while(positionsIterator.hasNext()) {
-            Vector2D grassPosition = positionsIterator.next();
+        for(Vector2D grassPosition : randomPositionGenerator) {
             grasses.put(grassPosition, new Grass(grassPosition));
         }
     }
@@ -40,13 +38,13 @@ public class GrassField extends AbstractWorldMap {
     }
 
     private void mapCheck(Vector2D position) {
-        mapStart = mapStart.lowerLeft(position);
-        mapEnd = mapEnd.upperRight(position);
+        mapVisibleLowerLeft = mapVisibleLowerLeft.lowerLeft(position);
+        mapVisibleUpperRight = mapVisibleUpperRight.upperRight(position);
     }
 
     private void updateMapSize() {
-        mapStart = new Vector2D(Integer.MAX_VALUE,Integer.MAX_VALUE);
-        mapEnd = new Vector2D(Integer.MIN_VALUE,Integer.MIN_VALUE);
+        mapVisibleLowerLeft = new Vector2D(Integer.MAX_VALUE,Integer.MAX_VALUE);
+        mapVisibleUpperRight = new Vector2D(Integer.MIN_VALUE,Integer.MIN_VALUE);
         for(Vector2D position : animals.keySet()) {
             mapCheck(position);
         }
@@ -65,7 +63,7 @@ public class GrassField extends AbstractWorldMap {
 
     public String toString() {
         updateMapSize();
-        return new MapVisualizer(this).draw(mapStart,mapEnd);
+        return visualizer.draw(mapVisibleLowerLeft,mapVisibleUpperRight);
     }
 
     @Override
