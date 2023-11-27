@@ -2,18 +2,19 @@ package agh.ics.oop.model;
 
 import org.junit.jupiter.api.Test;
 
-import static agh.ics.oop.model.MoveDirection.*;
+import static agh.ics.oop.model.MoveDirection.FORWARD;
+import static agh.ics.oop.model.MoveDirection.RIGHT;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RectangularMapTest {
-    private WorldMap map = new RectangularMap(5,5);
+public class GrassFieldTest {
+    private WorldMap map = new GrassField(5);
     private static final Vector2D SAMPLEVECTOR = new Vector2D(2,2);
 
     @Test
     public void placeTest() {
         assertTrue(map.place(new Animal(SAMPLEVECTOR)));
         assertFalse(map.place(new Animal(SAMPLEVECTOR)));
-        assertFalse(map.place(new Animal(new Vector2D(5,5))));
+        assertTrue(map.place(new Animal(new Vector2D(1000000,5))));
     }
 
 
@@ -33,7 +34,7 @@ public class RectangularMapTest {
         Animal temp = new Animal(SAMPLEVECTOR);
         map.place(temp);
         assertFalse(map.canMoveTo(SAMPLEVECTOR));
-        assertFalse(map.canMoveTo(new Vector2D(5,5)));
+        assertTrue(map.canMoveTo(new Vector2D(5,5)));
     }
 
     @Test

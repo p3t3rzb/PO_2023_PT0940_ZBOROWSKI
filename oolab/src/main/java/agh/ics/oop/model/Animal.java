@@ -3,7 +3,7 @@ package agh.ics.oop.model;
 import static agh.ics.oop.model.MapDirection.*;
 import static agh.ics.oop.model.MoveDirection.*;
 
-public class Animal {
+public class Animal implements WorldElement {
     private MapDirection orientation;
     private Vector2D position;
     //private final Vector2D mapStart = new Vector2D(0,0);
@@ -19,6 +19,7 @@ public class Animal {
         orientation = NORTH;
     }
 
+    @Override
     public String toString() {
         return switch(orientation) {
             case NORTH -> "^";
@@ -28,6 +29,7 @@ public class Animal {
         };
     }
 
+    @Override
     public boolean isAt(Vector2D position) {
         return this.position.equals(position);
     }
@@ -62,15 +64,8 @@ public class Animal {
         return orientation;
     }
 
-    public void setOrientation(MapDirection orientation) {
-        this.orientation = orientation;
-    }
-
+    @Override
     public Vector2D getPosition() {
         return position;
-    }
-
-    public void setPosition(Vector2D position) {
-        this.position = position;
     }
 }

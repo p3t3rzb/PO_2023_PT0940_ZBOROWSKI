@@ -12,15 +12,15 @@ import static java.util.Collections.unmodifiableList;
 
 public class Simulation {
     private final List<MoveDirection> moves;
-    private WorldMap<Animal,Vector2D> map;
+    private WorldMap map;
     private List<Animal> animals = new ArrayList<>();
 
-    public Simulation(List<MoveDirection> moves, List<Vector2D> positions, WorldMap<Animal,Vector2D> map) {
+    public Simulation(List<MoveDirection> moves, List<Vector2D> positions, WorldMap map) {
         this.moves = moves;
         this.map = map;
 
         for(Vector2D position: positions) {
-            if(map.place(new Animal(position)) == true) {
+            if(map.place(new Animal(position))) {
                 animals.add(new Animal(position));
             }
         }
