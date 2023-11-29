@@ -53,9 +53,13 @@ public class World {
         testAnimal.move(BACKWARD);
         System.out.println(testAnimal.toString());*/
 
-        List<MoveDirection> directions = OptionsParser.parse(args);
-        List<Vector2D> positions = List.of(new Vector2D(2,2), new Vector2D(3,4));
-        Simulation simulation = new Simulation(directions, positions, new GrassField(10));
-        simulation.run();
+        try {
+            List<MoveDirection> directions = OptionsParser.parse(args);
+            List<Vector2D> positions = List.of(new Vector2D(2,2), new Vector2D(3,4));
+            Simulation simulation = new Simulation(directions, positions, new GrassField(10));
+            simulation.run();
+        } catch(IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 }

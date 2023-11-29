@@ -7,7 +7,7 @@ import java.util.List;
 import static agh.ics.oop.model.MoveDirection.*;
 
 public class OptionsParser {
-    public static List<MoveDirection> parse(String[] args) {
+    public static List<MoveDirection> parse(String[] args) throws IllegalArgumentException {
         List<MoveDirection> result = new ArrayList<>();
 
         for(String arg: args) {
@@ -16,6 +16,7 @@ public class OptionsParser {
                 case "b": result.add(BACKWARD); break;
                 case "r": result.add(RIGHT); break;
                 case "l": result.add(LEFT); break;
+                default: throw new IllegalArgumentException(arg + " is not legal move specification");
             }
         }
 
