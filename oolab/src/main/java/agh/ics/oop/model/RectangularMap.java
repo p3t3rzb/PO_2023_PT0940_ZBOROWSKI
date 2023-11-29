@@ -9,6 +9,7 @@ import java.util.Map;
 public class RectangularMap extends AbstractWorldMap {
     private final Vector2D mapStart = new Vector2D(0,0);
     private final Vector2D mapEnd;
+    private final MapVisualizer visualizer = new MapVisualizer(this);
 
     public RectangularMap(int width, int height) {
         mapEnd = new Vector2D(width-1,height-1);
@@ -17,11 +18,6 @@ public class RectangularMap extends AbstractWorldMap {
     @Override
     public Boundary AbstractWorldMap() {
         return new Boundary(mapStart,mapEnd);
-    }
-
-    @Override
-    public boolean isOccupied(Vector2D position) {
-        return (animals.get(position) != null);
     }
 
     @Override
@@ -35,6 +31,6 @@ public class RectangularMap extends AbstractWorldMap {
     }
 
     public String toString() {
-        return new MapVisualizer(this).draw(mapStart,mapEnd);
+        return visualizer.draw(mapStart,mapEnd);
     }
 }

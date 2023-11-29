@@ -5,40 +5,13 @@ import java.util.*;
 
 import static java.lang.Math.random;
 
-class CustomIterator implements Iterator<Vector2D> {
-    private List<Vector2D> positions;
-    private int n;
-    private int pos = 0;
 
-    public CustomIterator(RandomPositionGenerator obj) {
-        this.n = obj.getPositions().size();
-        positions = obj.getPositions();
-    }
-
-    @Override
-    public Vector2D next() {
-        if(hasNext()) {
-            pos++;
-            return positions.get(pos-1);
-        }
-        return null;
-    }
-
-    @Override
-    public boolean hasNext() {
-        return pos < n;
-    }
-}
 public class RandomPositionGenerator implements Iterable<Vector2D> {
     private List<Vector2D> positions;
 
-    public List<Vector2D> getPositions() {
-        return Collections.unmodifiableList(positions);
-    }
-
     @Override
     public Iterator<Vector2D> iterator() {
-        return new CustomIterator(this);
+        return positions.iterator();
     }
 
     private List<Vector2D> randomPermutation(int width, int height) { // n numbers from 0 to n
