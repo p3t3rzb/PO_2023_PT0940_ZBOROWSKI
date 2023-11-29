@@ -1,5 +1,7 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.MapVisualizer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,8 +9,14 @@ import java.util.Map;
 
 public abstract class AbstractWorldMap implements WorldMap {
     protected final Map<Vector2D,Animal> animals = new HashMap<>();
+    private final MapVisualizer visualizer = new MapVisualizer(this);
 
-    abstract public Boundary AbstractWorldMap();
+    abstract public Boundary getCurrentBounds();
+
+    public String toString() {
+        Boundary currentBounds = getCurrentBounds();
+        return visualizer.draw(currentBounds.bottomLeftCorner(),currentBounds.upperRightCorner());
+    }
 
     @Override
     public void place(Animal animal) throws PositionAlreadyOccupiedException {

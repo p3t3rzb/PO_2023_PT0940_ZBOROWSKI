@@ -9,14 +9,14 @@ import java.util.Map;
 public class RectangularMap extends AbstractWorldMap {
     private final Vector2D mapStart = new Vector2D(0,0);
     private final Vector2D mapEnd;
-    private final MapVisualizer visualizer = new MapVisualizer(this);
+    //private final MapVisualizer visualizer = new MapVisualizer(this);
 
     public RectangularMap(int width, int height) {
         mapEnd = new Vector2D(width-1,height-1);
     }
 
     @Override
-    public Boundary AbstractWorldMap() {
+    public Boundary getCurrentBounds() {
         return new Boundary(mapStart,mapEnd);
     }
 
@@ -30,7 +30,7 @@ public class RectangularMap extends AbstractWorldMap {
         return position.follows(mapStart) && position.precedes(mapEnd) && isOccupied(position) == false;
     }
 
-    public String toString() {
+    /*public String toString() {
         return visualizer.draw(mapStart,mapEnd);
-    }
+    }*/
 }
