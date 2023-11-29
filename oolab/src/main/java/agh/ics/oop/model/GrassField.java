@@ -25,6 +25,11 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
+    public Boundary AbstractWorldMap() {
+        return new Boundary(mapStart,mapEnd);
+    }
+
+    @Override
     public WorldElement objectAt(Vector2D position) {
         WorldElement result = animals.get(position);
         if(result != null) {

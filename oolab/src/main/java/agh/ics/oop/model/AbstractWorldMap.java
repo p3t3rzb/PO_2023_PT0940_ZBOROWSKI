@@ -8,6 +8,8 @@ import java.util.Map;
 public abstract class AbstractWorldMap implements WorldMap {
     protected final Map<Vector2D,Animal> animals = new HashMap<>();
 
+    abstract public Boundary AbstractWorldMap();
+
     @Override
     public void place(Animal animal) throws PositionAlreadyOccupiedException {
         if(canMoveTo(animal.getPosition()) == false) {

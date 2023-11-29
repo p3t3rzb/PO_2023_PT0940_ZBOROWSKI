@@ -15,6 +15,11 @@ public class RectangularMap extends AbstractWorldMap {
     }
 
     @Override
+    public Boundary AbstractWorldMap() {
+        return new Boundary(mapStart,mapEnd);
+    }
+
+    @Override
     public boolean isOccupied(Vector2D position) {
         return (animals.get(position) != null);
     }
