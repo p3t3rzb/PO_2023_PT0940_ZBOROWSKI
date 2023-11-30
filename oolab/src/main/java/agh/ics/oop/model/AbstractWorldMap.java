@@ -2,16 +2,27 @@ package agh.ics.oop.model;
 
 import agh.ics.oop.model.util.MapVisualizer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class AbstractWorldMap implements WorldMap {
     protected final Map<Vector2D,Animal> animals = new HashMap<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
-
+    private List<MapChangeListener> observers = new ArrayList<>();
     abstract public Boundary getCurrentBounds();
+
+    public void addObserver(MapChangeListener listener) {
+        observers.add(listener);
+    }
+
+    public void removeObserver(MapChangeListener listener) {
+        observers.remove(listener);
+    }
+
+    private void mapChanged(String message) {
+        for(MapChangeListener observer : observers) {
+            observer.mapChanged(this,message);
+        }
+    }
 
     public String toString() {
         Boundary currentBounds = getCurrentBounds();
@@ -25,6 +36,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         }
 
         animals.put(animal.getPosition(),animal);
+        mapChanged("Put an animal at " + animal.getPosition().toString());
     }
 
     @Override
@@ -32,9 +44,11 @@ public abstract class AbstractWorldMap implements WorldMap {
         if(isOccupied(animal.getPosition()) == false) {
             return;
         }
+        String temp = animal.getPosition().toString();
         animals.remove(animal.getPosition());
         animal.move(direction,this);
         animals.put(animal.getPosition(),animal);
+        mapChanged("Moved an animal from " + temp + " to " + animal.getPosition().toString());
     }
 
     @Override

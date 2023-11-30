@@ -31,7 +31,6 @@ public class Simulation {
             Animal temp = animals.get(i % animals.size());
             map.move(temp,moves.get(i));
             System.out.println("Zwierzę " + i % animals.size() + " : " + temp.toString());
-            System.out.println(map.toString());
         }
     }
 
