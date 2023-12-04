@@ -2,6 +2,7 @@ package agh.ics.oop;
 
 import agh.ics.oop.model.*;
 
+import java.io.Console;
 import java.util.List;
 
 import static agh.ics.oop.model.MapDirection.*;
@@ -53,9 +54,15 @@ public class World {
         testAnimal.move(BACKWARD);
         System.out.println(testAnimal.toString());*/
 
-        List<MoveDirection> directions = OptionsParser.parse(args);
-        List<Vector2D> positions = List.of(new Vector2D(2,2), new Vector2D(3,4));
-        Simulation simulation = new Simulation(directions, positions, new GrassField(10));
-        simulation.run();
+        try {
+            List<MoveDirection> directions = OptionsParser.parse(args);
+            List<Vector2D> positions = List.of(new Vector2D(2,2), new Vector2D(3,4));
+            GrassField temp = new GrassField(10);
+            temp.addObserver(new ConsoleMapDisplay());
+            Simulation simulation = new Simulation(directions, positions, temp);
+            simulation.run();
+        } catch(IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 }

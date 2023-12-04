@@ -16,6 +16,7 @@ public class OptionsParser {
                 case "b": result.add(BACKWARD); break;
                 case "r": result.add(RIGHT); break;
                 case "l": result.add(LEFT); break;
+                default: throw new IllegalArgumentException(arg + " is not legal move specification");
             }
         }
 
