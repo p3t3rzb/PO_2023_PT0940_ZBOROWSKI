@@ -21,7 +21,7 @@ public class Simulation {
                 map.place(new Animal(position));
                 animals.add(new Animal(position));
             } catch (PositionAlreadyOccupiedException e) {
-                e.printStackTrace();
+                System.out.println("Can't place an animal at position " + position.toString());
             }
         }
     }

@@ -7,8 +7,9 @@ import java.util.*;
 public abstract class AbstractWorldMap implements WorldMap {
     protected final Map<Vector2D,Animal> animals = new HashMap<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
-    private List<MapChangeListener> observers = new ArrayList<>();
-    abstract public Boundary getCurrentBounds();
+    private final List<MapChangeListener> observers = new ArrayList<>();
+
+    abstract protected Boundary getCurrentBounds();
 
     public void addObserver(MapChangeListener listener) {
         observers.add(listener);
