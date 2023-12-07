@@ -9,6 +9,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     private final MapVisualizer visualizer = new MapVisualizer(this);
     private final List<MapChangeListener> observers = new ArrayList<>();
 
+
     abstract protected Boundary getCurrentBounds();
 
     public void addObserver(MapChangeListener listener) {

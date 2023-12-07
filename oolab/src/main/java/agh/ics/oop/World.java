@@ -1,8 +1,10 @@
 package agh.ics.oop;
 
 import agh.ics.oop.model.*;
+import org.w3c.dom.css.Rect;
 
 import java.io.Console;
+import java.util.ArrayList;
 import java.util.List;
 
 import static agh.ics.oop.model.MapDirection.*;
@@ -58,9 +60,13 @@ public class World {
             List<MoveDirection> directions = OptionsParser.parse(args);
             List<Vector2D> positions = List.of(new Vector2D(2,2), new Vector2D(3,4));
             GrassField temp = new GrassField(10);
+            RectangularMap temp2 = new RectangularMap(5,5);
             temp.addObserver(new ConsoleMapDisplay());
-            Simulation simulation = new Simulation(directions, positions, temp);
-            simulation.run();
+            temp2.addObserver(new ConsoleMapDisplay());
+            List<Simulation> simulations = new ArrayList<>();
+            simulations.add(new Simulation(directions, positions, temp));
+            simulations.add(new Simulation(directions, positions, temp2));
+            new SimulationEngine(simulations).runSync();
         } catch(IllegalArgumentException e) {
             e.printStackTrace();
         }
