@@ -17,7 +17,7 @@ public class World {
             List<Vector2D> positions = List.of(new Vector2D(2,2), new Vector2D(3,4));
             List<Simulation> simulations = new ArrayList<>();
             ConsoleMapDisplay observer = new ConsoleMapDisplay();
-            for(int i=0; i<50; i++) {
+            for(int i=0; i<500; i++) {
                 GrassField temp = new GrassField(10);
                 RectangularMap temp2 = new RectangularMap(5,5);
                 temp.addObserver(observer);
@@ -26,7 +26,7 @@ public class World {
                 simulations.add(new Simulation(directions, positions, temp2));
             }
             SimulationEngine engine = new SimulationEngine(simulations);
-            engine.runAsync();
+            engine.runAsyncInThreadPool();
             engine.awaitSimulationsEnd();
         } catch(IllegalArgumentException e) {
             e.printStackTrace();
