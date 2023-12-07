@@ -28,8 +28,8 @@ public class SimulationEngine {
     }
 
     public void awaitSimulationsEnd() throws InterruptedException {
-        for(Thread threadd : threads) {
-            threadd.join();
+        for(Thread thread : threads) {
+            thread.join();
         }
     }
 }
