@@ -9,8 +9,6 @@ import static java.lang.Math.*;
 public class GrassField extends AbstractWorldMap {
     private Vector2D mapVisibleLowerLeft, mapVisibleUpperRight;
     private final Map<Vector2D,Grass> grasses = new HashMap<>();
-    private final int mapID;
-    private static int objectsCount = 0;
 
     public GrassField(int n) {
         mapVisibleLowerLeft = new Vector2D(Integer.MAX_VALUE,Integer.MAX_VALUE);
@@ -22,8 +20,6 @@ public class GrassField extends AbstractWorldMap {
             grasses.put(grassPosition, new Grass(grassPosition));
         }
 
-        mapID = objectsCount;
-        objectsCount++;
     }
 
     @Override

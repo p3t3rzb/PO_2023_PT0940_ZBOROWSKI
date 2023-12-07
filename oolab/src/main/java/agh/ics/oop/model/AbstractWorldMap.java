@@ -8,9 +8,15 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected final Map<Vector2D,Animal> animals = new HashMap<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
     private final List<MapChangeListener> observers = new ArrayList<>();
-
+    protected final int mapID;
+    private static int objectsCount = 0;
 
     abstract protected Boundary getCurrentBounds();
+
+    public AbstractWorldMap() {
+        mapID = objectsCount;
+        objectsCount++;
+    }
 
     public void addObserver(MapChangeListener listener) {
         observers.add(listener);
