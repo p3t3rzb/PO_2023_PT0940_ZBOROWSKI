@@ -15,11 +15,6 @@ public class RectangularMap extends AbstractWorldMap {
     }
 
     @Override
-    public int getID() {
-        return mapID;
-    }
-
-    @Override
     public Boundary getCurrentBounds() {
         return new Boundary(mapStart,mapEnd);
     }

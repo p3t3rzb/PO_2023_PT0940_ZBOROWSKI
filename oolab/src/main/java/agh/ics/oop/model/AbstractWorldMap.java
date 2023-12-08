@@ -18,6 +18,10 @@ public abstract class AbstractWorldMap implements WorldMap {
         objectsCount++;
     }
 
+    public int getID() {
+        return mapID;
+    }
+
     public void addObserver(MapChangeListener listener) {
         observers.add(listener);
     }

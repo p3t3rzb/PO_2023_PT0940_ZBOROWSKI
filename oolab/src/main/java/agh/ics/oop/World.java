@@ -18,12 +18,12 @@ public class World {
             List<Simulation> simulations = new ArrayList<>();
             ConsoleMapDisplay observer = new ConsoleMapDisplay();
             for(int i=0; i<500; i++) {
-                GrassField temp = new GrassField(10);
-                RectangularMap temp2 = new RectangularMap(5,5);
-                temp.addObserver(observer);
-                temp2.addObserver(observer);
-                simulations.add(new Simulation(directions, positions, temp));
-                simulations.add(new Simulation(directions, positions, temp2));
+                GrassField grassMap = new GrassField(10);
+                RectangularMap rectangularMap = new RectangularMap(5,5);
+                grassMap.addObserver(observer);
+                rectangularMap.addObserver(observer);
+                simulations.add(new Simulation(directions, positions, grassMap));
+                simulations.add(new Simulation(directions, positions, rectangularMap));
             }
             SimulationEngine engine = new SimulationEngine(simulations);
             engine.runAsyncInThreadPool();

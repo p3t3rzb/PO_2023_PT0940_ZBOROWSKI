@@ -23,11 +23,6 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
-    public int getID() {
-        return mapID;
-    }
-
-    @Override
     public Boundary getCurrentBounds() {
         updateMapSize();
         return new Boundary(mapVisibleLowerLeft,mapVisibleUpperRight);
