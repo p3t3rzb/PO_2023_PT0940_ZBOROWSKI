@@ -19,6 +19,7 @@ public class GrassField extends AbstractWorldMap {
         for(Vector2D grassPosition : randomPositionGenerator) {
             grasses.put(grassPosition, new Grass(grassPosition));
         }
+
     }
 
     @Override

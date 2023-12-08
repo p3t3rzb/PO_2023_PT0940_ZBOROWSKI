@@ -9,6 +9,7 @@ import java.util.List;
  * @author apohllo, idzik
  */
 public interface WorldMap extends MoveValidator {
+    int getID();
 
     /**
      * Place a animal on the map.
