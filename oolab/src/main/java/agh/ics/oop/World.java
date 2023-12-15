@@ -1,23 +1,23 @@
 package agh.ics.oop;
 
 import agh.ics.oop.model.*;
-import org.w3c.dom.css.Rect;
+import javafx.application.Application;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
-import static agh.ics.oop.model.MapDirection.*;
-import static agh.ics.oop.model.MoveDirection.*;
-
 public class World {
     public static void main(String[] args) {
+        Application.launch(SimulationApp.class, args);
+
+
+
         try {
             List<MoveDirection> directions = OptionsParser.parse(args);
             List<Vector2D> positions = List.of(new Vector2D(2,2), new Vector2D(3,4));
             List<Simulation> simulations = new ArrayList<>();
             ConsoleMapDisplay observer = new ConsoleMapDisplay();
-            for(int i=0; i<500; i++) {
+            for(int i=0; i<50; i++) {
                 GrassField grassMap = new GrassField(10);
                 RectangularMap rectangularMap = new RectangularMap(5,5);
                 grassMap.addObserver(observer);
