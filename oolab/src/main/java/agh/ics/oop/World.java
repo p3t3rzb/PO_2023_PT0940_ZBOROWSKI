@@ -12,7 +12,7 @@ public class World {
 
 
 
-        try {
+        /*try {
             List<MoveDirection> directions = OptionsParser.parse(args);
             List<Vector2D> positions = List.of(new Vector2D(2,2), new Vector2D(3,4));
             List<Simulation> simulations = new ArrayList<>();
@@ -34,6 +34,6 @@ public class World {
             e.printStackTrace();
         }
 
-        System.out.println("System zakończył działanie");
+        System.out.println("System zakończył działanie");*/
     }
 }
