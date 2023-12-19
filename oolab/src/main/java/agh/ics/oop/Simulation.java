@@ -30,7 +30,6 @@ public class Simulation implements Runnable {
         for(int i=0; i<moves.size(); i++) {
             Animal temp = animals.get(i % animals.size());
             map.move(temp,moves.get(i));
-            System.out.println("Zwierzę " + i % animals.size() + " : " + temp.toString());
             try {
                 Thread.sleep(500);
             }
