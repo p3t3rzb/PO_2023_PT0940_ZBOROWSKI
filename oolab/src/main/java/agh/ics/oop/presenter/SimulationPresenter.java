@@ -42,27 +42,40 @@ public class SimulationPresenter implements MapChangeListener {
         int width = currentBounds.upperRightCorner().getX()-currentBounds.bottomLeftCorner().getX()+1;
         int height = currentBounds.upperRightCorner().getY()-currentBounds.bottomLeftCorner().getY()+1;
 
-        for(int i=0; i<height; i++) {
+        for(int i=0; i<=height; i++) {
             mapGrid.getRowConstraints().add(new RowConstraints(CELL_HEIGHT));
         }
-        for(int i=0; i<width; i++) {
+        for(int i=0; i<=width; i++) {
             mapGrid.getColumnConstraints().add(new ColumnConstraints(CELL_WIDTH));
         }
-
-        for(int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+        Label xyLabel = new Label();
+        xyLabel.setText("y\\x");
+        mapGrid.add(xyLabel,0,0);
+        mapGrid.setHalignment(xyLabel, HPos.CENTER);
+        for(int x = 1; x <= width; x++) {
+            Label child = new Label();
+            child.setText(String.valueOf(x+currentBounds.bottomLeftCorner().getX()));
+            mapGrid.add(child,x,0);
+            mapGrid.setHalignment(child, HPos.CENTER);
+        }
+        for(int y = 1; y <= height; y++) {
+            Label child = new Label();
+            child.setText(String.valueOf(height-y+currentBounds.bottomLeftCorner().getY())); // odwrócona orientacja przez wymogi zadania
+            mapGrid.add(child,0,y);
+            mapGrid.setHalignment(child, HPos.CENTER);
+        }
+        for(int x = 1; x < width; x++) {
+            for(int y = 1; y <= height; y++) {
                 Label child = new Label();
                 Vector2D childPosition = new Vector2D(x+currentBounds.bottomLeftCorner().getX(),y+currentBounds.bottomLeftCorner().getY());
                 WorldElement element = map.objectAt(childPosition);
                 if(element != null) {
                     child.setText(element.toString());
                 }
-                mapGrid.add(child,x,height-y-1); // odwrócona orientacja przez wymogi zadania
+                mapGrid.add(child,x,height-y); // odwrócona orientacja przez wymogi zadania
                 mapGrid.setHalignment(child, HPos.CENTER);
             }
         }
-
-        //infoLabel.setText(map.toString());
     }
 
     @Override
