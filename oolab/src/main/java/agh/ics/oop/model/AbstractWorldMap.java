@@ -11,7 +11,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected final int mapID;
     private static int objectsCount = 0;
 
-    abstract protected Boundary getCurrentBounds();
+    abstract public Boundary getCurrentBounds();
 
     public AbstractWorldMap() {
         mapID = objectsCount;
