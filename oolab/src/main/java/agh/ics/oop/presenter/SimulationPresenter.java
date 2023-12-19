@@ -54,25 +54,26 @@ public class SimulationPresenter implements MapChangeListener {
         mapGrid.setHalignment(xyLabel, HPos.CENTER);
         for(int x = 1; x <= width; x++) {
             Label child = new Label();
-            child.setText(String.valueOf(x+currentBounds.bottomLeftCorner().getX()));
+            child.setText(String.valueOf(x-1+currentBounds.bottomLeftCorner().getX()));
             mapGrid.add(child,x,0);
             mapGrid.setHalignment(child, HPos.CENTER);
         }
+        // f f f f b b r l f f f f f f f f f f f f f f f f f r r f f f f f f f f f f f f
         for(int y = 1; y <= height; y++) {
             Label child = new Label();
             child.setText(String.valueOf(height-y+currentBounds.bottomLeftCorner().getY())); // odwrócona orientacja przez wymogi zadania
             mapGrid.add(child,0,y);
             mapGrid.setHalignment(child, HPos.CENTER);
         }
-        for(int x = 1; x < width; x++) {
+        for(int x = 1; x <= width; x++) {
             for(int y = 1; y <= height; y++) {
                 Label child = new Label();
-                Vector2D childPosition = new Vector2D(x+currentBounds.bottomLeftCorner().getX(),y+currentBounds.bottomLeftCorner().getY());
+                Vector2D childPosition = new Vector2D(x-1+currentBounds.bottomLeftCorner().getX(),height-y+currentBounds.bottomLeftCorner().getY());
                 WorldElement element = map.objectAt(childPosition);
                 if(element != null) {
                     child.setText(element.toString());
                 }
-                mapGrid.add(child,x,height-y); // odwrócona orientacja przez wymogi zadania
+                mapGrid.add(child,x,y); // odwrócona orientacja przez wymogi zadania
                 mapGrid.setHalignment(child, HPos.CENTER);
             }
         }
