@@ -6,21 +6,26 @@ import agh.ics.oop.model.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 
 import static java.lang.Math.abs;
 
 public class SimulationPresenter implements MapChangeListener {
-    private static final int CELL_HEIGHT = 40;
-    private static final int CELL_WIDTH = 40;
+    private static final int CELL_HEIGHT = 30;
+    private static final int CELL_WIDTH = 30;
     private WorldMap map;
 
     @FXML
@@ -58,7 +63,6 @@ public class SimulationPresenter implements MapChangeListener {
             mapGrid.add(child,x,0);
             mapGrid.setHalignment(child, HPos.CENTER);
         }
-        // f f f f b b r l f f f f f f f f f f f f f f f f f r r f f f f f f f f f f f f
         for(int y = 1; y <= height; y++) {
             Label child = new Label();
             child.setText(String.valueOf(height-y+currentBounds.bottomLeftCorner().getY())); // odwrócona orientacja przez wymogi zadania
@@ -92,8 +96,29 @@ public class SimulationPresenter implements MapChangeListener {
         List<MoveDirection> directions = OptionsParser.parse(infoText.getText().split(" "));
         GrassField grassMap = new GrassField(10);
         setWorldMap(grassMap);
-        grassMap.addObserver(this);
-        new SimulationEngine(List.of(new Simulation(directions, positions, grassMap))).runAsync();
+
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("mapgrid.fxml"));
+
+        try {
+            BorderPane root = loader.load();
+            SimulationPresenter newPresenter = loader.getController();
+            grassMap.addObserver(newPresenter);
+            var scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Simulation");
+            stage.minWidthProperty().bind(root.minWidthProperty());
+            stage.minHeightProperty().bind(root.minHeightProperty());
+
+            stage.show();
+            SimulationEngine engine = new SimulationEngine(List.of(new Simulation(directions, positions, grassMap)));
+            engine.runAsync();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void clearGrid() {
