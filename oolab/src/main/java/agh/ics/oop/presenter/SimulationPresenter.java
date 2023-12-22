@@ -112,8 +112,8 @@ public class SimulationPresenter implements MapChangeListener {
             stage.minHeightProperty().bind(root.minHeightProperty());
 
             stage.show();
-            SimulationEngine engine = new SimulationEngine(List.of(new Simulation(directions, positions, grassMap)));
-            engine.runAsync();
+            Thread thread = new Thread(new Simulation(directions, positions, grassMap));
+            thread.start();
 
         } catch (IOException e) {
             e.printStackTrace();
