@@ -10,7 +10,15 @@ public enum MoveDirection {
     LEFT,
     FORWARD_LEFT;
 
-    public int toInt() {
+    public int directionToInt() {
         return ordinal();
+    }
+
+    public static MoveDirection intToDirection(int number) {
+        if(number >= 0 && number < 8) {
+            return values()[number];
+        }
+
+        return FORWARD;
     }
 }
