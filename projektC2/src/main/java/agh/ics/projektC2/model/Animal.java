@@ -5,8 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static agh.ics.projektC2.model.MapDirection.*;
-import static java.lang.Math.min;
+import static java.lang.Math.max;
 
 public class Animal implements WorldElement {
     private MapDirection orientation;
@@ -22,7 +21,7 @@ public class Animal implements WorldElement {
         this.energy = energy;
         this.genome = genome;
         age = 0;
-        currentGene = PRNG.nextInt(min(1,genome.size()));
+        currentGene = PRNG.nextInt(max(1,genome.size()));
         orientation = MapDirection.randomDirection();
     }
 

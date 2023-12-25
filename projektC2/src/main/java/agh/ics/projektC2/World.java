@@ -26,7 +26,7 @@ public class World {
         };
 
         Animal temp = new Animal(new Vector2D(0,0),100,List.of(1,2,3,4,0,1,1,4));
-        for(int i=0; i<8; i++) {
+        for(int i=0; i<10; i++) {
             System.out.println(temp.getOrientation().toString());
             System.out.println(temp.getPosition().toString());
             temp.move(validator);
