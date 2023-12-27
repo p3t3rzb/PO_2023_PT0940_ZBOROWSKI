@@ -22,8 +22,8 @@ public class World {
             }
         };
 
-        Animal temp = new Animal(new Vector2D(0,0),100,List.of(1,2,3,4,0,1,1,4),new EarthTransformation(new Vector2D(0,0),new Vector2D(2,2)));
-        for(int i=0; i<10; i++) {
+        Animal temp = new Animal(new Vector2D(0,0),100,List.of(2,0,0,0,0,0,2,0,0,0,0),new EarthTransformation(new Vector2D(0,0),new Vector2D(2,2)));
+        for(int i=0; i<12; i++) {
             System.out.println(temp.getOrientation().toString());
             System.out.println(temp.getPosition().toString());
             temp.move(validator);
