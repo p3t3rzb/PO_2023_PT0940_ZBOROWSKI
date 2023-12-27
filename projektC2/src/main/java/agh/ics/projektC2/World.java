@@ -1,9 +1,6 @@
 package agh.ics.projektC2;
 
-import agh.ics.projektC2.model.Animal;
-import agh.ics.projektC2.model.MapDirection;
-import agh.ics.projektC2.model.MoveValidator;
-import agh.ics.projektC2.model.Vector2D;
+import agh.ics.projektC2.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +22,7 @@ public class World {
             }
         };
 
-        Animal temp = new Animal(new Vector2D(0,0),100,List.of(1,2,3,4,0,1,1,4));
+        Animal temp = new Animal(new Vector2D(0,0),100,List.of(1,2,3,4,0,1,1,4),new EarthTransformation(new Vector2D(0,0),new Vector2D(2,2)));
         for(int i=0; i<10; i++) {
             System.out.println(temp.getOrientation().toString());
             System.out.println(temp.getPosition().toString());
