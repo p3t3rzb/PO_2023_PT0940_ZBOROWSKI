@@ -7,7 +7,7 @@ public interface WorldMap extends MoveValidator {
 
     void place(Animal animal) throws PositionAlreadyOccupiedException;
 
-    void move(Animal animal, MoveDirection direction);
+    void move(Animal animal);
 
     boolean isOccupied(Vector2D position);
 

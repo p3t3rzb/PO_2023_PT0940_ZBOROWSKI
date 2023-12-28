@@ -7,6 +7,7 @@ public class EarthMap extends AbstractWorldMap {
 
     public EarthMap(int width, int height) {
         mapEnd = new Vector2D(width-1,height-1);
+        transformation = new EarthTransformation(mapStart,mapEnd);
     }
 
     @Override
@@ -21,6 +22,7 @@ public class EarthMap extends AbstractWorldMap {
 
     @Override
     public boolean canMoveTo(Vector2D position) {
+        // uzupełnić
         return position.follows(mapStart) && position.precedes(mapEnd) && isOccupied(position) == false;
     }
 }

@@ -15,13 +15,11 @@ public class Animal implements WorldElement {
     private int currentGene;
     private int age;
     private static final Random PRNG = new Random();
-    private final MoveTransformation transformation;
 
-    public Animal(Vector2D position, int energy, List<Integer> genome, MoveTransformation transformation) {
+    public Animal(Vector2D position, int energy, List<Integer> genome) {
         this.position = position;
         this.energy = energy;
         this.genome = genome;
-        this.transformation = transformation;
         age = 0;
         currentGene = PRNG.nextInt(max(1,genome.size()));
         orientation = MapDirection.randomDirection();
@@ -54,7 +52,7 @@ public class Animal implements WorldElement {
         return this.position.equals(position);
     }
 
-    public void move(MoveValidator validator) {
+    public void move(MoveValidator validator, MoveTransformation transformation) {
         MoveDirection direction = MoveDirection.intToDirection(genome.get(currentGene).intValue());
 
         currentGene = currentGene+1;

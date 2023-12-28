@@ -22,12 +22,19 @@ public class World {
             }
         };
 
-        Animal temp = new Animal(new Vector2D(0,0),100,List.of(2,0,0,0,0,0,2,0,0,0,0),new EarthTransformation(new Vector2D(0,0),new Vector2D(2,2)));
+        EarthMap map = new EarthMap(3,3);
+        map.addObserver(new ConsoleMapDisplay());
+        List<Vector2D> positions = List.of(new Vector2D(0,0),new Vector2D(2,2));
+        Simulation simulation = new Simulation(positions,map);
+
+        simulation.run();
+
+        /*Animal temp = new Animal(new Vector2D(0,0),100,List.of(0,0,0,0,0,0,0,0,0,0));
         for(int i=0; i<12; i++) {
             System.out.println(temp.getOrientation().toString());
             System.out.println(temp.getPosition().toString());
-            temp.move(validator);
+            temp.move(validator,transformation);
         }
-        System.out.println(temp.getOrientation().toString());
+        System.out.println(temp.getOrientation().toString());*/
     }
 }
