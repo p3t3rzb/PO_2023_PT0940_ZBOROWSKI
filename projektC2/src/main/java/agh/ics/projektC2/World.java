@@ -22,7 +22,7 @@ public class World {
             }
         };
 
-        EarthMap map = new EarthMap(3,3);
+        EarthMap map = new EarthMap(10,10);
         map.addObserver(new ConsoleMapDisplay());
         List<Vector2D> positions = List.of(new Vector2D(0,0),new Vector2D(2,2));
         Simulation simulation = new Simulation(positions,map);

@@ -16,7 +16,7 @@ public class Simulation implements Runnable {
 
         for(Vector2D position: positions) {
             try {
-                Animal animal = new Animal(position,100,List.of(0,0,0,0,0,0,0,0,0,0));
+                Animal animal = new Animal(position,100,List.of(0,1,2,3,0,0,0,4,5,6,7,0,0,0));
                 map.place(animal);
                 animals.add(animal);
             } catch (PositionAlreadyOccupiedException e) {
