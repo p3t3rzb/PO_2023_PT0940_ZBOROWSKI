@@ -11,7 +11,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected final int mapID;
     private static int objectsCount = 0;
 
-    abstract protected Boundary getCurrentBounds();
+    abstract public Boundary getCurrentBounds();
 
     public AbstractWorldMap() {
         mapID = objectsCount;
@@ -60,7 +60,12 @@ public abstract class AbstractWorldMap implements WorldMap {
         animals.remove(animal.getPosition());
         animal.move(direction,this);
         animals.put(animal.getPosition(),animal);
-        mapChanged("Moved an animal from " + temp + " to " + animal.getPosition().toString());
+        if(!temp.equals(animal.getPosition().toString())) {
+            mapChanged("Moved an animal from " + temp + " to " + animal.getPosition().toString());
+        } else {
+            mapChanged("Animal at " + temp + " rotating");
+        }
+
     }
 
     @Override

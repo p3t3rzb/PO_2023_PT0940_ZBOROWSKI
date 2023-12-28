@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            minHeight="500.0" minWidth="500.0"
+            fx:controller="agh.ics.oop.presenter.SimulationPresenter">
+    <top>
+        <Label fx:id="lastMove" textAlignment="CENTER"/>
+    </top>
+    <center>
+        <GridPane fx:id="mapGrid" gridLinesVisible="true" alignment="CENTER"/>
+    </center>
+</BorderPane>

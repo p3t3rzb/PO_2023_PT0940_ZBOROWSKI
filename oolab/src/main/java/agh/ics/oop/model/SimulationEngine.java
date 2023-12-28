@@ -1,19 +1,16 @@
 package agh.ics.oop.model;
 
 import agh.ics.oop.Simulation;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
 public class SimulationEngine {
     private final List<Simulation> simulations;
     private final List<Thread> threads = new ArrayList<>();
-    private ExecutorService executorService = newFixedThreadPool(4);
+    private final ExecutorService executorService = newFixedThreadPool(4);
 
     public SimulationEngine(List<Simulation> simulations) {
         this.simulations = simulations;
