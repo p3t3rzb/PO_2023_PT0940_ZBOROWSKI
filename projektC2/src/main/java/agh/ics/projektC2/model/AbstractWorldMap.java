@@ -70,7 +70,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         }
     }
 
-    public Plant getPlantAt(Vector2D position) {
+    public Plant plantAt(Vector2D position) {
         return plants.get(position);
     }
 

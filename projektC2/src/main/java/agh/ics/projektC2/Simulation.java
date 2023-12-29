@@ -27,7 +27,6 @@ public class Simulation implements Runnable {
 
     public void run() {
         for(int i=0; i<100; i++) {
-            System.out.println("t");
             Animal temp = animals.get(i % animals.size());
             map.move(temp);
         }

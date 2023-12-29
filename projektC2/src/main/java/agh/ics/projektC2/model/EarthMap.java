@@ -2,6 +2,8 @@ package agh.ics.projektC2.model;
 
 import java.util.List;
 
+import static java.util.Collections.max;
+
 public class EarthMap extends AbstractWorldMap {
     private final Vector2D mapStart = new Vector2D(0,0);
     private final Vector2D mapEnd;
@@ -17,9 +19,9 @@ public class EarthMap extends AbstractWorldMap {
     }
 
     @Override
-    public Animal objectAt(Vector2D position) {
+    public WorldElement objectAt(Vector2D position) {
         List<Animal> objectsAt = animals.get(position);
-        return objectsAt.isEmpty() ? null : objectsAt.get(0);
+        return objectsAt.isEmpty() ? plantAt(position) : max(objectsAt);
     }
 
     @Override
