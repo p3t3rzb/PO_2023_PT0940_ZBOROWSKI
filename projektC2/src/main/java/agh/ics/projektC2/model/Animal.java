@@ -7,20 +7,20 @@ import java.util.Random;
 
 import static java.lang.Math.max;
 
-public class Animal implements WorldElement {
+public class Animal implements WorldElement, Comparable<Animal> {
     private MapDirection orientation;
     private Vector2D position;
     private final List<Integer> genome;
     private int energy;
     private int currentGene;
-    private int age;
+    private int age = 0;
+    private int childrenNo = 0;
     private static final Random PRNG = new Random();
 
     public Animal(Vector2D position, int energy, List<Integer> genome) {
         this.position = position;
         this.energy = energy;
         this.genome = genome;
-        age = 0;
         currentGene = PRNG.nextInt(max(1,genome.size()));
         orientation = MapDirection.randomDirection();
     }
@@ -35,6 +35,27 @@ public class Animal implements WorldElement {
 
     public void setEnergy(int energy) {
         this.energy = energy;
+    }
+
+    @Override
+    public int compareTo(Animal otherAnimal) {
+        int result = Integer.compare(this.getEnergy(),otherAnimal.getEnergy());
+        if(result == 0) {
+            result = Integer.compare(this.getAge(),otherAnimal.getAge());
+            if(result == 0) {
+                result = Integer.compare(this.getChildrenNo(),otherAnimal.getChildrenNo());
+            }
+        }
+
+        return result;
+    }
+
+    public int getChildrenNo() {
+        return childrenNo;
+    }
+
+    public int getAge() {
+        return age;
     }
 
     @Override

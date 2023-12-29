@@ -1,5 +1,7 @@
 package agh.ics.projektC2.model;
 
+import static java.util.Objects.hash;
+
 public class Vector2D {
     private final int x, y;
 
@@ -42,7 +44,7 @@ public class Vector2D {
 
     @Override
     public int hashCode() {
-        return 1000*x+y;
+        return hash(x,y);
     }
 
     @Override

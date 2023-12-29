@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractWorldMap implements WorldMap {
-    protected final Map<Vector2D,Animal> animals = new HashMap<>();
+    protected final AnimalMultiMap animals = new AnimalMultiMap();
+    protected final HashMap<Vector2D,Plant> plants = new HashMap<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
     private final List<MapChangeListener> observers = new ArrayList<>();
     protected final int mapID;
@@ -59,7 +60,7 @@ public abstract class AbstractWorldMap implements WorldMap {
             return;
         }
         String temp = animal.getPosition().toString();
-        animals.remove(animal.getPosition());
+        animals.remove(animal.getPosition(),animal);
         animal.move(this,transformation);
         animals.put(animal.getPosition(),animal);
         if(!temp.equals(animal.getPosition().toString())) {
@@ -67,6 +68,10 @@ public abstract class AbstractWorldMap implements WorldMap {
         } else {
             mapChanged("Animal at " + temp + " rotating");
         }
+    }
+
+    public Plant getPlantAt(Vector2D position) {
+        return plants.get(position);
     }
 
     @Override
@@ -83,8 +88,8 @@ public abstract class AbstractWorldMap implements WorldMap {
     @Override
     public List<WorldElement> getElements() {
         List<WorldElement> result = new ArrayList<>();
-
-        result.addAll(animals.values());
+        // uzupełnić później
+        //result.addAll(animals.values());
 
         return result;
     }
