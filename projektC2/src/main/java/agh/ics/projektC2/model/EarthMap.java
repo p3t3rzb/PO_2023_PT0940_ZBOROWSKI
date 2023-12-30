@@ -36,7 +36,14 @@ public class EarthMap extends AbstractWorldMap {
 
     @Override
     public void eatPlants() {
-
+        for(Animal animal : animals.values()) {
+            if(plantAt(animal.getPosition()) != null) {
+                forbiddenForPlants.remove(animal.getPosition());
+                plants.remove(animal.getPosition());
+                Animal winningAnimal = max(animals.get(animal.getPosition()));
+                winningAnimal.setEnergy(winningAnimal.getEnergy()+plantEnergy);
+            }
+        }
     }
 
     @Override
