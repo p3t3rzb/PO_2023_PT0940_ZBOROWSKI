@@ -21,4 +21,13 @@ public class AnimalMultiMap {
             return v;
         });
     }
+
+    public List<Animal> values() {
+        List<Animal> animals = new ArrayList<>();
+        for(ArrayList<Animal> list : map.values()) {
+            animals.addAll(list);
+        }
+
+        return animals;
+    }
 }

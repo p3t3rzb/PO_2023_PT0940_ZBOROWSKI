@@ -11,6 +11,10 @@ public interface WorldMap extends MoveValidator {
 
     void move(Animal animal);
 
+    void eatPlants();
+
+    void removeDeadAnimals();
+
     boolean isOccupied(Vector2D position);
 
     WorldElement objectAt(Vector2D position);

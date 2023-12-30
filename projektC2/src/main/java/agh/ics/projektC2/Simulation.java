@@ -18,7 +18,7 @@ public class Simulation implements Runnable {
 
         for(Vector2D position: positions) {
             try {
-                Animal animal = new Animal(position,100,List.of(0,1,2,3,0,0,0,4,5,6,7,0,0,0));
+                Animal animal = new Animal(position,50,List.of(0,1,2,3,0,0,0,4,5,6,7,0,0,0));
                 map.place(animal);
                 animals.add(animal);
             } catch (PositionAlreadyOccupiedException e) {
@@ -29,9 +29,21 @@ public class Simulation implements Runnable {
 
     public void run() {
         for(int i=0; i<100; i++) {
+            // 1
+            map.removeDeadAnimals();
+
+            // 2
+            for(Animal animal : animals) {
+                map.move(animal);
+            }
+
+            // 3
+            map.eatPlants();
+
+            // 4
+
+            // 5
             this.map.addPlants(plantCount);
-            Animal temp = animals.get(i % animals.size());
-            map.move(temp);
         }
     }
 

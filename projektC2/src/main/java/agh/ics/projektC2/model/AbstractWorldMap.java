@@ -13,6 +13,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     private final MapVisualizer visualizer = new MapVisualizer(this);
     private final List<MapChangeListener> observers = new ArrayList<>();
     protected final int mapID;
+    protected final int plantEnergy;
     private static int objectsCount = 0;
     protected MoveTransformation transformation;
     protected List<Vector2D> preferredPositions;
@@ -20,7 +21,14 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     abstract public Boundary getCurrentBounds();
 
-    public AbstractWorldMap() {
+    @Override
+    abstract public void eatPlants();
+
+    @Override
+    abstract public void removeDeadAnimals();
+
+    public AbstractWorldMap(int plantEnergy) {
+        this.plantEnergy = plantEnergy;
         mapID = objectsCount;
         objectsCount++;
     }
@@ -56,6 +64,8 @@ public abstract class AbstractWorldMap implements WorldMap {
             plants.put(position,new Plant(position));
             forbiddenForPlants.put(position,Boolean.TRUE);
         }
+
+        mapChanged(count + " new plants"); // usunąć później
     }
 
     @Override
@@ -70,13 +80,14 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     @Override
     public void move(Animal animal) {
-        if(isOccupied(animal.getPosition()) == false) {
+        if(!animals.get(animal.getPosition()).contains(animal)) { // zamiana na animal
             return;
         }
         String temp = animal.getPosition().toString();
         animals.remove(animal.getPosition(),animal);
         animal.move(this,transformation);
         animals.put(animal.getPosition(),animal);
+        animal.setEnergy(animal.getEnergy()-1);
         if(!temp.equals(animal.getPosition().toString())) {
             mapChanged("Moved an animal from " + temp + " to " + animal.getPosition().toString());
         } else {
