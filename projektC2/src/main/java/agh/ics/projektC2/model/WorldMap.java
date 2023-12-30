@@ -5,6 +5,8 @@ import java.util.List;
 public interface WorldMap extends MoveValidator {
     int getID();
 
+    void addPlants(int count);
+
     void place(Animal animal) throws PositionAlreadyOccupiedException;
 
     void move(Animal animal);

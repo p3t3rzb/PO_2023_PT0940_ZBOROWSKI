@@ -1,6 +1,7 @@
 package agh.ics.projektC2.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class PositionGenerator {
@@ -10,13 +11,16 @@ public class PositionGenerator {
         return positions;
     }
 
-    public PositionGenerator(Boundary boundary) {
+    public PositionGenerator(Boundary boundary, HashMap<Vector2D,Boolean> forbidden) {
         Vector2D startPosition = boundary.bottomLeftCorner();
         Vector2D endPosition = boundary.upperRightCorner();
 
         for(int i=startPosition.getX(); i<=endPosition.getX(); i++) {
             for(int j=startPosition.getY(); j<= endPosition.getY(); j++) {
-                positions.add(new Vector2D(i,j));
+                Vector2D position = new Vector2D(i,j);
+                if(forbidden.get(position) != Boolean.TRUE) {
+                    positions.add(new Vector2D(i,j));
+                }
             }
         }
     }

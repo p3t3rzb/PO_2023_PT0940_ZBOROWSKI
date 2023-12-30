@@ -1,5 +1,6 @@
 package agh.ics.projektC2.model;
 
+import javax.swing.text.Position;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,11 +9,14 @@ import java.util.Map;
 public abstract class AbstractWorldMap implements WorldMap {
     protected final AnimalMultiMap animals = new AnimalMultiMap();
     protected final HashMap<Vector2D,Plant> plants = new HashMap<>();
+    protected final HashMap<Vector2D,Boolean> forbiddenForPlants = new HashMap<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
     private final List<MapChangeListener> observers = new ArrayList<>();
     protected final int mapID;
     private static int objectsCount = 0;
     protected MoveTransformation transformation;
+    protected List<Vector2D> preferredPositions;
+    protected List<Vector2D> notPreferredPositions;
 
     abstract public Boundary getCurrentBounds();
 
@@ -45,8 +49,18 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
+    public void addPlants(int count) {
+        List<Vector2D> positions = new RandomPositionGenerator(preferredPositions,notPreferredPositions,count).getPositions();
+
+        for(Vector2D position : positions) {
+            plants.put(position,new Plant(position));
+            forbiddenForPlants.put(position,Boolean.TRUE);
+        }
+    }
+
+    @Override
     public void place(Animal animal) throws PositionAlreadyOccupiedException {
-        if(canMoveTo(animal.getPosition()) == false) {
+        if(!canMoveTo(animal.getPosition())) {
             throw new PositionAlreadyOccupiedException(animal.getPosition());
         }
 
