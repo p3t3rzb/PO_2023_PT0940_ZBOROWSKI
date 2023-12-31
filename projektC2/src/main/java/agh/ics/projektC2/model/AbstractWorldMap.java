@@ -13,6 +13,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     private final List<MapChangeListener> observers = new ArrayList<>();
     protected final int mapID;
     protected final int plantEnergy;
+    protected Mutation mutation;
     private static int objectsCount = 0;
     private final int satisfactoryEnergy; // energia potrzebna do rozmnażania
     private final int requiredEnergy; // energia pobierana przy rozmnażaniu
@@ -30,7 +31,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                sort(list);
                reverse(list);
                 if(list.get(1).getEnergy() >= satisfactoryEnergy) {
-                    animals.put(position,list.get(0).generateChild(list.get(1),requiredEnergy));
+                    animals.put(position,list.get(0).generateChild(list.get(1),requiredEnergy,mutation));
                 }
             }
         }
@@ -51,10 +52,11 @@ public abstract class AbstractWorldMap implements WorldMap {
     @Override
     abstract public void removeDeadAnimals();
 
-    public AbstractWorldMap(int plantEnergy, int satisfactoryEnergy, int requiredEnergy) {
+    public AbstractWorldMap(int plantEnergy, int satisfactoryEnergy, int requiredEnergy, Mutation mutation) {
         this.plantEnergy = plantEnergy;
         this.satisfactoryEnergy = satisfactoryEnergy;
         this.requiredEnergy = requiredEnergy;
+        this.mutation = mutation;
         mapID = objectsCount;
         objectsCount++;
     }
@@ -103,7 +105,7 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     @Override
     public void move(Animal animal) {
-        System.out.println(animal.getEnergy());
+        System.out.println(animal.getGenome());
         if(!animals.get(animal.getPosition()).contains(animal)) { // zamiana na animal
             return;
         }

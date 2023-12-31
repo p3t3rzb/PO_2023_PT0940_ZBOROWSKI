@@ -11,7 +11,6 @@ import static java.util.Collections.unmodifiableList;
 public class Simulation implements Runnable {
     private final WorldMap map;
     private final int plantCount;
-    private final List<Animal> animals = new ArrayList<>();
     private static final Random PRNG = new Random();
 
     public Simulation(List<Vector2D> positions, WorldMap map, int plantCount) {
@@ -23,7 +22,6 @@ public class Simulation implements Runnable {
             try {
                 Animal animal = new Animal(position,100,List.of(PRNG.nextInt(8),PRNG.nextInt(8),PRNG.nextInt(8),PRNG.nextInt(8),PRNG.nextInt(8),PRNG.nextInt(8),PRNG.nextInt(8),PRNG.nextInt(8)));
                 map.place(animal);
-                animals.add(animal);
             } catch (PositionAlreadyOccupiedException e) {
                 System.out.println("Can't place an animal at position " + position.toString());
             }
@@ -31,7 +29,7 @@ public class Simulation implements Runnable {
     }
 
     public void run() {
-        for(int i=0; i<200; i++) {
+        for(int i=0; i<300; i++) {
             // 1
             map.removeDeadAnimals();
 
@@ -49,9 +47,5 @@ public class Simulation implements Runnable {
             // 5
             this.map.addPlants(plantCount);
         }
-    }
-
-    public List<Animal> getAnimals() {
-        return unmodifiableList(animals);
     }
 }

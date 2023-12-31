@@ -12,8 +12,8 @@ public class EarthMap extends AbstractWorldMap {
     private final Boundary notPreferredBoundaryUpper;
     private final Boundary notPreferredBoundaryLower;
 
-    public EarthMap(int width, int height, int plantEnergy, int satisfactoryEnergy, int requiredEnergy) {
-        super(plantEnergy,satisfactoryEnergy,requiredEnergy);
+    public EarthMap(int width, int height, int plantEnergy, int satisfactoryEnergy, int requiredEnergy, Mutation mutation) {
+        super(plantEnergy,satisfactoryEnergy,requiredEnergy,mutation);
         mapEnd = new Vector2D(width-1,height-1);
         transformation = new EarthTransformation(mapStart,mapEnd);
 

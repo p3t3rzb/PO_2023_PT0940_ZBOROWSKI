@@ -26,7 +26,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
         orientation = MapDirection.randomDirection();
     }
 
-    public Animal generateChild(Animal secondParent, int requiredEnergy) {
+    public Animal generateChild(Animal secondParent, int requiredEnergy, Mutation mutation) {
         childrenNo++;
         energy -= requiredEnergy;
         secondParent.childrenNo++;
@@ -49,7 +49,8 @@ public class Animal implements WorldElement, Comparable<Animal> {
                 newGenome.add(genome.get(i));
             }
         }
-        // dodać mutacje
+
+        mutation.mutateGenome(newGenome);
 
         return new Animal(position,requiredEnergy*2,newGenome);
     }
