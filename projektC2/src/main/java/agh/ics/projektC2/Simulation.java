@@ -4,6 +4,7 @@ import agh.ics.projektC2.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -11,14 +12,16 @@ public class Simulation implements Runnable {
     private final WorldMap map;
     private final int plantCount;
     private final List<Animal> animals = new ArrayList<>();
+    private static final Random PRNG = new Random();
 
     public Simulation(List<Vector2D> positions, WorldMap map, int plantCount) {
         this.map = map;
         this.plantCount = plantCount;
 
+
         for(Vector2D position: positions) {
             try {
-                Animal animal = new Animal(position,50,List.of(0,1,2,3,0,0,0,4,5,6,7,0,0,0));
+                Animal animal = new Animal(position,100,List.of(PRNG.nextInt(8),PRNG.nextInt(8),PRNG.nextInt(8),PRNG.nextInt(8),PRNG.nextInt(8),PRNG.nextInt(8),PRNG.nextInt(8),PRNG.nextInt(8)));
                 map.place(animal);
                 animals.add(animal);
             } catch (PositionAlreadyOccupiedException e) {
@@ -28,12 +31,12 @@ public class Simulation implements Runnable {
     }
 
     public void run() {
-        for(int i=0; i<100; i++) {
+        for(int i=0; i<200; i++) {
             // 1
             map.removeDeadAnimals();
 
             // 2
-            for(Animal animal : animals) {
+            for(Animal animal : map.getAnimals()) {
                 map.move(animal);
             }
 
@@ -41,6 +44,7 @@ public class Simulation implements Runnable {
             map.eatPlants();
 
             // 4
+            map.procreate();
 
             // 5
             this.map.addPlants(plantCount);

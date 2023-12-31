@@ -28,7 +28,7 @@ public class RandomPositionGenerator implements Iterable<Vector2D> {
             } else if(j < preferredPositions.size()) {
                 positions.add(preferredPositions.get(j));
                 j++;
-            } else if(i == notPreferredPositions.size() && j == notPreferredPositions.size()) {
+            } else if(i == notPreferredPositions.size() && j == preferredPositions.size()) {
                 break;
             }
         }

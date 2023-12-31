@@ -1,6 +1,7 @@
 package agh.ics.projektC2.model;
 
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -23,6 +24,34 @@ public class Animal implements WorldElement, Comparable<Animal> {
         this.genome = genome;
         currentGene = PRNG.nextInt(max(1,genome.size()));
         orientation = MapDirection.randomDirection();
+    }
+
+    public Animal generateChild(Animal secondParent, int requiredEnergy) {
+        childrenNo++;
+        energy -= requiredEnergy;
+        secondParent.childrenNo++;
+        secondParent.energy -= requiredEnergy;
+        List<Integer> newGenome = new ArrayList<>(genome.size());
+        int fromFirstParent = (int)(genome.size()*energy/(secondParent.energy+energy));
+
+        if(PRNG.nextInt(2) == 0) {
+            for (int i = 0; i < fromFirstParent; i++) {
+                newGenome.add(genome.get(i));
+            }
+            for (int i = fromFirstParent; i < genome.size(); i++) {
+                newGenome.add(secondParent.genome.get(i));
+            }
+        } else {
+            for(int i=0; i<genome.size()-fromFirstParent; i++) {
+                newGenome.add(secondParent.genome.get(i));
+            }
+            for(int i=genome.size()-fromFirstParent; i<genome.size(); i++) {
+                newGenome.add(genome.get(i));
+            }
+        }
+        // dodać mutacje
+
+        return new Animal(position,requiredEnergy*2,newGenome);
     }
 
     public List<Integer> getGenome() {

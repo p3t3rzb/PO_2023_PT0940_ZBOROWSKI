@@ -12,8 +12,8 @@ public class EarthMap extends AbstractWorldMap {
     private final Boundary notPreferredBoundaryUpper;
     private final Boundary notPreferredBoundaryLower;
 
-    public EarthMap(int width, int height, int plantEnergy) {
-        super(plantEnergy);
+    public EarthMap(int width, int height, int plantEnergy, int satisfactoryEnergy, int requiredEnergy) {
+        super(plantEnergy,satisfactoryEnergy,requiredEnergy);
         mapEnd = new Vector2D(width-1,height-1);
         transformation = new EarthTransformation(mapStart,mapEnd);
 
@@ -32,18 +32,6 @@ public class EarthMap extends AbstractWorldMap {
         notPreferredPositions.addAll(new PositionGenerator(notPreferredBoundaryLower,forbiddenForPlants).getPositions());
 
         super.addPlants(count);
-    }
-
-    @Override
-    public void eatPlants() {
-        for(Animal animal : animals.values()) {
-            if(plantAt(animal.getPosition()) != null) {
-                forbiddenForPlants.remove(animal.getPosition());
-                plants.remove(animal.getPosition());
-                Animal winningAnimal = max(animals.get(animal.getPosition()));
-                winningAnimal.setEnergy(winningAnimal.getEnergy()+plantEnergy);
-            }
-        }
     }
 
     @Override

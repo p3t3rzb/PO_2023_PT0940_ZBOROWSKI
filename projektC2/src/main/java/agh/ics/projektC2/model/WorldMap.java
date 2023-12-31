@@ -11,6 +11,8 @@ public interface WorldMap extends MoveValidator {
 
     void move(Animal animal);
 
+    void procreate();
+
     void eatPlants();
 
     void removeDeadAnimals();
@@ -22,4 +24,6 @@ public interface WorldMap extends MoveValidator {
     Boundary getCurrentBounds();
 
     List<WorldElement> getElements();
+
+    List<Animal> getAnimals();
 }

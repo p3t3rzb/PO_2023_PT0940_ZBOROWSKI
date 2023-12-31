@@ -1,10 +1,9 @@
 package agh.ics.projektC2.model;
 
 import javax.swing.text.Position;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static java.util.Collections.*;
 
 public abstract class AbstractWorldMap implements WorldMap {
     protected final AnimalMultiMap animals = new AnimalMultiMap();
@@ -15,6 +14,8 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected final int mapID;
     protected final int plantEnergy;
     private static int objectsCount = 0;
+    private final int satisfactoryEnergy; // energia potrzebna do rozmnażania
+    private final int requiredEnergy; // energia pobierana przy rozmnażaniu
     protected MoveTransformation transformation;
     protected List<Vector2D> preferredPositions;
     protected List<Vector2D> notPreferredPositions;
@@ -22,13 +23,38 @@ public abstract class AbstractWorldMap implements WorldMap {
     abstract public Boundary getCurrentBounds();
 
     @Override
-    abstract public void eatPlants();
+    public void procreate() {
+        for(Vector2D position : animals.keySet()) {
+            List<Animal> list = animals.get(position);
+            if(list.size() > 1) {       // zoptymalizować
+               sort(list);
+               reverse(list);
+                if(list.get(1).getEnergy() >= satisfactoryEnergy) {
+                    animals.put(position,list.get(0).generateChild(list.get(1),requiredEnergy));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void eatPlants() {
+        for(Animal animal : animals.values()) {
+            if(plantAt(animal.getPosition()) != null) {
+                forbiddenForPlants.remove(animal.getPosition());
+                plants.remove(animal.getPosition());
+                Animal winningAnimal = max(animals.get(animal.getPosition()));
+                winningAnimal.setEnergy(winningAnimal.getEnergy()+plantEnergy);
+            }
+        }
+    }
 
     @Override
     abstract public void removeDeadAnimals();
 
-    public AbstractWorldMap(int plantEnergy) {
+    public AbstractWorldMap(int plantEnergy, int satisfactoryEnergy, int requiredEnergy) {
         this.plantEnergy = plantEnergy;
+        this.satisfactoryEnergy = satisfactoryEnergy;
+        this.requiredEnergy = requiredEnergy;
         mapID = objectsCount;
         objectsCount++;
     }
@@ -59,13 +85,10 @@ public abstract class AbstractWorldMap implements WorldMap {
     @Override
     public void addPlants(int count) {
         List<Vector2D> positions = new RandomPositionGenerator(preferredPositions,notPreferredPositions,count).getPositions();
-
         for(Vector2D position : positions) {
             plants.put(position,new Plant(position));
             forbiddenForPlants.put(position,Boolean.TRUE);
         }
-
-        mapChanged(count + " new plants"); // usunąć później
     }
 
     @Override
@@ -80,6 +103,7 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     @Override
     public void move(Animal animal) {
+        System.out.println(animal.getEnergy());
         if(!animals.get(animal.getPosition()).contains(animal)) { // zamiana na animal
             return;
         }
@@ -115,6 +139,14 @@ public abstract class AbstractWorldMap implements WorldMap {
         List<WorldElement> result = new ArrayList<>();
         // uzupełnić później
         //result.addAll(animals.values());
+
+        return result;
+    }
+
+    @Override
+    public List<Animal> getAnimals() {
+        List<Animal> result = new ArrayList<>();
+        result.addAll(animals.values());
 
         return result;
     }
