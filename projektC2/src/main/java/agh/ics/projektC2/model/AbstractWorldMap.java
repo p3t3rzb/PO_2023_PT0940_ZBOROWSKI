@@ -3,6 +3,7 @@ package agh.ics.projektC2.model;
 import javax.swing.text.Position;
 import java.util.*;
 
+import static java.util.Arrays.copyOfRange;
 import static java.util.Collections.*;
 
 public abstract class AbstractWorldMap implements WorldMap {
@@ -20,16 +21,45 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected MoveTransformation transformation;
     protected List<Vector2D> preferredPositions;
     protected List<Vector2D> notPreferredPositions;
+    private static final Random PRNG = new Random();
 
     abstract public Boundary getCurrentBounds();
+
 
     @Override
     public void procreate() {
         for(Vector2D position : animals.keySet()) {
             List<Animal> list = animals.get(position);
-            if(list.size() > 1) {       // zoptymalizować
-               sort(list);
-               reverse(list);
+            if(list.size() > 1) {
+                sort(list);
+                reverse(list);
+
+                // obsługa przypadków gdy rywalizuje kilka o tych samych "wycenach" na pierwszym lub drugim miejscu
+
+                int i,j;
+                for(i=0; i < list.size() && list.get(i) == list.get(0); i++);
+                for(j=i; j < list.size() && list.get(j) == list.get(i); j++);
+
+                List<Animal> firstValue = new ArrayList<>();
+                List<Animal> secondValue = new ArrayList<>();
+
+                for(int t = 0; t < i; t++) {
+                    firstValue.add(list.get(t));
+                }
+                for(int t = i; t < j; t++) {
+                    secondValue.add(list.get(t));
+                }
+
+                Collections.shuffle(firstValue);
+                Collections.shuffle(secondValue);
+
+                for(int t = 0; t < i; t++) {
+                    list.set(t,firstValue.get(t));
+                }
+                for(int t = i; t < j; t++) {
+                    list.set(t,secondValue.get(t-i));
+                }
+
                 if(list.get(1).getEnergy() >= satisfactoryEnergy) {
                     animals.put(position,list.get(0).generateChild(list.get(1),requiredEnergy,mutation));
                 }
@@ -43,7 +73,12 @@ public abstract class AbstractWorldMap implements WorldMap {
             if(plantAt(animal.getPosition()) != null) {
                 forbiddenForPlants.remove(animal.getPosition());
                 plants.remove(animal.getPosition());
-                Animal winningAnimal = max(animals.get(animal.getPosition()));
+                List<Animal> candidates = animals.get(animal.getPosition());
+                sort(candidates);
+                reverse(candidates);
+                int i; // ilość zwierząt o tej samej wycenie
+                for(i=0; i < candidates.size() && candidates.get(i) == candidates.get(0); i++);
+                Animal winningAnimal = candidates.get(PRNG.nextInt(i));
                 winningAnimal.setEnergy(winningAnimal.getEnergy()+plantEnergy);
             }
         }
