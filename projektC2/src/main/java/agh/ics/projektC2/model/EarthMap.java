@@ -8,30 +8,12 @@ import static java.util.Collections.max;
 public class EarthMap extends AbstractWorldMap {
     private final Vector2D mapStart = new Vector2D(0,0);
     private final Vector2D mapEnd;
-    private final Boundary preferredBoundary;
-    private final Boundary notPreferredBoundaryUpper;
-    private final Boundary notPreferredBoundaryLower;
 
-    public EarthMap(int width, int height, int plantEnergy, int satisfactoryEnergy, int requiredEnergy, Mutation mutation) {
-        super(plantEnergy,satisfactoryEnergy,requiredEnergy,mutation);
+    public EarthMap(int width, int height, int plantEnergy, int satisfactoryEnergy, int requiredEnergy, Mutation mutation, int minMutationCount, int maxMutationCount) {
+        super(plantEnergy,satisfactoryEnergy,requiredEnergy,mutation,minMutationCount,maxMutationCount);
         mapEnd = new Vector2D(width-1,height-1);
         transformation = new EarthTransformation(mapStart,mapEnd);
-
-        preferredBoundary = new Boundary(new Vector2D(mapStart.getX(),mapStart.getY() + (int)(0.4 * (mapEnd.getY() - mapStart.getY()))),
-                                         new Vector2D(mapEnd.getX(),mapStart.getY() + (int)(0.6 * (mapEnd.getY() - mapStart.getY()))));
-        notPreferredBoundaryLower = new Boundary(new Vector2D(mapStart.getX(),mapStart.getY()),
-                                                 new Vector2D(mapEnd.getY(),mapStart.getY() + (int)(0.4 * (mapEnd.getY() - mapStart.getY())) - 1));
-        notPreferredBoundaryUpper = new Boundary(new Vector2D(mapStart.getX(),mapStart.getY() + (int)(0.6 * (mapEnd.getY() - mapStart.getY())) + 1),
-                                                 new Vector2D(mapEnd.getX(),mapEnd.getY()));
-    }
-
-    @Override
-    public void addPlants(int count) {
-        preferredPositions = new PositionGenerator(preferredBoundary,forbiddenForPlants).getPositions();
-        notPreferredPositions = new PositionGenerator(notPreferredBoundaryUpper,forbiddenForPlants).getPositions();
-        notPreferredPositions.addAll(new PositionGenerator(notPreferredBoundaryLower,forbiddenForPlants).getPositions());
-
-        super.addPlants(count);
+        growth = new EquatorGrowth(mapStart, mapEnd, forbiddenForPlants);
     }
 
     @Override

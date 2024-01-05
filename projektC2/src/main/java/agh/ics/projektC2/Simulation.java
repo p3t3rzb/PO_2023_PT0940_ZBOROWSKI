@@ -35,7 +35,7 @@ public class Simulation implements Runnable {
     }
 
     public void run() {
-        for(int i=0; i<200; i++) {
+        for(int i=0; i<300; i++) {
             // 1
             map.removeDeadAnimals();
 

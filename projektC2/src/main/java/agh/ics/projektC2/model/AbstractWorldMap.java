@@ -15,16 +15,53 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected final int mapID;
     protected final int plantEnergy;
     protected Mutation mutation;
+    private final int minMutationCount;
+    private final int maxMutationCount;
     private static int objectsCount = 0;
     private final int satisfactoryEnergy; // energia potrzebna do rozmnażania
     private final int requiredEnergy; // energia pobierana przy rozmnażaniu
     protected MoveTransformation transformation;
-    protected List<Vector2D> preferredPositions;
-    protected List<Vector2D> notPreferredPositions;
     private static final Random PRNG = new Random();
+    protected PlantGrowth growth;
 
     abstract public Boundary getCurrentBounds();
 
+
+
+
+    public AbstractWorldMap(int plantEnergy, int satisfactoryEnergy, int requiredEnergy, Mutation mutation, int minMutationCount, int maxMutationCount) {
+        this.plantEnergy = plantEnergy;
+        this.satisfactoryEnergy = satisfactoryEnergy;
+        this.requiredEnergy = requiredEnergy;
+        this.mutation = mutation;
+        this.minMutationCount = minMutationCount;
+        this.maxMutationCount = maxMutationCount;
+        mapID = objectsCount;
+        objectsCount++;
+    }
+
+    public int getID() {
+        return mapID;
+    }
+
+    public void addObserver(MapChangeListener listener) {
+        observers.add(listener);
+    }
+
+    public void removeObserver(MapChangeListener listener) {
+        observers.remove(listener);
+    }
+
+    private void mapChanged(String message) {
+        for(MapChangeListener observer : observers) {
+            observer.mapChanged(this,message);
+        }
+    }
+
+    public String toString() {
+        Boundary currentBounds = getCurrentBounds();
+        return visualizer.draw(currentBounds.bottomLeftCorner(),currentBounds.upperRightCorner());
+    }
 
     @Override
     public void procreate() {
@@ -61,7 +98,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                 }
 
                 if(list.get(1).getEnergy() >= satisfactoryEnergy) {
-                    animals.put(position,list.get(0).generateChild(list.get(1),requiredEnergy,mutation));
+                    animals.put(position,list.get(0).generateChild(list.get(1),requiredEnergy,mutation,minMutationCount,maxMutationCount));
                 }
             }
         }
@@ -87,41 +124,9 @@ public abstract class AbstractWorldMap implements WorldMap {
     @Override
     abstract public void removeDeadAnimals();
 
-    public AbstractWorldMap(int plantEnergy, int satisfactoryEnergy, int requiredEnergy, Mutation mutation) {
-        this.plantEnergy = plantEnergy;
-        this.satisfactoryEnergy = satisfactoryEnergy;
-        this.requiredEnergy = requiredEnergy;
-        this.mutation = mutation;
-        mapID = objectsCount;
-        objectsCount++;
-    }
-
-    public int getID() {
-        return mapID;
-    }
-
-    public void addObserver(MapChangeListener listener) {
-        observers.add(listener);
-    }
-
-    public void removeObserver(MapChangeListener listener) {
-        observers.remove(listener);
-    }
-
-    private void mapChanged(String message) {
-        for(MapChangeListener observer : observers) {
-            observer.mapChanged(this,message);
-        }
-    }
-
-    public String toString() {
-        Boundary currentBounds = getCurrentBounds();
-        return visualizer.draw(currentBounds.bottomLeftCorner(),currentBounds.upperRightCorner());
-    }
-
     @Override
     public void addPlants(int count) {
-        List<Vector2D> positions = new RandomPositionGenerator(preferredPositions,notPreferredPositions,count).getPositions();
+        List<Vector2D> positions = growth.positions(count);
         for(Vector2D position : positions) {
             plants.put(position,new Plant(position));
             forbiddenForPlants.put(position,Boolean.TRUE);

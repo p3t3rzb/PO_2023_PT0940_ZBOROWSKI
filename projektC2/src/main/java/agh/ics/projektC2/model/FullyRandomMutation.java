@@ -9,8 +9,9 @@ public class FullyRandomMutation implements Mutation {
     private static final Random PRNG = new Random();
 
     @Override
-    public void mutateGenome(List<Integer> genome) {
-        int howMany = PRNG.nextInt(genome.size());
+    public void mutateGenome(List<Integer> genome, int minMutationCount, int maxMutationCount) {
+        // dodać że 0 <= minMutationCount <= maxMutationCount <= genome.size()
+        int howMany = maxMutationCount != 0 ? minMutationCount + PRNG.nextInt(maxMutationCount-minMutationCount) : 0;
         List<Integer> oneToN = new ArrayList<>();
         for(int i=0; i<genome.size(); i++) {
             oneToN.add(i);

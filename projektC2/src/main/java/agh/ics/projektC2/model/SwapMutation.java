@@ -9,14 +9,18 @@ public class SwapMutation implements Mutation {
     private static final Random PRNG = new Random();
 
     @Override
-    public void mutateGenome(List<Integer> genome) {
+    public void mutateGenome(List<Integer> genome, int minMutationCount, int maxMutationCount) {
+        int howMany = maxMutationCount != 0 ? minMutationCount + PRNG.nextInt(maxMutationCount-minMutationCount) : 0;
         List<Integer> oneToN = new ArrayList<>();
         for(int i=0; i<genome.size(); i++) {
             oneToN.add(i);
         }
         Collections.shuffle(oneToN);
-        Integer temp = genome.get(oneToN.get(1));
-        genome.set(oneToN.get(1),genome.get(oneToN.get(0)));
-        genome.set(oneToN.get(0),temp);
+        for(int i=0; i<howMany; i+=2) {
+            Integer temp = genome.get(oneToN.get(i+1));
+            genome.set(oneToN.get(i+1),genome.get(oneToN.get(i)));
+            genome.set(oneToN.get(i),temp);
+        }
+
     }
 }
