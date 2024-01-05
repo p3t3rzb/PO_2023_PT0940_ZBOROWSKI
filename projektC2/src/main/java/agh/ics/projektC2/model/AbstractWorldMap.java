@@ -122,7 +122,13 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    abstract public void removeDeadAnimals();
+    public void removeDeadAnimals() {
+        for(Animal animal : animals.values()) {
+            if(animal.getEnergy() == 0) {
+                animals.remove(animal.getPosition(),animal);
+            }
+        }
+    }
 
     @Override
     public void addPlants(int count) {

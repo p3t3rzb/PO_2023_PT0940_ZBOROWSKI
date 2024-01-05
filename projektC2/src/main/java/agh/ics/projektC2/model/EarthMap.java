@@ -17,15 +17,6 @@ public class EarthMap extends AbstractWorldMap {
     }
 
     @Override
-    public void removeDeadAnimals() {
-        for(Animal animal : animals.values()) {
-            if(animal.getEnergy() == 0) {
-                animals.remove(animal.getPosition(),animal);
-            }
-        }
-    }
-
-    @Override
     public Boundary getCurrentBounds() {
         return new Boundary(mapStart,mapEnd);
     }
