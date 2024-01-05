@@ -12,6 +12,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private MapDirection orientation;
     private Vector2D position;
     private final List<Integer> genome;
+    private final List<Animal> children = new ArrayList<>();
     private int energy;
     private int currentGene;
     private int age = 0;
@@ -52,7 +53,12 @@ public class Animal implements WorldElement, Comparable<Animal> {
 
         mutation.mutateGenome(newGenome,minMutationCount,maxMutationCount);
 
-        return new Animal(position,requiredEnergy*2,newGenome);
+        Animal child = new Animal(position,requiredEnergy*2,newGenome);
+
+        children.add(child);
+        secondParent.children.add(child);
+
+        return child;
     }
 
     public List<Integer> getGenome() {
