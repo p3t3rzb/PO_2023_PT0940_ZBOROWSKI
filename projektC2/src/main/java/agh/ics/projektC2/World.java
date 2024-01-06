@@ -9,7 +9,7 @@ public class World {
         Mutation mutation = new SwapMutation();
         FloodingMap map = new FloodingMap(10,10,2,20,10,mutation,0,10);
         map.addObserver(new ConsoleMapDisplay());
-        Simulation simulation = new Simulation(map,2,2,100,10);
+        Simulation simulation = new Simulation(map,2,10,100,10);
 
         simulation.run();
     }

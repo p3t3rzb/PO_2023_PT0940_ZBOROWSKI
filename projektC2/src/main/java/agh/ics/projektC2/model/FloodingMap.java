@@ -12,18 +12,19 @@ public class FloodingMap extends AbstractWorldMap {
     private final HashMap<Vector2D,Water> waters = new HashMap<>();
     private final HashMap<Vector2D,Boolean> forbiddenForWaters = new HashMap<>();
     private final HashMap<Vector2D,Water> waterSources = new HashMap<>();
-    private final int floodingsCount;
+    private int floodingsCount = 0;
+    private final int floodingsNo = 3;
+    private final int maxFloodRadius = 4;
 
     public FloodingMap(int width, int height, int plantEnergy, int satisfactoryEnergy, int requiredEnergy, Mutation mutation, int minMutationCount, int maxMutationCount) {
         super(plantEnergy,satisfactoryEnergy,requiredEnergy,mutation,minMutationCount,maxMutationCount);
         mapEnd = new Vector2D(width-1,height-1);
         transformation = new IdentityTransformation();
         growth = new EquatorGrowth(mapStart, mapEnd, forbiddenForPlants);
-        floodingsCount = 3;
         forbiddenForAnimals = forbiddenForWaters;
 
         List<Vector2D> positions = new PositionGenerator(getCurrentBounds(),forbiddenForWaters).getPositions();
-        positions = new RandomPositionGenerator(positions,new ArrayList<>(),floodingsCount).getPositions();
+        positions = new RandomPositionGenerator(positions,new ArrayList<>(),floodingsNo).getPositions(); // count - ile ma być zbiorników
         for(Vector2D position : positions) {
             Water water = new Water(position);
             waters.put(position,water);
@@ -34,7 +35,7 @@ public class FloodingMap extends AbstractWorldMap {
 
     private Water waterAt(Vector2D position) {
         return waters.get(position);
-    }
+    };
 
     @Override
     public Boundary getCurrentBounds() {
@@ -45,6 +46,43 @@ public class FloodingMap extends AbstractWorldMap {
     public void place(Animal animal) throws PositionAlreadyOccupiedException {
         super.place(animal);
         forbiddenForWaters.put(animal.getPosition(),true);
+    }
+
+    private void expandWaters() {
+        List<Vector2D> toAdd = new ArrayList<>();
+        for(Vector2D position : waters.keySet()) {
+            for(Vector2D adjacentWaterPosition : position.adjacent()) {
+                if(forbiddenForWaters.get(adjacentWaterPosition) == null) {
+                    toAdd.add(adjacentWaterPosition);
+                }
+            }
+        }
+
+        for(Vector2D position : toAdd) {
+            waters.put(position,new Water(position));
+            forbiddenForWaters.put(position,true);
+        }
+    }
+
+    private void shrinkWaters() {
+        List<Vector2D> toRemove = new ArrayList<>();
+        for(Vector2D position : waters.keySet()) {
+            int count = 0;
+            for(Vector2D adjacentWaterPosition : position.adjacent()) {
+                if(waterAt(adjacentWaterPosition) != null) {
+                    count++;
+                }
+            }
+
+            if((count < 4 || count == 0) && waterSources.get(position) == null) {
+                toRemove.add(position);
+            }
+        }
+
+        for(Vector2D position : toRemove) {
+            waters.remove(position);
+            forbiddenForWaters.remove(position);
+        }
     }
 
     @Override
@@ -63,7 +101,12 @@ public class FloodingMap extends AbstractWorldMap {
         forbiddenForWaters.remove(animal.getPosition());
         super.move(animal);
         forbiddenForWaters.put(animal.getPosition(),true);
-        // powiększanie i zmniejszanie cykliczne wody
+        floodingsCount = (floodingsCount+1)%(maxFloodRadius*2-2);
+        if(floodingsCount < (maxFloodRadius-1)) {
+            expandWaters();
+        } else {
+            shrinkWaters();
+        }
     }
 
     @Override

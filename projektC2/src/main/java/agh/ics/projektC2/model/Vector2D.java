@@ -1,5 +1,8 @@
 package agh.ics.projektC2.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.util.Objects.hash;
 
 public class Vector2D {
@@ -36,6 +39,15 @@ public class Vector2D {
 
     public Vector2D lowerLeft(Vector2D other) {
         return new Vector2D(Math.min(x,other.getX()),Math.min(y,other.getY()));
+    }
+
+    public List<Vector2D> adjacent() {
+        List<Vector2D> result = new ArrayList<>(4);
+        result.add(this.add(new Vector2D(1,0)));
+        result.add(this.add(new Vector2D(-1,0)));
+        result.add(this.add(new Vector2D(0,1)));
+        result.add(this.add(new Vector2D(0,-1)));
+        return result;
     }
 
     public Vector2D opposite() {
