@@ -1,5 +1,6 @@
 package agh.ics.projektC2.model;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface WorldMap extends MoveValidator {
@@ -20,6 +21,8 @@ public interface WorldMap extends MoveValidator {
     boolean isOccupied(Vector2D position);
 
     WorldElement objectAt(Vector2D position);
+
+    HashMap<Vector2D, Boolean> getForbiddenForAnimals();
 
     Boundary getCurrentBounds();
 

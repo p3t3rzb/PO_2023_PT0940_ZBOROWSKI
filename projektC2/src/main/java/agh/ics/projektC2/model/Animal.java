@@ -90,6 +90,19 @@ public class Animal implements WorldElement, Comparable<Animal> {
         return childrenNo;
     }
 
+    public List<Animal> getChildren() {
+        return children;
+    }
+
+    public int getDescendantsNo() {
+        int result = childrenNo;
+        for(Animal child : children) {
+            result += child.getDescendantsNo();
+        }
+
+        return result;
+    }
+
     public int getAge() {
         return age;
     }

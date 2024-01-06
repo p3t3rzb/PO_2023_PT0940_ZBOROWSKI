@@ -10,6 +10,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected final AnimalMultiMap animals = new AnimalMultiMap();
     protected final HashMap<Vector2D,Plant> plants = new HashMap<>();
     protected final HashMap<Vector2D,Boolean> forbiddenForPlants = new HashMap<>();
+    protected HashMap<Vector2D,Boolean> forbiddenForAnimals = new HashMap<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
     private final List<MapChangeListener> observers = new ArrayList<>();
     protected final int mapID;
@@ -42,6 +43,11 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     public int getID() {
         return mapID;
+    }
+
+    @Override
+    public HashMap<Vector2D, Boolean> getForbiddenForAnimals() {
+        return forbiddenForAnimals;
     }
 
     public void addObserver(MapChangeListener listener) {

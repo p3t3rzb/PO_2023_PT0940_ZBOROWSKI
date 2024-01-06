@@ -9,7 +9,7 @@ public class Water implements WorldElement {
 
     @Override
     public String toString() {
-        return "#";
+        return "~";
     }
 
     @Override

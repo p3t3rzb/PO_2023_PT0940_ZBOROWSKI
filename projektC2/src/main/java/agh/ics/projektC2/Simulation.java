@@ -17,7 +17,7 @@ public class Simulation implements Runnable {
     public Simulation(WorldMap map, int plantCount, int animalsCount, int initialEnergy, int genomeLength) {
         this.map = map;
         this.plantCount = plantCount;
-        List<Vector2D> positions = new PositionGenerator(map.getCurrentBounds(),new HashMap<>()).getPositions();
+        List<Vector2D> positions = new PositionGenerator(map.getCurrentBounds(),map.getForbiddenForAnimals()).getPositions();
         positions = new RandomPositionGenerator(positions,new ArrayList<>(),animalsCount).getPositions();
 
         for(Vector2D position : positions) {
