@@ -97,10 +97,12 @@ public class FloodingMap extends AbstractWorldMap {
     }
 
     @Override
-    public void move(Animal animal) {
-        forbiddenForWaters.remove(animal.getPosition());
-        super.move(animal);
-        forbiddenForWaters.put(animal.getPosition(),true);
+    public void move() {
+        for(Animal animal : getAnimals()) {
+            forbiddenForWaters.remove(animal.getPosition());
+            moveAnimal(animal);
+            forbiddenForWaters.put(animal.getPosition(),true);
+        }
         floodingsCount = (floodingsCount+1)%(maxFloodRadius*2-2);
         if(floodingsCount < (maxFloodRadius-1)) {
             expandWaters();

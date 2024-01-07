@@ -17,6 +17,13 @@ public class EarthMap extends AbstractWorldMap {
     }
 
     @Override
+    public void move() {
+        for(Animal animal : getAnimals()) {
+            moveAnimal(animal);
+        }
+    }
+
+    @Override
     public Boundary getCurrentBounds() {
         return new Boundary(mapStart,mapEnd);
     }

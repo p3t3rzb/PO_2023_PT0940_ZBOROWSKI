@@ -156,7 +156,9 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public void move(Animal animal) {
+    abstract public void move();
+
+    protected void moveAnimal(Animal animal) {
         System.out.println(animal.getGenome());
         if(!animals.get(animal.getPosition()).contains(animal)) { // zamiana na animal
             return;

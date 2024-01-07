@@ -10,7 +10,7 @@ public interface WorldMap extends MoveValidator {
 
     void place(Animal animal) throws PositionAlreadyOccupiedException;
 
-    void move(Animal animal);
+    void move();
 
     void procreate();
 

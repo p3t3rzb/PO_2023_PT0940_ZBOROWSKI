@@ -40,9 +40,7 @@ public class Simulation implements Runnable {
             map.removeDeadAnimals();
 
             // 2
-            for(Animal animal : map.getAnimals()) {
-                map.move(animal);
-            }
+            map.move();
 
             // 3
             map.eatPlants();
