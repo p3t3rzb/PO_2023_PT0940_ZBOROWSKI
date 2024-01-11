@@ -2,6 +2,8 @@ package agh.ics.oop.model;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static agh.ics.oop.model.MoveDirection.FORWARD;
 import static agh.ics.oop.model.MoveDirection.RIGHT;
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,6 +32,23 @@ public class GrassFieldTest {
         assertTrue(map.isOccupied(SAMPLEVECTOR));
         map.move(temp,FORWARD);
         assertFalse(map.isOccupied(SAMPLEVECTOR));
+    }
+
+    @Test
+    public void getOrderedAnimalsTest() {
+        try {
+            map.place(new Animal(new Vector2D(3,3)));
+            map.place(new Animal(new Vector2D(2,3)));
+            map.place(new Animal(new Vector2D(3,2)));
+            map.place(new Animal(SAMPLEVECTOR));
+            List<Animal> animals = map.getOrderedAnimals();
+            assertEquals(animals.get(0).getPosition(),SAMPLEVECTOR);
+            assertEquals(animals.get(1).getPosition(),new Vector2D(2,3));
+            assertEquals(animals.get(2).getPosition(),new Vector2D(3,2));
+            assertEquals(animals.get(3).getPosition(),new Vector2D(3,3));
+        } catch(PositionAlreadyOccupiedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

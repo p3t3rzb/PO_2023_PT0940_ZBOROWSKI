@@ -19,7 +19,11 @@ import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static java.lang.Math.abs;
 
@@ -73,10 +77,8 @@ public class SimulationPresenter implements MapChangeListener {
             for(int y = 1; y <= height; y++) {
                 Label child = new Label();
                 Vector2D childPosition = new Vector2D(x-1+currentBounds.bottomLeftCorner().getX(),height-y+currentBounds.bottomLeftCorner().getY());
-                WorldElement element = map.objectAt(childPosition);
-                if(element != null) {
-                    child.setText(element.toString());
-                }
+                Optional<WorldElement> element = map.objectAt(childPosition);
+                element.ifPresent(worldElement -> child.setText(worldElement.toString()));
                 mapGrid.add(child,x,y); // odwrócona orientacja przez wymogi zadania
                 mapGrid.setHalignment(child, HPos.CENTER);
             }
@@ -93,7 +95,7 @@ public class SimulationPresenter implements MapChangeListener {
 
     public void onSimulationStartClicked(ActionEvent actionEvent) {
         List<Vector2D> positions = List.of(new Vector2D(2,2), new Vector2D(3,4));
-        List<MoveDirection> directions = OptionsParser.parse(infoText.getText().split(" "));
+        List<MoveDirection> directions = OptionsParser.parse(Arrays.stream(infoText.getText().split(" ")).toList());
         GrassField grassMap = new GrassField(10);
         setWorldMap(grassMap);
 
@@ -105,6 +107,9 @@ public class SimulationPresenter implements MapChangeListener {
             BorderPane root = loader.load();
             SimulationPresenter newPresenter = loader.getController();
             grassMap.addObserver(newPresenter);
+            grassMap.addObserver((worldMap,message) -> {
+                System.out.println(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss ").format(LocalDateTime.now()) + message);}
+            );
             var scene = new Scene(root);
             stage.setScene(scene);
             stage.setTitle("Simulation");
