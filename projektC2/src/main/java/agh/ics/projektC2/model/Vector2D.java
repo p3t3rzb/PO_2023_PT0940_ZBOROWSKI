@@ -1,5 +1,10 @@
 package agh.ics.projektC2.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Objects.hash;
+
 public class Vector2D {
     private final int x, y;
 
@@ -36,13 +41,22 @@ public class Vector2D {
         return new Vector2D(Math.min(x,other.getX()),Math.min(y,other.getY()));
     }
 
+    public List<Vector2D> adjacent() {
+        List<Vector2D> result = new ArrayList<>(4);
+        result.add(this.add(new Vector2D(1,0)));
+        result.add(this.add(new Vector2D(-1,0)));
+        result.add(this.add(new Vector2D(0,1)));
+        result.add(this.add(new Vector2D(0,-1)));
+        return result;
+    }
+
     public Vector2D opposite() {
         return new Vector2D(-x,-y);
     }
 
     @Override
     public int hashCode() {
-        return 1000*x+y;
+        return hash(x,y);
     }
 
     @Override

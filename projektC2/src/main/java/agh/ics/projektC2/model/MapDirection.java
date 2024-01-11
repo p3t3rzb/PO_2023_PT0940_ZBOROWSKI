@@ -1,20 +1,21 @@
 package agh.ics.projektC2.model;
 
+import java.util.Random;
+
 public enum MapDirection {
     NORTH(new Vector2D(0,1),"Północ",0),
-    NORTHEAST(new Vector2D(1,1), "Północny wschód",1),
+    NORTH_EAST(new Vector2D(1,1), "Północny wschód",1),
     EAST(new Vector2D(1,0),"Wschód",2),
-    SOUTHEAST(new Vector2D(1,-1), "Południowy wschód",3),
+    SOUTH_EAST(new Vector2D(1,-1), "Południowy wschód",3),
     SOUTH(new Vector2D(0,-1),"Południe",4),
-    SOUTHWEST(new Vector2D(-1,-1), "Południowy zachód",5),
+    SOUTH_WEST(new Vector2D(-1,-1), "Południowy zachód",5),
     WEST(new Vector2D(-1,0),"Zachód",6),
-    NORTHWEST(new Vector2D(-1,1), "Północny zachód",7);
+    NORTH_WEST(new Vector2D(-1,1), "Północny zachód",7);
 
-
-    private static MapDirection values[] = values();
     private Vector2D directionVector;
     private String directionName;
     private int rotation;
+    private static final Random PRNG = new Random();
 
     MapDirection(Vector2D directionVector, String directionName, int rotation) {
         this.rotation = rotation;
@@ -22,13 +23,12 @@ public enum MapDirection {
         this.directionName = directionName;
     }
 
-
-    public MapDirection next(int rotationChange) {
-        return values[(8+rotation+rotationChange%8)%8];
+    public static MapDirection randomDirection() {
+        return values()[PRNG.nextInt(8)];
     }
 
-    public MapDirection previous(int rotationChange) {
-        return values[(8+rotation-rotationChange%8)%8];
+    public MapDirection rotate(MoveDirection degree) {
+        return values()[(8+rotation+degree.directionToInt()%8)%8];
     }
 
     public Vector2D toUnitVector() {

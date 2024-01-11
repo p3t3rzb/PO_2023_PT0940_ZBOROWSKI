@@ -48,6 +48,6 @@ public class AnimalTest {
         temp.move(FORWARD,map);
         temp.move(FORWARD,map);
         assertEquals(temp.toString(), "<");
-        assertEquals(temp.getPosition().toString(), "(0,2)");
+        assertEquals(temp.getPosition().toString(), "(0,2map)");
     }
 }
