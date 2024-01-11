@@ -6,14 +6,21 @@ public class Grass implements WorldElement {
         this.position = position;
     }
 
+    @Override
     public Vector2D getPosition() {
         return position;
+    }
+
+    @Override
+    public String getImageFile() {
+        return "grass.png";
     }
 
     public String toString() {
         return "*";
     }
 
+    @Override
     public boolean isAt(Vector2D position) {
         return this.position.equals(position);
     }

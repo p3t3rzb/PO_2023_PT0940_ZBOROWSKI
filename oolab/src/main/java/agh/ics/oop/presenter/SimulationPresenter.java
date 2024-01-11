@@ -8,14 +8,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -28,8 +26,8 @@ import java.util.Optional;
 import static java.lang.Math.abs;
 
 public class SimulationPresenter implements MapChangeListener {
-    private static final int CELL_HEIGHT = 30;
-    private static final int CELL_WIDTH = 30;
+    private static final int CELL_HEIGHT = 40;
+    private static final int CELL_WIDTH = 40;
     private WorldMap map;
 
     @FXML
@@ -75,12 +73,13 @@ public class SimulationPresenter implements MapChangeListener {
         }
         for(int x = 1; x <= width; x++) {
             for(int y = 1; y <= height; y++) {
-                Label child = new Label();
                 Vector2D childPosition = new Vector2D(x-1+currentBounds.bottomLeftCorner().getX(),height-y+currentBounds.bottomLeftCorner().getY());
                 Optional<WorldElement> element = map.objectAt(childPosition);
-                element.ifPresent(worldElement -> child.setText(worldElement.toString()));
-                mapGrid.add(child,x,y); // odwrócona orientacja przez wymogi zadania
-                GridPane.setHalignment(child, HPos.CENTER);
+                if(element.isPresent()) {
+                    Node child = new WorldElementBox(element.get()).getBox();
+                    mapGrid.add(child,x,y);
+                    GridPane.setHalignment(child,HPos.CENTER);
+                }
             }
         }
     }
