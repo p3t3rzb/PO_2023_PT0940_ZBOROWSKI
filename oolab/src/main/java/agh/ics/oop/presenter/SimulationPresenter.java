@@ -60,18 +60,18 @@ public class SimulationPresenter implements MapChangeListener {
         Label xyLabel = new Label();
         xyLabel.setText("y\\x");
         mapGrid.add(xyLabel,0,0);
-        mapGrid.setHalignment(xyLabel, HPos.CENTER);
+        GridPane.setHalignment(xyLabel, HPos.CENTER);
         for(int x = 1; x <= width; x++) {
             Label child = new Label();
             child.setText(String.valueOf(x-1+currentBounds.bottomLeftCorner().getX()));
             mapGrid.add(child,x,0);
-            mapGrid.setHalignment(child, HPos.CENTER);
+            GridPane.setHalignment(child, HPos.CENTER);
         }
         for(int y = 1; y <= height; y++) {
             Label child = new Label();
             child.setText(String.valueOf(height-y+currentBounds.bottomLeftCorner().getY())); // odwrócona orientacja przez wymogi zadania
             mapGrid.add(child,0,y);
-            mapGrid.setHalignment(child, HPos.CENTER);
+            GridPane.setHalignment(child, HPos.CENTER);
         }
         for(int x = 1; x <= width; x++) {
             for(int y = 1; y <= height; y++) {
@@ -80,7 +80,7 @@ public class SimulationPresenter implements MapChangeListener {
                 Optional<WorldElement> element = map.objectAt(childPosition);
                 element.ifPresent(worldElement -> child.setText(worldElement.toString()));
                 mapGrid.add(child,x,y); // odwrócona orientacja przez wymogi zadania
-                mapGrid.setHalignment(child, HPos.CENTER);
+                GridPane.setHalignment(child, HPos.CENTER);
             }
         }
     }
@@ -107,6 +107,7 @@ public class SimulationPresenter implements MapChangeListener {
             BorderPane root = loader.load();
             SimulationPresenter newPresenter = loader.getController();
             grassMap.addObserver(newPresenter);
+            grassMap.addObserver(new FileMapDisplay());
             grassMap.addObserver((worldMap,message) -> {
                 System.out.println(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss ").format(LocalDateTime.now()) + message);}
             );
