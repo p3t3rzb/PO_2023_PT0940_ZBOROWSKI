@@ -17,7 +17,7 @@ public class WorldElementBox {
     static final HashMap<String,Image> images = new HashMap<>();
 
     static {
-        String path = "C:\\Users\\ASD\\Desktop\\Programowanie obiektowe\\PO_2023_PT0940_ZBOROWSKI\\oolab\\src\\main\\resources\\";
+        String path = System.getProperty("user.dir") + "\\src\\main\\resources\\";
         try {
             images.put("grass.png",new Image(new FileInputStream(path + "grass.png")));
             images.put("up.png",new Image(new FileInputStream(path + "up.png")));
