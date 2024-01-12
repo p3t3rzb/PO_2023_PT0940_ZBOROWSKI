@@ -1,17 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
 <GridPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            minHeight="200.0" minWidth="200.0"
-			alignment="center"
-            fx:controller="agh.ics.oop.presenter.SimulationPresenter">
-    <Text id="" text="" GridPane.ColumndIndex="0" GridPane.rowIndex+"0" GridPane.columnSpan="2"/>
+		  xmlns:fx="http://javafx.com/fxml"
+		  minHeight="480.0" minWidth="350.0"
+		  alignment="center"
+		  fx:controller="agh.ics.projektC2.SimulationApp">
+	<VBox GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" alignment="CENTER">
+		<Label text="Map"/>
+	</VBox>
+
+	<Label text="Width: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+	<TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 	
-	<Label text="Width " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-	
-	<Label text="Height " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+	<Label text="Height: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+	<TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+	<Label text="Map variant: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+	<ComboBox GridPane.columnIndex="1" GridPane.rowIndex="3" maxWidth="200">
+		<items>
+			<FXCollections fx:factory="observableArrayList">
+				<String fx:value="Earth"/>
+				<String fx:value="Flooding"/>
+			</FXCollections>
+		</items>
+	</ComboBox>
+
+	<VBox GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2" alignment="CENTER">
+		<Label text="Plants"/>
+	</VBox>
+
+	<Label text="Initial plants amount: " GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+	<TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+	<Label text="Plant energy: " GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+	<TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+	<Label text="Plants growing daily: " GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+	<TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+	<VBox GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.columnSpan="2" alignment="CENTER">
+		<Label text="Animals"/>
+	</VBox>
+
+	<Label text="Initial animals amount: " GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+	<TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+
+	<Label text="Animal initial energy: " GridPane.columnIndex="0" GridPane.rowIndex="10"/>
+	<TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
+
+	<Label text="Energy required to breed: " GridPane.columnIndex="0" GridPane.rowIndex="11"/>
+	<TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="11"/>
+
+	<Label text="Energy spent on breeding: " GridPane.columnIndex="0" GridPane.rowIndex="12"/>
+	<TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="12"/>
+
+	<VBox GridPane.columnIndex="0" GridPane.rowIndex="13" GridPane.columnSpan="2" alignment="CENTER">
+		<Label text="Genetics"/>
+	</VBox>
+
+	<Label text="Minimal amount of mutations: " GridPane.columnIndex="0" GridPane.rowIndex="14"/>
+	<TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="14"/>
+
+	<Label text="Maximal amount of mutations: " GridPane.columnIndex="0" GridPane.rowIndex="15"/>
+	<TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="15"/>
+
+	<Label text="Mutation variant: " GridPane.columnIndex="0" GridPane.rowIndex="16"/>
+	<ComboBox GridPane.columnIndex="1" GridPane.rowIndex="16" maxWidth="200">
+		<items>
+			<FXCollections fx:factory="observableArrayList">
+				<String fx:value="Fully random"/>
+				<String fx:value="Swap"/>
+			</FXCollections>
+		</items>
+	</ComboBox>
+
+	<Label text="Genome length: " GridPane.columnIndex="0" GridPane.rowIndex="17"/>
+	<TextField alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="17"/>
+
+	<VBox GridPane.columnIndex="0" GridPane.rowIndex="18" GridPane.columnSpan="2" alignment="CENTER">
+		<Button text="Start"/>
+	</VBox>
 </GridPane>
