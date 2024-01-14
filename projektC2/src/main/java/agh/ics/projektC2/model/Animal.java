@@ -108,6 +108,20 @@ public class Animal implements WorldElement, Comparable<Animal> {
     }
 
     @Override
+    public String getImageFile() {
+        return switch(orientation) {
+            case EAST -> "right.png";
+            case NORTH -> "up.png";
+            case WEST -> "left.png";
+            case SOUTH -> "down.png";
+            case NORTH_EAST -> "upright.png";
+            case SOUTH_EAST -> "rightdown.png";
+            case NORTH_WEST -> "upleft.png";
+            case SOUTH_WEST -> "downleft.png";
+        };
+    }
+
+    @Override
     public String toString() {
         return switch(orientation) {
             case NORTH, NORTH_EAST -> "^";

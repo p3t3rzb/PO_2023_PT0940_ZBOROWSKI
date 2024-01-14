@@ -1,10 +1,9 @@
 package agh.ics.projektC2.model;
 
-import javax.swing.text.Position;
 import java.util.*;
 
-import static java.util.Arrays.copyOfRange;
-import static java.util.Collections.*;
+import static java.util.Collections.reverse;
+import static java.util.Collections.sort;
 
 public abstract class AbstractWorldMap implements WorldMap {
     protected final AnimalMultiMap animals = new AnimalMultiMap();
@@ -50,15 +49,17 @@ public abstract class AbstractWorldMap implements WorldMap {
         return forbiddenForAnimals;
     }
 
+    @Override
     public void addObserver(MapChangeListener listener) {
         observers.add(listener);
     }
 
+    @Override
     public void removeObserver(MapChangeListener listener) {
         observers.remove(listener);
     }
 
-    private void mapChanged(String message) {
+    protected void mapChanged(String message) {
         for(MapChangeListener observer : observers) {
             observer.mapChanged(this,message);
         }
@@ -159,7 +160,6 @@ public abstract class AbstractWorldMap implements WorldMap {
     abstract public void move();
 
     protected void moveAnimal(Animal animal) {
-        System.out.println(animal.getGenome());
         if(!animals.get(animal.getPosition()).contains(animal)) { // zamiana na animal
             return;
         }
@@ -168,11 +168,11 @@ public abstract class AbstractWorldMap implements WorldMap {
         animal.move(this,transformation);
         animals.put(animal.getPosition(),animal);
         animal.setEnergy(animal.getEnergy()-1);
-        if(!temp.equals(animal.getPosition().toString())) {
+        /*if(!temp.equals(animal.getPosition().toString())) {
             mapChanged("Moved an animal from " + temp + " to " + animal.getPosition().toString());
         } else {
             mapChanged("Animal at " + temp + " rotating");
-        }
+        }*/
     }
 
     public Plant plantAt(Vector2D position) {

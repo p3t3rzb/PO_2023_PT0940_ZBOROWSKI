@@ -1,6 +1,5 @@
 package agh.ics.projektC2.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.max;
@@ -21,6 +20,7 @@ public class EarthMap extends AbstractWorldMap {
         for(Animal animal : getAnimals()) {
             moveAnimal(animal);
         }
+        mapChanged("map changed"); // rozwinąć
     }
 
     @Override

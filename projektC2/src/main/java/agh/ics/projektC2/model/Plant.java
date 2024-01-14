@@ -8,6 +8,11 @@ public class Plant implements WorldElement {
     }
 
     @Override
+    public String getImageFile() {
+        return "plant.png";
+    }
+
+    @Override
     public Vector2D getPosition() {
         return position;
     }

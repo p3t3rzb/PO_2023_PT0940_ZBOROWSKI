@@ -3,11 +3,8 @@ package agh.ics.projektC2;
 import agh.ics.projektC2.model.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
-import static java.util.Collections.unmodifiableList;
 
 public class Simulation implements Runnable {
     private final WorldMap map;
@@ -35,7 +32,7 @@ public class Simulation implements Runnable {
     }
 
     public void run() {
-        for(int i=0; i<300; i++) {
+        for(int i=0; i<300000; i++) {
             // 1
             map.removeDeadAnimals();
 
@@ -50,6 +47,13 @@ public class Simulation implements Runnable {
 
             // 5
             this.map.addPlants(plantCount);
+
+            try {
+                Thread.sleep(80);
+            }
+            catch(InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

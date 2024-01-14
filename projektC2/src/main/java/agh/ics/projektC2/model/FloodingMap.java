@@ -109,6 +109,7 @@ public class FloodingMap extends AbstractWorldMap {
         } else {
             shrinkWaters();
         }
+        mapChanged("map changed"); // rozwinąć
     }
 
     @Override
