@@ -92,4 +92,8 @@
 	<VBox GridPane.columnIndex="0" GridPane.rowIndex="20" GridPane.columnSpan="2" alignment="CENTER">
 		<Button text="Start" onAction="#onSimulationStartClicked"/>
 	</VBox>
+
+	<VBox GridPane.columnIndex="0" GridPane.rowIndex="21" GridPane.columnSpan="2" alignment="CENTER">
+		<Label text="" fx:id="incorrectDataLabel"/>
+	</VBox>
 </GridPane>

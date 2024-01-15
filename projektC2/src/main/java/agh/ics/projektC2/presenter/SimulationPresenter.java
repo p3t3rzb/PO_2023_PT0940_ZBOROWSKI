@@ -34,6 +34,8 @@ public class SimulationPresenter implements MapChangeListener {
     GridPane mapGrid;
     @FXML
     Button pauseButton;
+    @FXML
+    Label incorrectDataLabel;
 
     private void setWorldMap(WorldMap map) {
         this.map = map;
@@ -110,19 +112,36 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void onSimulationStartClicked(ActionEvent actionEvent) {
-        int width = Integer.parseInt(this.width.getText());
-        int height = Integer.parseInt(this.height.getText());
-        int initialPlants = Integer.parseInt(this.initialPlants.getText());
-        int plantEnergy = Integer.parseInt(this.plantEnergy.getText());
-        int plantCount = Integer.parseInt(this.plantCount.getText());
-        int animalsCount = Integer.parseInt(this.animalsCount.getText());
-        int initialEnergy = Integer.parseInt(this.initialEnergy.getText());
-        int satisfactoryEnergy = Integer.parseInt(this.satisfactoryEnergy.getText());
-        int requiredEnergy = Integer.parseInt(this.requiredEnergy.getText());
-        int minMutations = Integer.parseInt(this.minMutations.getText());
-        int maxMutations = Integer.parseInt(this.maxMutations.getText());
-        int genomeLength = Integer.parseInt(this.genomeLength.getText());
-        int waitingTime = Integer.parseInt(this.waitingTime.getText());
+        int width,height,initialPlants,plantEnergy,plantCount,animalsCount,initialEnergy,satisfactoryEnergy,requiredEnergy,minMutations,maxMutations,genomeLength,waitingTime;
+        try {
+             width = Integer.parseInt(this.width.getText());
+             height = Integer.parseInt(this.height.getText());
+             initialPlants = Integer.parseInt(this.initialPlants.getText());
+             plantEnergy = Integer.parseInt(this.plantEnergy.getText());
+             plantCount = Integer.parseInt(this.plantCount.getText());
+             animalsCount = Integer.parseInt(this.animalsCount.getText());
+             initialEnergy = Integer.parseInt(this.initialEnergy.getText());
+             satisfactoryEnergy = Integer.parseInt(this.satisfactoryEnergy.getText());
+             requiredEnergy = Integer.parseInt(this.requiredEnergy.getText());
+             minMutations = Integer.parseInt(this.minMutations.getText());
+             maxMutations = Integer.parseInt(this.maxMutations.getText());
+             genomeLength = Integer.parseInt(this.genomeLength.getText());
+             waitingTime = Integer.parseInt(this.waitingTime.getText());
+        } catch (NumberFormatException e) {
+            incorrectDataLabel.setText("Incorrect data");
+            return;
+        }
+
+        if(width <= 0 || width > 1000 || height <= 0 || height > 1000
+                || initialPlants < 0 || plantEnergy < 0 || plantCount < 0 || plantCount > width*height
+                || animalsCount < 0 || animalsCount > width*height || initialEnergy <= 0 || satisfactoryEnergy <= 0
+                || requiredEnergy <= 0 || minMutations < 0 || minMutations > maxMutations || maxMutations > genomeLength
+                || genomeLength <= 0 || waitingTime <= 0) {
+            incorrectDataLabel.setText("Incorrect data");
+            return;
+        }
+
+        incorrectDataLabel.setText("");
 
         Mutation mutation = mutationVariant.getValue().equals("Fully random") ? new FullyRandomMutation() : new SwapMutation();
         WorldMap newMap = mapVariant.getValue().equals("Earth") ? new EarthMap(width,height,plantEnergy,satisfactoryEnergy,requiredEnergy,mutation,minMutations,maxMutations,initialPlants)
