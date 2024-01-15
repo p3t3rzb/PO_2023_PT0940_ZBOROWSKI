@@ -9,12 +9,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -22,6 +24,7 @@ import java.io.IOException;
 public class SimulationPresenter implements MapChangeListener {
     private static final int CELL_HEIGHT = 40;
     private static final int CELL_WIDTH = 40;
+    private Simulation simulation;
     private WorldMap map;
     @FXML
     TextField width, height, initialPlants, plantEnergy, plantCount, animalsCount, initialEnergy, satisfactoryEnergy, requiredEnergy, minMutations, maxMutations, genomeLength, waitingTime;
@@ -29,6 +32,8 @@ public class SimulationPresenter implements MapChangeListener {
     ComboBox<String> mutationVariant, mapVariant;
     @FXML
     GridPane mapGrid;
+    @FXML
+    Button pauseButton;
 
     private void setWorldMap(WorldMap map) {
         this.map = map;
@@ -81,11 +86,27 @@ public class SimulationPresenter implements MapChangeListener {
         }
     }
 
+    public void setSimulation(Simulation simulation) {
+        this.simulation = simulation;
+    }
+
     @Override
     public void mapChanged(WorldMap map, String message) {
         Platform.runLater(() -> {
             drawMap(map);
         });
+    }
+
+    public void onSimulationPauseClicked(ActionEvent actionEvent) {
+        //pauseButton.setText(pauseButton.getText().equals("Pause") ? "Resume" : "Pause");
+        if(pauseButton.getText().equals("Pause")) {
+            pauseButton.setText("Resume");
+            simulation.pause();
+        } else {
+            pauseButton.setText("Pause");
+            simulation.resume();
+        }
+        //pauseButton.getText().equals("Pause") ? simulation.pause() : simulation.resume();
     }
 
     public void onSimulationStartClicked(ActionEvent actionEvent) {
@@ -107,15 +128,16 @@ public class SimulationPresenter implements MapChangeListener {
         WorldMap newMap = mapVariant.getValue().equals("Earth") ? new EarthMap(width,height,plantEnergy,satisfactoryEnergy,requiredEnergy,mutation,minMutations,maxMutations)
                                                            : new FloodingMap(width,height,plantEnergy,satisfactoryEnergy,requiredEnergy,mutation,minMutations,maxMutations);
         //newMap.addObserver(new ConsoleMapDisplay());
-        Simulation simulation = new Simulation(newMap,plantCount,animalsCount,initialEnergy,genomeLength);
+        Simulation newSimulation = new Simulation(newMap,plantCount,animalsCount,initialEnergy,genomeLength,waitingTime);
 
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("mapgrid.fxml"));
 
         try {
-            GridPane root = loader.load();
+            VBox root = loader.load();
             SimulationPresenter newPresenter = loader.getController();
+            newPresenter.setSimulation(newSimulation);
             newMap.addObserver(newPresenter);
             var scene = new Scene(root);
             stage.setScene(scene);
@@ -124,7 +146,7 @@ public class SimulationPresenter implements MapChangeListener {
             stage.minHeightProperty().bind(root.minHeightProperty());
 
             stage.show();
-            Thread thread = new Thread(simulation);
+            Thread thread = new Thread(newSimulation);
             thread.start();
         } catch (IOException e) {
             e.printStackTrace();

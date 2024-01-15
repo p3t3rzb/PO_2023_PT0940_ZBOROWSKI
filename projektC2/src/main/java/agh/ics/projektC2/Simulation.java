@@ -8,12 +8,14 @@ import java.util.Random;
 
 public class Simulation implements Runnable {
     private final WorldMap map;
-    private final int plantCount;
+    private final int plantCount, waitingTime;
+    private boolean onPause = false;
     private static final Random PRNG = new Random();
 
-    public Simulation(WorldMap map, int plantCount, int animalsCount, int initialEnergy, int genomeLength) {
+    public Simulation(WorldMap map, int plantCount, int animalsCount, int initialEnergy, int genomeLength, int waitingTime) {
         this.map = map;
         this.plantCount = plantCount;
+        this.waitingTime = waitingTime;
         List<Vector2D> positions = new PositionGenerator(map.getCurrentBounds(),map.getForbiddenForAnimals()).getPositions();
         positions = new RandomPositionGenerator(positions,new ArrayList<>(),animalsCount).getPositions();
 
@@ -31,8 +33,28 @@ public class Simulation implements Runnable {
         }
     }
 
+    public synchronized void pause() {
+        onPause = true;
+    }
+
+    public synchronized void resume() {
+        onPause = false;
+        notify();
+    }
+
     public void run() {
         for(int i=0; i<300000; i++) {
+            while (onPause) {
+                synchronized(this) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        System.err.println("Thread Interrupted");
+                    }
+                }
+            }
+
             // 1
             map.removeDeadAnimals();
 
@@ -48,8 +70,15 @@ public class Simulation implements Runnable {
             // 5
             this.map.addPlants(plantCount);
 
+            int sum = 0;
+            for(Animal animal : map.getAnimals()) {
+                sum += animal.getEnergy();
+            }
+            sum /= map.getAnimals().size();
+            System.out.println(sum);
+
             try {
-                Thread.sleep(80);
+                Thread.sleep(waitingTime);
             }
             catch(InterruptedException e) {
                 e.printStackTrace();
