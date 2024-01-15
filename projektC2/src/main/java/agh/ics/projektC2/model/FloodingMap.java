@@ -16,7 +16,7 @@ public class FloodingMap extends AbstractWorldMap {
     private final int floodingsNo = 3;
     private final int maxFloodRadius = 4;
 
-    public FloodingMap(int width, int height, int plantEnergy, int satisfactoryEnergy, int requiredEnergy, Mutation mutation, int minMutationCount, int maxMutationCount) {
+    public FloodingMap(int width, int height, int plantEnergy, int satisfactoryEnergy, int requiredEnergy, Mutation mutation, int minMutationCount, int maxMutationCount, int initialPlants) {
         super(plantEnergy,satisfactoryEnergy,requiredEnergy,mutation,minMutationCount,maxMutationCount);
         mapEnd = new Vector2D(width-1,height-1);
         transformation = new IdentityTransformation();
@@ -31,6 +31,8 @@ public class FloodingMap extends AbstractWorldMap {
             waterSources.put(position,water);
             forbiddenForWaters.put(position,true);
         }
+
+        addPlants(initialPlants);
     }
 
     private Water waterAt(Vector2D position) {
