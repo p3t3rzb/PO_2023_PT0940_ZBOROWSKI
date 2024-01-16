@@ -102,8 +102,8 @@ public class Animal implements WorldElement, Comparable<Animal> {
     }
 
     private int getDescendants(List<Animal> tried, int depth) {
-        if(depth > 20) {
-            return 0; // ograniczam głębokość relacji do 20 pokoleń
+        if(depth > 5) {
+            return 0; // ograniczam głębokość relacji do 5 pokoleń ze względów wydajnościowych
         }
         int result = childrenNo;
         for(Animal child : children) {

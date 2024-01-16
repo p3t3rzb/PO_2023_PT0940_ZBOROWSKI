@@ -91,9 +91,21 @@ public class SimulationPresenter implements MapChangeListener {
             }
         }
 
-        generalAnimalInfo.setText("General population statistics: ");
+        float avgEnergy = 0, avgChildren = 0;
+        for(Animal animal : map.getAnimals()) {
+            avgEnergy += animal.getEnergy();
+            avgChildren += animal.getChildrenNo();
+        }
+        avgEnergy /= map.getAnimals().size();
+        avgChildren /= map.getAnimals().size();
 
-        followedAnimalInfo.setText("Followed animal statistics: \n" +
+        generalAnimalInfo.setText("===== General population statistics: =====" +
+                "\nAmount of animals: " + map.getAnimals().size() +
+                "\nAmount of plants: " + map.getPlants().size() +
+                "\nAverage energy of animals: " + avgEnergy +
+                "\nAverage amount of children: " + avgChildren);
+
+        followedAnimalInfo.setText("===== Followed animal statistics: ===== \n" +
                 (followedAnimal.isDead() ? "Died at day: " + String.valueOf(followedAnimal.getDeathDay()) : "Age: " + String.valueOf(followedAnimal.getAge())) + '\n' +
                 followedAnimal.getPosition().toString() + '\n' +
                 "Children: " + String.valueOf(followedAnimal.getChildrenNo()) + '\n' +

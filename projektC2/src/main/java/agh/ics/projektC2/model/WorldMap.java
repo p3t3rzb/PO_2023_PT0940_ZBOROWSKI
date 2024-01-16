@@ -33,4 +33,6 @@ public interface WorldMap extends MoveValidator {
     List<WorldElement> getElements();
 
     List<Animal> getAnimals();
+
+    List<Plant> getPlants();
 }

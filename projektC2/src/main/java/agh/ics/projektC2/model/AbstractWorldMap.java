@@ -211,4 +211,9 @@ public abstract class AbstractWorldMap implements WorldMap {
 
         return result;
     }
+
+    @Override
+    public List<Plant> getPlants() {
+        return new ArrayList<>(plants.values());
+    }
 }
