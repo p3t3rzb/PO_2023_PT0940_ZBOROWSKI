@@ -7,7 +7,7 @@
 <GridPane xmlns="http://javafx.com/javafx"
 		  xmlns:fx="http://javafx.com/fxml"
 		  minHeight="530.0" minWidth="350.0"
-		  alignment="center"
+		  alignment="CENTER"
 		  fx:controller="agh.ics.projektC2.presenter.SimulationPresenter">
 	<VBox GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" alignment="CENTER">
 		<Label text="Map"/>
@@ -94,6 +94,6 @@
 	</VBox>
 
 	<VBox GridPane.columnIndex="0" GridPane.rowIndex="21" GridPane.columnSpan="2" alignment="CENTER">
-		<Label text="" fx:id="incorrectDataLabel"/>
+		<Label fx:id="incorrectDataLabel"/>
 	</VBox>
 </GridPane>

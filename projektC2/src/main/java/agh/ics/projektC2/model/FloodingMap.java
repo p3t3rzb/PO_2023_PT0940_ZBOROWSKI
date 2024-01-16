@@ -101,6 +101,7 @@ public class FloodingMap extends AbstractWorldMap {
 
     @Override
     public void move() {
+        day++;
         for(Animal animal : getAnimals()) {
             forbiddenForWaters.remove(animal.getPosition());
             moveAnimal(animal);

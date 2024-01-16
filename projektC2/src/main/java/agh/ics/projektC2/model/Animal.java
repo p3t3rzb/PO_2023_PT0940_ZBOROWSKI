@@ -1,10 +1,7 @@
 package agh.ics.projektC2.model;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static java.lang.Math.max;
 
@@ -17,7 +14,17 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private int currentGene;
     private int age = 0;
     private int childrenNo = 0;
+    private int deathDay = -1;
+    private boolean dead = false;
     private static final Random PRNG = new Random();
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public int getDeathDay() {
+        return deathDay;
+    }
 
     public Animal(Vector2D position, int energy, List<Integer> genome) {
         this.position = position;
@@ -94,13 +101,23 @@ public class Animal implements WorldElement, Comparable<Animal> {
         return children;
     }
 
-    public int getDescendantsNo() {
+    private int getDescendants(List<Animal> tried, int depth) {
+        if(depth > 20) {
+            return 0; // ograniczam głębokość relacji do 20 pokoleń
+        }
         int result = childrenNo;
         for(Animal child : children) {
-            result += child.getDescendantsNo();
+            if(!tried.contains(child)) {
+                tried.add(child);
+                result += child.getDescendants(tried,depth+1);
+            }
         }
 
         return result;
+    }
+
+    public int getDescendantsNo() {
+        return getDescendants(new LinkedList<>(),0);
     }
 
     public int getAge() {
@@ -134,6 +151,11 @@ public class Animal implements WorldElement, Comparable<Animal> {
     @Override
     public boolean isAt(Vector2D position) {
         return this.position.equals(position);
+    }
+
+    public void die(int deathDay) {
+        dead = true;
+        this.deathDay = deathDay;
     }
 
     public void move(MoveValidator validator, MoveTransformation transformation) {

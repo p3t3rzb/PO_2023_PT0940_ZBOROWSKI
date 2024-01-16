@@ -16,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -25,6 +24,7 @@ public class SimulationPresenter implements MapChangeListener {
     private static final int CELL_HEIGHT = 40;
     private static final int CELL_WIDTH = 40;
     private Simulation simulation;
+    private Animal followedAnimal;
     private WorldMap map;
     @FXML
     TextField width, height, initialPlants, plantEnergy, plantCount, animalsCount, initialEnergy, satisfactoryEnergy, requiredEnergy, minMutations, maxMutations, genomeLength, waitingTime;
@@ -35,10 +35,14 @@ public class SimulationPresenter implements MapChangeListener {
     @FXML
     Button pauseButton;
     @FXML
-    Label incorrectDataLabel;
+    Label incorrectDataLabel, followedAnimalInfo, generalAnimalInfo;
 
     private void setWorldMap(WorldMap map) {
         this.map = map;
+    }
+
+    public void setFollowedAnimal(Animal followedAnimal) {
+        this.followedAnimal = followedAnimal;
     }
 
     private void clearGrid() {
@@ -80,12 +84,20 @@ public class SimulationPresenter implements MapChangeListener {
                 Vector2D childPosition = new Vector2D(x-1+currentBounds.bottomLeftCorner().getX(),height-y+currentBounds.bottomLeftCorner().getY());
                 WorldElement element = map.objectAt(childPosition);
                 if(element != null) {
-                    Node child = new WorldElementBox(element).getBox();
+                    Node child = new WorldElementBox(element,followedAnimal).getBox();
                     mapGrid.add(child,x,y);
                     GridPane.setHalignment(child,HPos.CENTER);
                 }
             }
         }
+
+        generalAnimalInfo.setText("General population statistics: ");
+
+        followedAnimalInfo.setText("Followed animal statistics: \n" +
+                (followedAnimal.isDead() ? "Died at day: " + String.valueOf(followedAnimal.getDeathDay()) : "Age: " + String.valueOf(followedAnimal.getAge())) + '\n' +
+                followedAnimal.getPosition().toString() + '\n' +
+                "Children: " + String.valueOf(followedAnimal.getChildrenNo()) + '\n' +
+                "Descendants: " + String.valueOf(followedAnimal.getDescendantsNo()) + '\n');
     }
 
     public void setSimulation(Simulation simulation) {
@@ -100,15 +112,15 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void onSimulationPauseClicked(ActionEvent actionEvent) {
-        //pauseButton.setText(pauseButton.getText().equals("Pause") ? "Resume" : "Pause");
         if(pauseButton.getText().equals("Pause")) {
             pauseButton.setText("Resume");
             simulation.pause();
+            // event handlers żeby zmienić followedAnimal
         } else {
             pauseButton.setText("Pause");
             simulation.resume();
+            // usunąć event handlers
         }
-        //pauseButton.getText().equals("Pause") ? simulation.pause() : simulation.resume();
     }
 
     public void onSimulationStartClicked(ActionEvent actionEvent) {
@@ -154,9 +166,10 @@ public class SimulationPresenter implements MapChangeListener {
         loader.setLocation(getClass().getClassLoader().getResource("mapgrid.fxml"));
 
         try {
-            VBox root = loader.load();
+            GridPane root = loader.load();
             SimulationPresenter newPresenter = loader.getController();
             newPresenter.setSimulation(newSimulation);
+            newPresenter.setFollowedAnimal(newMap.getAnimals().get(0));
             newMap.addObserver(newPresenter);
             var scene = new Scene(root);
             stage.setScene(scene);

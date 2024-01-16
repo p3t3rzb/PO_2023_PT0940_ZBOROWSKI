@@ -1,6 +1,7 @@
 package agh.ics.projektC2.model;
 
 import javafx.geometry.Pos;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -31,13 +32,25 @@ public class WorldElementBox {
         }
     }
 
-    public WorldElementBox(WorldElement element) {
+    public WorldElementBox(WorldElement element, WorldElement special) {
         if(images.containsKey(element.getImageFile())) {
             Image image = images.get(element.getImageFile());
             ImageView imageView = new ImageView(image);
             imageView.setFitHeight(20);
             imageView.setFitWidth(20);
-            //Label label = new Label(element.getPosition().toString());
+
+            if(element instanceof Animal) {
+                ColorAdjust colorAdjust = new ColorAdjust();
+                if(element == special) {
+                    colorAdjust.setHue(5);
+                    colorAdjust.setBrightness(-0.3);
+                } else {
+                    int energy = ((Animal) element).getEnergy();
+                    colorAdjust.setBrightness(0.5 - energy / 200.0);
+                }
+                imageView.setEffect(colorAdjust);
+            }
+
             vbox = new VBox();
             vbox.getChildren().add(imageView);
             //vbox.getChildren().add(label);

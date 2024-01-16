@@ -17,6 +17,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected Mutation mutation;
     private final int minMutationCount;
     private final int maxMutationCount;
+    protected int day = 0;
     private static int objectsCount = 0;
     private final int satisfactoryEnergy; // energia potrzebna do rozmnażania
     private final int requiredEnergy; // energia pobierana przy rozmnażaniu
@@ -168,6 +169,10 @@ public abstract class AbstractWorldMap implements WorldMap {
         animal.move(this,transformation);
         animals.put(animal.getPosition(),animal);
         animal.setEnergy(animal.getEnergy()-1);
+
+        if(animal.getEnergy() == 0) {
+            animal.die(day);
+        }
         /*if(!temp.equals(animal.getPosition().toString())) {
             mapChanged("Moved an animal from " + temp + " to " + animal.getPosition().toString());
         } else {

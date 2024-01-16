@@ -18,6 +18,7 @@ public class EarthMap extends AbstractWorldMap {
 
     @Override
     public void move() {
+        day++;
         for(Animal animal : getAnimals()) {
             moveAnimal(animal);
         }
