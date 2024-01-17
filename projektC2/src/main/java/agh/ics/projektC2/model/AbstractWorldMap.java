@@ -1,10 +1,9 @@
 package agh.ics.projektC2.model;
 
-import javax.swing.text.Position;
 import java.util.*;
 
-import static java.util.Arrays.copyOfRange;
-import static java.util.Collections.*;
+import static java.util.Collections.reverse;
+import static java.util.Collections.sort;
 
 public abstract class AbstractWorldMap implements WorldMap {
     protected final AnimalMultiMap animals = new AnimalMultiMap();
@@ -13,11 +12,13 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected HashMap<Vector2D,Boolean> forbiddenForAnimals = new HashMap<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
     private final List<MapChangeListener> observers = new ArrayList<>();
+    private final List<Animal> deadAnimals = new ArrayList<>();
     protected final int mapID;
     protected final int plantEnergy;
     protected Mutation mutation;
     private final int minMutationCount;
     private final int maxMutationCount;
+    protected int day = 0;
     private static int objectsCount = 0;
     private final int satisfactoryEnergy; // energia potrzebna do rozmnażania
     private final int requiredEnergy; // energia pobierana przy rozmnażaniu
@@ -46,19 +47,26 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
+    public List<Animal> getDeadAnimals() {
+        return Collections.unmodifiableList(deadAnimals);
+    }
+
+    @Override
     public HashMap<Vector2D, Boolean> getForbiddenForAnimals() {
         return forbiddenForAnimals;
     }
 
+    @Override
     public void addObserver(MapChangeListener listener) {
         observers.add(listener);
     }
 
+    @Override
     public void removeObserver(MapChangeListener listener) {
         observers.remove(listener);
     }
 
-    private void mapChanged(String message) {
+    protected void mapChanged(String message) {
         for(MapChangeListener observer : observers) {
             observer.mapChanged(this,message);
         }
@@ -123,6 +131,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                 for(i=0; i < candidates.size() && candidates.get(i) == candidates.get(0); i++);
                 Animal winningAnimal = candidates.get(PRNG.nextInt(i));
                 winningAnimal.setEnergy(winningAnimal.getEnergy()+plantEnergy);
+                winningAnimal.setPlantsEaten(winningAnimal.getPlantsEaten()+1);
             }
         }
     }
@@ -132,6 +141,8 @@ public abstract class AbstractWorldMap implements WorldMap {
         for(Animal animal : animals.values()) {
             if(animal.getEnergy() == 0) {
                 animals.remove(animal.getPosition(),animal);
+                animal.die(day);
+                deadAnimals.add(animal);
             }
         }
     }
@@ -159,7 +170,6 @@ public abstract class AbstractWorldMap implements WorldMap {
     abstract public void move();
 
     protected void moveAnimal(Animal animal) {
-        System.out.println(animal.getGenome());
         if(!animals.get(animal.getPosition()).contains(animal)) { // zamiana na animal
             return;
         }
@@ -168,11 +178,6 @@ public abstract class AbstractWorldMap implements WorldMap {
         animal.move(this,transformation);
         animals.put(animal.getPosition(),animal);
         animal.setEnergy(animal.getEnergy()-1);
-        if(!temp.equals(animal.getPosition().toString())) {
-            mapChanged("Moved an animal from " + temp + " to " + animal.getPosition().toString());
-        } else {
-            mapChanged("Animal at " + temp + " rotating");
-        }
     }
 
     public Plant plantAt(Vector2D position) {
@@ -205,5 +210,10 @@ public abstract class AbstractWorldMap implements WorldMap {
         result.addAll(animals.values());
 
         return result;
+    }
+
+    @Override
+    public List<Plant> getPlants() {
+        return new ArrayList<>(plants.values());
     }
 }

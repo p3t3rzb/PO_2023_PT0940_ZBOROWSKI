@@ -13,7 +13,7 @@ public class EarthTransformation implements MoveTransformation {
     public OrientedPosition transform(OrientedPosition currentPosition, MapDirection lastMove) {
         Vector2D position = currentPosition.position();
         MapDirection orientation = currentPosition.orientation();
-        int width = mapEnd.getY()-mapStart.getX()+1;
+        int width = mapEnd.getX()-mapStart.getX()+1;
 
         // odbijanie od góry
 

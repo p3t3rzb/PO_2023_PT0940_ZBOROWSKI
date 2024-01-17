@@ -4,6 +4,7 @@ import agh.ics.oop.model.util.MapVisualizer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class RectangularMap extends AbstractWorldMap {
@@ -20,8 +21,8 @@ public class RectangularMap extends AbstractWorldMap {
     }
 
     @Override
-    public Animal objectAt(Vector2D position) {
-        return animals.get(position);
+    public Optional<WorldElement> objectAt(Vector2D position) {
+        return Optional.ofNullable(animals.get(position));
     }
 
     @Override

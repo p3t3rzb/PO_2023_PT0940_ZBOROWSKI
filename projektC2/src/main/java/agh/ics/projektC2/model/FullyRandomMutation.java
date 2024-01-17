@@ -10,8 +10,7 @@ public class FullyRandomMutation implements Mutation {
 
     @Override
     public void mutateGenome(List<Integer> genome, int minMutationCount, int maxMutationCount) {
-        // dodać że 0 <= minMutationCount <= maxMutationCount <= genome.size()
-        int howMany = maxMutationCount != 0 ? minMutationCount + PRNG.nextInt(maxMutationCount-minMutationCount) : 0;
+        int howMany = maxMutationCount != minMutationCount ? (maxMutationCount != 0 ? minMutationCount + PRNG.nextInt(maxMutationCount-minMutationCount) : 0) : 0;
         List<Integer> oneToN = new ArrayList<>();
         for(int i=0; i<genome.size(); i++) {
             oneToN.add(i);

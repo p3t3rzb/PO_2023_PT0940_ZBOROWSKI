@@ -1,6 +1,8 @@
 package agh.ics.oop.model;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.Math.*;
 
@@ -27,18 +29,13 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
-    public WorldElement objectAt(Vector2D position) {
+    public Optional<WorldElement> objectAt(Vector2D position) {
         WorldElement result = animals.get(position);
         if(result != null) {
-            return result;
+            return Optional.of(result);
         } else {
-            result = grasses.get(position);
-            if (result != null) {
-                return result;
-            }
+            return Optional.ofNullable(grasses.get(position));
         }
-
-        return null;
     }
 
     private void mapCheck(Vector2D position) {
@@ -67,12 +64,7 @@ public class GrassField extends AbstractWorldMap {
 
     @Override
     public List<WorldElement> getElements() {
-        List<WorldElement> result = super.getElements();
-
-        for(Grass grass : grasses.values()) {
-            result.add(grass);
-        }
-
-        return result;
+        return Stream.concat(animals.values().stream(),
+                grasses.values().stream()).collect(Collectors.toList());
     }
 }

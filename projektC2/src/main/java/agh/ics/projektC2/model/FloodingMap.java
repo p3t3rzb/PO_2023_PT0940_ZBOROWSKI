@@ -13,16 +13,17 @@ public class FloodingMap extends AbstractWorldMap {
     private final HashMap<Vector2D,Boolean> forbiddenForWaters = new HashMap<>();
     private final HashMap<Vector2D,Water> waterSources = new HashMap<>();
     private int floodingsCount = 0;
-    private final int floodingsNo = 3;
+    private final int floodingsNo;
     private final int maxFloodRadius = 4;
 
-    public FloodingMap(int width, int height, int plantEnergy, int satisfactoryEnergy, int requiredEnergy, Mutation mutation, int minMutationCount, int maxMutationCount) {
+    public FloodingMap(int width, int height, int plantEnergy, int satisfactoryEnergy, int requiredEnergy, Mutation mutation, int minMutationCount, int maxMutationCount, int initialPlants) {
         super(plantEnergy,satisfactoryEnergy,requiredEnergy,mutation,minMutationCount,maxMutationCount);
         mapEnd = new Vector2D(width-1,height-1);
         transformation = new IdentityTransformation();
         growth = new EquatorGrowth(mapStart, mapEnd, forbiddenForPlants);
         forbiddenForAnimals = forbiddenForWaters;
 
+        floodingsNo = height*width/30;
         List<Vector2D> positions = new PositionGenerator(getCurrentBounds(),forbiddenForWaters).getPositions();
         positions = new RandomPositionGenerator(positions,new ArrayList<>(),floodingsNo).getPositions(); // count - ile ma być zbiorników
         for(Vector2D position : positions) {
@@ -31,6 +32,8 @@ public class FloodingMap extends AbstractWorldMap {
             waterSources.put(position,water);
             forbiddenForWaters.put(position,true);
         }
+
+        addPlants(initialPlants);
     }
 
     private Water waterAt(Vector2D position) {
@@ -98,6 +101,7 @@ public class FloodingMap extends AbstractWorldMap {
 
     @Override
     public void move() {
+        day++;
         for(Animal animal : getAnimals()) {
             forbiddenForWaters.remove(animal.getPosition());
             moveAnimal(animal);
@@ -109,6 +113,7 @@ public class FloodingMap extends AbstractWorldMap {
         } else {
             shrinkWaters();
         }
+        mapChanged("map changed"); // rozwinąć
     }
 
     @Override

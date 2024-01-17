@@ -8,6 +8,11 @@ public class Water implements WorldElement {
     }
 
     @Override
+    public String getImageFile() {
+        return "water.png";
+    }
+
+    @Override
     public String toString() {
         return "~";
     }
