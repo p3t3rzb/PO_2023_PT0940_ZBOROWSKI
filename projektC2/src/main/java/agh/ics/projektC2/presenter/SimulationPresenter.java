@@ -13,12 +13,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class SimulationPresenter implements MapChangeListener {
     private static final int CELL_HEIGHT = 40;
@@ -46,12 +49,12 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     private void clearGrid() {
-        mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0)); // hack to retain visible grid lines
+        mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0));
         mapGrid.getColumnConstraints().clear();
         mapGrid.getRowConstraints().clear();
     }
 
-    private void drawMap(WorldMap map) {
+    private void drawMap() {
         clearGrid();
         Boundary currentBounds = map.getCurrentBounds();
         int width = currentBounds.upperRightCorner().getX()-currentBounds.bottomLeftCorner().getX()+1;
@@ -91,7 +94,29 @@ public class SimulationPresenter implements MapChangeListener {
             }
         }
 
-        float avgEnergy = 0, avgChildren = 0;
+        showStats();
+    }
+
+    public void showStats() {
+        List<Vector2D> fields = new PositionGenerator(map.getCurrentBounds(),new HashMap<>()).getPositions();
+        List<Vector2D> emptyFields = new ArrayList<>();
+        for(Vector2D position : fields) {
+            if(map.objectAt(position) == null) {
+                emptyFields.add(position);
+            }
+        }
+
+        List<String> allGenomes = map.getAnimals().stream()
+                .map(Animal::getGenome)
+                .toList();
+
+        Map<String, Long> genomeCountMap = allGenomes.stream()
+                .collect(Collectors.groupingBy(g -> g, Collectors.counting()));
+
+        Optional<Map.Entry<String, Long>> mostCommonGenomeEntry = genomeCountMap.entrySet().stream()
+                .max(Comparator.comparing(Map.Entry::getValue));
+
+        int avgEnergy = 0, avgChildren = 0;
         for(Animal animal : map.getAnimals()) {
             avgEnergy += animal.getEnergy();
             avgChildren += animal.getChildrenNo();
@@ -99,17 +124,31 @@ public class SimulationPresenter implements MapChangeListener {
         avgEnergy /= map.getAnimals().size();
         avgChildren /= map.getAnimals().size();
 
-        generalAnimalInfo.setText("===== General population statistics: =====" +
-                "\nAmount of animals: " + map.getAnimals().size() +
-                "\nAmount of plants: " + map.getPlants().size() +
-                "\nAverage energy of animals: " + avgEnergy +
-                "\nAverage amount of children: " + avgChildren);
+        int avgLifespan = 0;
+        for(Animal animal : map.getDeadAnimals()) {
+            avgLifespan += animal.getAge();
+        }
+        if(!map.getDeadAnimals().isEmpty()) {
+            avgLifespan /= map.getDeadAnimals().size();
+        }
 
-        followedAnimalInfo.setText("===== Followed animal statistics: ===== \n" +
-                (followedAnimal.isDead() ? "Died at day: " + String.valueOf(followedAnimal.getDeathDay()) : "Age: " + String.valueOf(followedAnimal.getAge())) + '\n' +
-                followedAnimal.getPosition().toString() + '\n' +
-                "Children: " + String.valueOf(followedAnimal.getChildrenNo()) + '\n' +
-                "Descendants: " + String.valueOf(followedAnimal.getDescendantsNo()) + '\n');
+        generalAnimalInfo.setText("\tGeneral population statistics:\t\t" +
+                "\nAmount of animals: \t\t" + map.getAnimals().size() +
+                "\nAmount of plants: \t\t\t" + map.getPlants().size() +
+                "\nAverage energy of animals: \t" + avgEnergy +
+                "\nAverage amount of children: \t" + avgChildren +
+                "\nMost common genome: \t\t" + mostCommonGenomeEntry.get().getKey() +
+                "\nEmpty positions: \t\t\t" + emptyFields.size() +
+                "\nAverage lifespan of the dead: \t" + avgLifespan + "\n\n\n");
+
+        followedAnimalInfo.setText("\tFollowed animal statistics:\t\t\n" +
+                (followedAnimal.isDead() ? "Died at day: \t\t" + followedAnimal.getDeathDay() : "Age: \t\t\t" + followedAnimal.getAge()) +
+                "\nEnergy: \t\t\t" + followedAnimal.getEnergy() +
+                "\nChildren: \t\t\t" + followedAnimal.getChildrenNo() +
+                "\nDescendants: \t\t" + followedAnimal.getDescendantsNo() +
+                "\nGenome: \t\t\t" + followedAnimal.getGenome() +
+                "\nActivated gene: \t" + followedAnimal.getCurrentGene() +
+                "\nPlants eaten: \t\t" + followedAnimal.getPlantsEaten() + '\n');
     }
 
     public void setSimulation(Simulation simulation) {
@@ -118,20 +157,33 @@ public class SimulationPresenter implements MapChangeListener {
 
     @Override
     public void mapChanged(WorldMap map, String message) {
-        Platform.runLater(() -> {
-            drawMap(map);
-        });
+        Platform.runLater(this::drawMap);
     }
 
     public void onSimulationPauseClicked(ActionEvent actionEvent) {
         if(pauseButton.getText().equals("Pause")) {
             pauseButton.setText("Resume");
             simulation.pause();
-            // event handlers żeby zmienić followedAnimal
+
+            for(Node node : mapGrid.getChildren()) {
+                node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                    int height = map.getCurrentBounds().upperRightCorner().getY()-map.getCurrentBounds().bottomLeftCorner().getY()+1;
+                    int x = GridPane.getColumnIndex(node)-1;
+                    int y = height-GridPane.getRowIndex(node);
+                    Vector2D position = new Vector2D(x,y);
+                    if(map.objectAt(position) instanceof Animal) {
+                        followedAnimal = (Animal)(map.objectAt(position));
+                    }
+                    showStats();
+                });
+            }
+
+            // pokaż preferowane pozycje roślin
+
+            // pokaż dominujący genom
         } else {
             pauseButton.setText("Pause");
             simulation.resume();
-            // usunąć event handlers
         }
     }
 
@@ -170,7 +222,6 @@ public class SimulationPresenter implements MapChangeListener {
         Mutation mutation = mutationVariant.getValue().equals("Fully random") ? new FullyRandomMutation() : new SwapMutation();
         WorldMap newMap = mapVariant.getValue().equals("Earth") ? new EarthMap(width,height,plantEnergy,satisfactoryEnergy,requiredEnergy,mutation,minMutations,maxMutations,initialPlants)
                                                            : new FloodingMap(width,height,plantEnergy,satisfactoryEnergy,requiredEnergy,mutation,minMutations,maxMutations,initialPlants);
-        //newMap.addObserver(new ConsoleMapDisplay());
         Simulation newSimulation = new Simulation(newMap,plantCount,animalsCount,initialEnergy,genomeLength,waitingTime);
 
         Stage stage = new Stage();
@@ -180,6 +231,7 @@ public class SimulationPresenter implements MapChangeListener {
         try {
             GridPane root = loader.load();
             SimulationPresenter newPresenter = loader.getController();
+            newPresenter.setWorldMap(newMap);
             newPresenter.setSimulation(newSimulation);
             newPresenter.setFollowedAnimal(newMap.getAnimals().get(0));
             newMap.addObserver(newPresenter);

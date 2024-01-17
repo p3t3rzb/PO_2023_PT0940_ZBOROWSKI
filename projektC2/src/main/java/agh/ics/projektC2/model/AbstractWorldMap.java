@@ -12,6 +12,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected HashMap<Vector2D,Boolean> forbiddenForAnimals = new HashMap<>();
     private final MapVisualizer visualizer = new MapVisualizer(this);
     private final List<MapChangeListener> observers = new ArrayList<>();
+    private final List<Animal> deadAnimals = new ArrayList<>();
     protected final int mapID;
     protected final int plantEnergy;
     protected Mutation mutation;
@@ -43,6 +44,11 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     public int getID() {
         return mapID;
+    }
+
+    @Override
+    public List<Animal> getDeadAnimals() {
+        return Collections.unmodifiableList(deadAnimals);
     }
 
     @Override
@@ -125,6 +131,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                 for(i=0; i < candidates.size() && candidates.get(i) == candidates.get(0); i++);
                 Animal winningAnimal = candidates.get(PRNG.nextInt(i));
                 winningAnimal.setEnergy(winningAnimal.getEnergy()+plantEnergy);
+                winningAnimal.setPlantsEaten(winningAnimal.getPlantsEaten()+1);
             }
         }
     }
@@ -134,6 +141,8 @@ public abstract class AbstractWorldMap implements WorldMap {
         for(Animal animal : animals.values()) {
             if(animal.getEnergy() == 0) {
                 animals.remove(animal.getPosition(),animal);
+                animal.die(day);
+                deadAnimals.add(animal);
             }
         }
     }
@@ -169,15 +178,6 @@ public abstract class AbstractWorldMap implements WorldMap {
         animal.move(this,transformation);
         animals.put(animal.getPosition(),animal);
         animal.setEnergy(animal.getEnergy()-1);
-
-        if(animal.getEnergy() == 0) {
-            animal.die(day);
-        }
-        /*if(!temp.equals(animal.getPosition().toString())) {
-            mapChanged("Moved an animal from " + temp + " to " + animal.getPosition().toString());
-        } else {
-            mapChanged("Animal at " + temp + " rotating");
-        }*/
     }
 
     public Plant plantAt(Vector2D position) {

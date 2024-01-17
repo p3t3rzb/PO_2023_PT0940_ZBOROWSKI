@@ -24,6 +24,8 @@ public interface WorldMap extends MoveValidator {
 
     void removeObserver(MapChangeListener mapChangeListener);
 
+    List<Animal> getDeadAnimals();
+
     WorldElement objectAt(Vector2D position);
 
     HashMap<Vector2D, Boolean> getForbiddenForAnimals();

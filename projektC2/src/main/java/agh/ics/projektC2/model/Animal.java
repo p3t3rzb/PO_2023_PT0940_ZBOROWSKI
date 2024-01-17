@@ -1,7 +1,11 @@
 package agh.ics.projektC2.model;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 import static java.lang.Math.max;
 
@@ -15,6 +19,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private int age = 0;
     private int childrenNo = 0;
     private int deathDay = -1;
+    private int plantsEaten = 0;
     private boolean dead = false;
     private static final Random PRNG = new Random();
 
@@ -68,8 +73,22 @@ public class Animal implements WorldElement, Comparable<Animal> {
         return child;
     }
 
-    public List<Integer> getGenome() {
-        return Collections.unmodifiableList(genome); // sprawdzić później
+    public int getCurrentGene() {
+        return genome.get(currentGene);
+    }
+
+    public int getPlantsEaten() {
+        return plantsEaten;
+    }
+
+    public void setPlantsEaten(int plantsEaten) {
+        this.plantsEaten = plantsEaten;
+    }
+
+    public String getGenome() {
+        return genome.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(""));
     }
 
     public int getEnergy() {
