@@ -70,13 +70,6 @@ public class Simulation implements Runnable {
             // 5
             this.map.addPlants(plantCount);
 
-            int sum = 0;
-            for(Animal animal : map.getAnimals()) {
-                sum += animal.getEnergy();
-            }
-            sum /= map.getAnimals().size();
-            System.out.println(sum);
-
             try {
                 Thread.sleep(waitingTime);
             }

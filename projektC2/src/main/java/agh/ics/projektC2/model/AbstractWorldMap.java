@@ -10,7 +10,6 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected final HashMap<Vector2D,Plant> plants = new HashMap<>();
     protected final HashMap<Vector2D,Boolean> forbiddenForPlants = new HashMap<>();
     protected HashMap<Vector2D,Boolean> forbiddenForAnimals = new HashMap<>();
-    private final MapVisualizer visualizer = new MapVisualizer(this);
     private final List<MapChangeListener> observers = new ArrayList<>();
     private final List<Animal> deadAnimals = new ArrayList<>();
     protected final int mapID;
@@ -28,9 +27,6 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     abstract public Boundary getCurrentBounds();
 
-
-
-
     public AbstractWorldMap(int plantEnergy, int satisfactoryEnergy, int requiredEnergy, Mutation mutation, int minMutationCount, int maxMutationCount) {
         this.plantEnergy = plantEnergy;
         this.satisfactoryEnergy = satisfactoryEnergy;
@@ -44,6 +40,11 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     public int getID() {
         return mapID;
+    }
+
+    @Override
+    public Boundary getPreferredBoundary() {
+        return growth.getPreferredBoundary();
     }
 
     @Override
@@ -70,11 +71,6 @@ public abstract class AbstractWorldMap implements WorldMap {
         for(MapChangeListener observer : observers) {
             observer.mapChanged(this,message);
         }
-    }
-
-    public String toString() {
-        Boundary currentBounds = getCurrentBounds();
-        return visualizer.draw(currentBounds.bottomLeftCorner(),currentBounds.upperRightCorner());
     }
 
     @Override
@@ -185,24 +181,10 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public boolean isOccupied(Vector2D position)  {
-        return (objectAt(position) != null);
-    }
-
-    @Override
     abstract public WorldElement objectAt(Vector2D position);
 
     @Override
     abstract public boolean canMoveTo(Vector2D position);
-
-    @Override
-    public List<WorldElement> getElements() {
-        List<WorldElement> result = new ArrayList<>();
-        // uzupełnić później
-        //result.addAll(animals.values());
-
-        return result;
-    }
 
     @Override
     public List<Animal> getAnimals() {

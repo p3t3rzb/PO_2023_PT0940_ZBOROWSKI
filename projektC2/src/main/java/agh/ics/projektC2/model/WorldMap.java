@@ -18,11 +18,11 @@ public interface WorldMap extends MoveValidator {
 
     void removeDeadAnimals();
 
-    boolean isOccupied(Vector2D position);
-
     void addObserver(MapChangeListener mapChangeListener);
 
     void removeObserver(MapChangeListener mapChangeListener);
+
+    Boundary getPreferredBoundary();
 
     List<Animal> getDeadAnimals();
 
@@ -31,8 +31,6 @@ public interface WorldMap extends MoveValidator {
     HashMap<Vector2D, Boolean> getForbiddenForAnimals();
 
     Boundary getCurrentBounds();
-
-    List<WorldElement> getElements();
 
     List<Animal> getAnimals();
 
