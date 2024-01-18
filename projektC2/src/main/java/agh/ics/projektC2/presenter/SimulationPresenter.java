@@ -17,9 +17,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -184,6 +185,64 @@ public class SimulationPresenter implements MapChangeListener {
         } else {
             pauseButton.setText("Pause");
             simulation.resume();
+        }
+    }
+
+    public void onSaveConfigClicked(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        File file = fileChooser.showOpenDialog(new Stage());
+        try {
+            PrintWriter printWriter = new PrintWriter(new FileWriter(file));
+
+            printWriter.println(this.width.getText());
+            printWriter.println(this.height.getText());
+            printWriter.println(this.mapVariant.getValue());
+            printWriter.println(this.initialPlants.getText());
+            printWriter.println(this.plantEnergy.getText());
+            printWriter.println(this.plantCount.getText());
+            printWriter.println(this.animalsCount.getText());
+            printWriter.println(this.initialEnergy.getText());
+            printWriter.println(this.satisfactoryEnergy.getText());
+            printWriter.println(this.requiredEnergy.getText());
+            printWriter.println(this.minMutations.getText());
+            printWriter.println(this.maxMutations.getText());
+            printWriter.println(this.genomeLength.getText());
+            printWriter.println(this.mutationVariant.getValue());
+            printWriter.println(this.waitingTime.getText());
+
+            printWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error occured while loading the file");
+        }
+    }
+
+    public void onLoadConfigClicked(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        File file = fileChooser.showOpenDialog(new Stage());
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+
+            width.setText(reader.readLine());
+            height.setText(reader.readLine());
+            mapVariant.setValue(reader.readLine());
+            initialPlants.setText(reader.readLine());
+            plantEnergy.setText(reader.readLine());
+            plantCount.setText(reader.readLine());
+            animalsCount.setText(reader.readLine());
+            initialEnergy.setText(reader.readLine());
+            satisfactoryEnergy.setText(reader.readLine());
+            requiredEnergy.setText(reader.readLine());
+            minMutations.setText(reader.readLine());
+            maxMutations.setText(reader.readLine());
+            genomeLength.setText(reader.readLine());
+            mutationVariant.setValue(reader.readLine());
+            waitingTime.setText(reader.readLine());
+
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("Error occured while loading the file");
         }
     }
 
