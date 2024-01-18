@@ -22,6 +22,8 @@ public interface WorldMap extends MoveValidator {
 
     void removeObserver(MapChangeListener mapChangeListener);
 
+    Boundary getPreferredBoundary();
+
     List<Animal> getDeadAnimals();
 
     WorldElement objectAt(Vector2D position);

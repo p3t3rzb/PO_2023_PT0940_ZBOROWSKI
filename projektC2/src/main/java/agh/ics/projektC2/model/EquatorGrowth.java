@@ -2,7 +2,6 @@ package agh.ics.projektC2.model;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Vector;
 
 public class EquatorGrowth implements PlantGrowth {
     private final HashMap<Vector2D,Boolean> forbiddenForPlants;
@@ -28,5 +27,10 @@ public class EquatorGrowth implements PlantGrowth {
         notPreferredPositions.addAll(new PositionGenerator(notPreferredBoundaryLower,forbiddenForPlants).getPositions());
 
         return new RandomPositionGenerator(preferredPositions,notPreferredPositions,count).getPositions();
+    }
+
+    @Override
+    public Boundary getPreferredBoundary() {
+        return preferredBoundary;
     }
 }

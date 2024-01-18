@@ -27,9 +27,6 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     abstract public Boundary getCurrentBounds();
 
-
-
-
     public AbstractWorldMap(int plantEnergy, int satisfactoryEnergy, int requiredEnergy, Mutation mutation, int minMutationCount, int maxMutationCount) {
         this.plantEnergy = plantEnergy;
         this.satisfactoryEnergy = satisfactoryEnergy;
@@ -43,6 +40,11 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     public int getID() {
         return mapID;
+    }
+
+    @Override
+    public Boundary getPreferredBoundary() {
+        return growth.getPreferredBoundary();
     }
 
     @Override

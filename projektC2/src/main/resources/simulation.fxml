@@ -88,19 +88,22 @@
 	<Label text="Day duration (milliseconds): " GridPane.columnIndex="0" GridPane.rowIndex="19"/>
 	<TextField fx:id="waitingTime" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="19"/>
 
-	<VBox GridPane.columnIndex="0" GridPane.rowIndex="20" GridPane.columnSpan="2" alignment="CENTER">
+	<Label text="Save to log.csv: " GridPane.columnIndex="0" GridPane.rowIndex="20"/>
+	<CheckBox fx:id="saveLog" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="20"/>
+
+	<VBox GridPane.columnIndex="0" GridPane.rowIndex="21" GridPane.columnSpan="2" alignment="CENTER">
 		<Button text="Save configuration" onAction="#onSaveConfigClicked"/>
 	</VBox>
 
-	<VBox GridPane.columnIndex="0" GridPane.rowIndex="21" GridPane.columnSpan="2" alignment="CENTER">
+	<VBox GridPane.columnIndex="0" GridPane.rowIndex="22" GridPane.columnSpan="2" alignment="CENTER">
 		<Button text="Load configuration" onAction="#onLoadConfigClicked"/>
 	</VBox>
 
-	<VBox GridPane.columnIndex="0" GridPane.rowIndex="22" GridPane.columnSpan="2" alignment="CENTER">
+	<VBox GridPane.columnIndex="0" GridPane.rowIndex="23" GridPane.columnSpan="2" alignment="CENTER">
 		<Button text="Start" onAction="#onSimulationStartClicked"/>
 	</VBox>
 
-	<VBox GridPane.columnIndex="0" GridPane.rowIndex="23" GridPane.columnSpan="2" alignment="CENTER">
+	<VBox GridPane.columnIndex="0" GridPane.rowIndex="24" GridPane.columnSpan="2" alignment="CENTER">
 		<Label fx:id="incorrectDataLabel"/>
 	</VBox>
 </GridPane>
