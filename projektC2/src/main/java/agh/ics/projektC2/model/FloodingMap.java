@@ -1,8 +1,6 @@
 package agh.ics.projektC2.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Collections.max;
 
@@ -10,7 +8,7 @@ public class FloodingMap extends AbstractWorldMap {
     private final Vector2D mapStart = new Vector2D(0,0);
     private final Vector2D mapEnd;
     private final HashMap<Vector2D,Water> waters = new HashMap<>();
-    private final HashMap<Vector2D,Boolean> forbiddenForWaters = new HashMap<>();
+    private final Set<Vector2D> forbiddenForWaters = new HashSet<>();
     private final HashMap<Vector2D,Water> waterSources = new HashMap<>();
     private int floodingsCount = 0;
     private final int floodingsNo;
@@ -30,7 +28,7 @@ public class FloodingMap extends AbstractWorldMap {
             Water water = new Water(position);
             waters.put(position,water);
             waterSources.put(position,water);
-            forbiddenForWaters.put(position,true);
+            forbiddenForWaters.add(position);
         }
 
         addPlants(initialPlants);
@@ -48,14 +46,14 @@ public class FloodingMap extends AbstractWorldMap {
     @Override
     public void place(Animal animal) throws PositionAlreadyOccupiedException {
         super.place(animal);
-        forbiddenForWaters.put(animal.getPosition(),true);
+        forbiddenForWaters.add(animal.getPosition());
     }
 
     private void expandWaters() {
         List<Vector2D> toAdd = new ArrayList<>();
         for(Vector2D position : waters.keySet()) {
             for(Vector2D adjacentWaterPosition : position.adjacent()) {
-                if(forbiddenForWaters.get(adjacentWaterPosition) == null) {
+                if(!forbiddenForWaters.contains(adjacentWaterPosition)) {
                     toAdd.add(adjacentWaterPosition);
                 }
             }
@@ -63,7 +61,7 @@ public class FloodingMap extends AbstractWorldMap {
 
         for(Vector2D position : toAdd) {
             waters.put(position,new Water(position));
-            forbiddenForWaters.put(position,true);
+            forbiddenForWaters.add(position);
         }
     }
 
@@ -103,9 +101,12 @@ public class FloodingMap extends AbstractWorldMap {
     public void move() {
         day++;
         for(Animal animal : getAnimals()) {
-            forbiddenForWaters.remove(animal.getPosition());
+            Vector2D position = animal.getPosition();
             moveAnimal(animal);
-            forbiddenForWaters.put(animal.getPosition(),true);
+            if(objectAt(position) instanceof Plant || objectAt(position) == null) {
+                forbiddenForWaters.remove(position);
+            }
+            forbiddenForWaters.add(animal.getPosition());
         }
         floodingsCount = (floodingsCount+1)%(maxFloodRadius*2-2);
         if(floodingsCount < (maxFloodRadius-1)) {

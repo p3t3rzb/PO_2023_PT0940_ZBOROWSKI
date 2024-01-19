@@ -130,7 +130,7 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void showStats() {
-        List<Vector2D> fields = new PositionGenerator(map.getCurrentBounds(),new HashMap<>()).getPositions();
+        List<Vector2D> fields = new PositionGenerator(map.getCurrentBounds(),new HashSet<>()).getPositions();
         List<Vector2D> emptyFields = new ArrayList<>();
         for(Vector2D position : fields) {
             if(map.objectAt(position) == null) {
@@ -248,7 +248,7 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void onPreferredFieldsClicked(ActionEvent actionEvent) {
-        List<Vector2D> positions = new PositionGenerator(map.getPreferredBoundary(), new HashMap<>()).getPositions();
+        List<Vector2D> positions = new PositionGenerator(map.getPreferredBoundary(), new HashSet<>()).getPositions();
         List<Vector2D> tried = new ArrayList<>();
 
         for(Node node : mapGrid.getChildren()) {
@@ -290,7 +290,7 @@ public class SimulationPresenter implements MapChangeListener {
 
         String mostCommonGenome = mostCommonGenomeEntry.get().getKey();
 
-        List<Vector2D> fields = new PositionGenerator(map.getCurrentBounds(),new HashMap<>()).getPositions();
+        List<Vector2D> fields = new PositionGenerator(map.getCurrentBounds(),new HashSet<>()).getPositions();
 
         for(Node node : mapGrid.getChildren()) {
             if(GridPane.getColumnIndex(node) == null) {
