@@ -1,10 +1,7 @@
 package agh.ics.projektC2.model;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.max;
@@ -72,7 +69,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
         child.parents.add(this);
         child.parents.add(secondParent);
 
-        List<Animal> tried = new ArrayList<>();
+        Set<Animal> tried = new HashSet<>();
         Stack<Animal> ancestors = new Stack<>();
         ancestors.push(this);
         ancestors.push(secondParent);

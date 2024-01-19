@@ -1,15 +1,15 @@
 package agh.ics.projektC2.model;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class EquatorGrowth implements PlantGrowth {
-    private final HashMap<Vector2D,Boolean> forbiddenForPlants;
+    private final Set<Vector2D> forbiddenForPlants;
     private final Boundary preferredBoundary;
     private final Boundary notPreferredBoundaryLower;
     private final Boundary notPreferredBoundaryUpper;
 
-    public EquatorGrowth(Vector2D mapStart, Vector2D mapEnd, HashMap<Vector2D,Boolean> forbiddenForPlants) {
+    public EquatorGrowth(Vector2D mapStart, Vector2D mapEnd, Set<Vector2D> forbiddenForPlants) {
         this.forbiddenForPlants = forbiddenForPlants;
 
         preferredBoundary = new Boundary(new Vector2D(mapStart.getX(),mapStart.getY() + (int)(0.4 * (mapEnd.getY() - mapStart.getY())+1)),

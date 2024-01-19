@@ -8,10 +8,10 @@ import static java.util.Collections.sort;
 public abstract class AbstractWorldMap implements WorldMap {
     protected final AnimalMultiMap animals = new AnimalMultiMap();
     protected final HashMap<Vector2D,Plant> plants = new HashMap<>();
-    protected final HashMap<Vector2D,Boolean> forbiddenForPlants = new HashMap<>();
-    protected HashMap<Vector2D,Boolean> forbiddenForAnimals = new HashMap<>();
+    protected final Set<Vector2D> forbiddenForPlants = new HashSet<>();
+    protected Set<Vector2D> forbiddenForAnimals = new HashSet<>();
     private final List<MapChangeListener> observers = new ArrayList<>();
-    private final List<Animal> deadAnimals = new ArrayList<>();
+    private final Set<Animal> deadAnimals = new HashSet<>();
     protected final int mapID;
     protected final int plantEnergy;
     protected Mutation mutation;
@@ -48,12 +48,12 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public List<Animal> getDeadAnimals() {
-        return Collections.unmodifiableList(deadAnimals);
+    public Set<Animal> getDeadAnimals() {
+        return deadAnimals;
     }
 
     @Override
-    public HashMap<Vector2D, Boolean> getForbiddenForAnimals() {
+    public Set<Vector2D> getForbiddenForAnimals() {
         return forbiddenForAnimals;
     }
 
@@ -148,7 +148,7 @@ public abstract class AbstractWorldMap implements WorldMap {
         List<Vector2D> positions = growth.positions(count);
         for(Vector2D position : positions) {
             plants.put(position,new Plant(position));
-            forbiddenForPlants.put(position,Boolean.TRUE);
+            forbiddenForPlants.add(position);
         }
     }
 

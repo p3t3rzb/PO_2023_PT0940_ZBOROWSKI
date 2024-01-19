@@ -1,7 +1,7 @@
 package agh.ics.projektC2.model;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public interface WorldMap extends MoveValidator {
     int getID();
@@ -24,11 +24,11 @@ public interface WorldMap extends MoveValidator {
 
     Boundary getPreferredBoundary();
 
-    List<Animal> getDeadAnimals();
+    Set<Animal> getDeadAnimals();
 
     WorldElement objectAt(Vector2D position);
 
-    HashMap<Vector2D, Boolean> getForbiddenForAnimals();
+    Set<Vector2D> getForbiddenForAnimals();
 
     Boundary getCurrentBounds();
 
