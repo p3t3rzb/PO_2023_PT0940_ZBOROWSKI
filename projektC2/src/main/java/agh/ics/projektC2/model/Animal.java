@@ -2,9 +2,9 @@ package agh.ics.projektC2.model;
 
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.max;
@@ -13,11 +13,12 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private MapDirection orientation;
     private Vector2D position;
     private final List<Integer> genome;
-    private final List<Animal> children = new ArrayList<>();
+    private final List<Animal> parents = new ArrayList<>(2);
     private int energy;
     private int currentGene;
     private int age = 0;
     private int childrenNo = 0;
+    private int descendantsNo = 0;
     private int deathDay = -1;
     private int plantsEaten = 0;
     private boolean dead = false;
@@ -40,7 +41,6 @@ public class Animal implements WorldElement, Comparable<Animal> {
     }
 
     public Animal generateChild(Animal secondParent, int requiredEnergy, Mutation mutation, int minMutationCount, int maxMutationCount) {
-        childrenNo++;
         energy -= requiredEnergy;
         secondParent.childrenNo++;
         secondParent.energy -= requiredEnergy;
@@ -67,8 +67,25 @@ public class Animal implements WorldElement, Comparable<Animal> {
 
         Animal child = new Animal(position,requiredEnergy*2,newGenome);
 
-        children.add(child);
-        secondParent.children.add(child);
+        this.childrenNo++;
+        secondParent.childrenNo++;
+        child.parents.add(this);
+        child.parents.add(secondParent);
+
+        List<Animal> tried = new ArrayList<>();
+        Stack<Animal> ancestors = new Stack<>();
+        ancestors.push(this);
+        ancestors.push(secondParent);
+        while(!ancestors.empty()) {
+            Animal current = ancestors.pop();
+            tried.add(current);
+            current.descendantsNo++;
+            for(Animal parent : current.parents) {
+                if(!tried.contains(parent)) {
+                    ancestors.push(parent);
+                }
+            }
+        }
 
         return child;
     }
@@ -116,27 +133,8 @@ public class Animal implements WorldElement, Comparable<Animal> {
         return childrenNo;
     }
 
-    public List<Animal> getChildren() {
-        return children;
-    }
-
-    private int getDescendants(List<Animal> tried, int depth) {
-        if(depth > 5) {
-            return 0; // ograniczam głębokość relacji do 5 pokoleń ze względów wydajnościowych
-        }
-        int result = childrenNo;
-        for(Animal child : children) {
-            if(!tried.contains(child)) {
-                tried.add(child);
-                result += child.getDescendants(tried,depth+1);
-            }
-        }
-
-        return result;
-    }
-
     public int getDescendantsNo() {
-        return getDescendants(new LinkedList<>(),0);
+        return descendantsNo;
     }
 
     public int getAge() {

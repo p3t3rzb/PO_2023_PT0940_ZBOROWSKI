@@ -1,10 +1,13 @@
 plugins {
     id 'java'
+    id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
 group = 'org.example'
 version = '1.0-SNAPSHOT'
+
+mainClassName = 'agh.ics.projektC2.World'
 
 repositories {
     mavenCentral()

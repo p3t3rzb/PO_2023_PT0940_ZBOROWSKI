@@ -10,6 +10,7 @@ public class Simulation implements Runnable {
     private final WorldMap map;
     private final int plantCount, waitingTime;
     private boolean onPause = false;
+    private boolean running = true;
     private static final Random PRNG = new Random();
 
     public Simulation(WorldMap map, int plantCount, int animalsCount, int initialEnergy, int genomeLength, int waitingTime) {
@@ -33,6 +34,10 @@ public class Simulation implements Runnable {
         }
     }
 
+    public boolean isOnPause() {
+        return onPause;
+    }
+
     public synchronized void pause() {
         onPause = true;
     }
@@ -42,8 +47,12 @@ public class Simulation implements Runnable {
         notify();
     }
 
+    public void end() {
+        running = false;
+    }
+
     public void run() {
-        for(int i=0; i<300000; i++) {
+        while(running) {
             while (onPause) {
                 synchronized(this) {
                     try {

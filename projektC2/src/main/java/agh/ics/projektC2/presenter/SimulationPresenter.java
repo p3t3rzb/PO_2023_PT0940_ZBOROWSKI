@@ -67,9 +67,10 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     private void drawMap() {
+        clearGrid();
         preferredFields.setVisible(false);
         mostCommonGenome.setVisible(false);
-        clearGrid();
+
         Boundary currentBounds = map.getCurrentBounds();
         int width = currentBounds.upperRightCorner().getX()-currentBounds.bottomLeftCorner().getX()+1;
         int height = currentBounds.upperRightCorner().getY()-currentBounds.bottomLeftCorner().getY()+1;
@@ -109,6 +110,23 @@ public class SimulationPresenter implements MapChangeListener {
         }
 
         showStats();
+
+        if(simulation.isOnPause()) {
+            for(Node node : mapGrid.getChildren()) {
+                node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                    int x = GridPane.getColumnIndex(node)-1;
+                    int y = height-GridPane.getRowIndex(node);
+                    Vector2D position = new Vector2D(x,y);
+                    if(map.objectAt(position) instanceof Animal) {
+                        followedAnimal = (Animal)(map.objectAt(position));
+                    }
+                    showStats();
+                });
+            }
+
+            preferredFields.setVisible(true);
+            mostCommonGenome.setVisible(true);
+        }
     }
 
     public void showStats() {
@@ -179,32 +197,23 @@ public class SimulationPresenter implements MapChangeListener {
         Platform.runLater(this::drawMap);
     }
 
+    @FXML
+    public void exitApplication(ActionEvent event) {
+        System.out.println("Closing window");
+        simulation.end();
+    }
+
     public void onSimulationPauseClicked(ActionEvent actionEvent) {
         if(pauseButton.getText().equals("Pause")) {
             pauseButton.setText("Resume");
             simulation.pause();
-
-            for(Node node : mapGrid.getChildren()) {
-                node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                    int height = map.getCurrentBounds().upperRightCorner().getY()-map.getCurrentBounds().bottomLeftCorner().getY()+1;
-                    int x = GridPane.getColumnIndex(node)-1;
-                    int y = height-GridPane.getRowIndex(node);
-                    Vector2D position = new Vector2D(x,y);
-                    if(map.objectAt(position) instanceof Animal) {
-                        followedAnimal = (Animal)(map.objectAt(position));
-                    }
-                    showStats();
-                });
-            }
-
-            preferredFields.setVisible(true);
-            mostCommonGenome.setVisible(true);
         } else {
             pauseButton.setText("Pause");
             preferredFields.setVisible(false);
             mostCommonGenome.setVisible(false);
             simulation.resume();
         }
+        drawMap();
     }
 
 
