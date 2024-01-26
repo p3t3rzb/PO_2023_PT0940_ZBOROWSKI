@@ -1,4 +1,4 @@
-package agh.ics.projektC2.model;
+package agh.ics.projektC2.model; // to na pewno model?
 
 import javafx.geometry.Pos;
 import javafx.scene.effect.ColorAdjust;

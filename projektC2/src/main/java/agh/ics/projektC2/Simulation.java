@@ -58,7 +58,7 @@ public class Simulation implements Runnable {
                     try {
                         wait();
                     } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
+                        Thread.currentThread().interrupt(); // ?
                         System.err.println("Thread Interrupted");
                     }
                 }

@@ -1,4 +1,4 @@
-package agh.ics.projektC2.model;
+package agh.ics.projektC2.model; // dużo różnych klas w tym pakiecie - podzielić na mniejsze
 
 import java.util.*;
 

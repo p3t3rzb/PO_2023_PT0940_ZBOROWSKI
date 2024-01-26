@@ -19,16 +19,16 @@ public class RandomPositionGenerator implements Iterable<Vector2D> {
         positions = new ArrayList<>();
         Collections.shuffle(preferredPositions);
         Collections.shuffle(notPreferredPositions);
-        int i=0,j=0;
+        int i = 0, j = 0;
 
-        while(i+j<count) {
-            if(PRNG.nextInt(5) == 0 && i < notPreferredPositions.size()) {
+        while (i + j < count) {
+            if (PRNG.nextInt(5) == 0 && i < notPreferredPositions.size()) {
                 positions.add(notPreferredPositions.get(i));
                 i++;
-            } else if(j < preferredPositions.size()) {
+            } else if (j < preferredPositions.size()) {
                 positions.add(preferredPositions.get(j));
                 j++;
-            } else if(i == notPreferredPositions.size() && j == preferredPositions.size()) {
+            } else if (i == notPreferredPositions.size() && j == preferredPositions.size()) {
                 break;
             }
         }

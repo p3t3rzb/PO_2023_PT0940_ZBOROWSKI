@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
-public class SimulationEngine {
+public class SimulationEngine { // potrzebny?
     private final List<Simulation> simulations;
     private final List<Thread> threads = new ArrayList<>();
     private final ExecutorService executorService = newFixedThreadPool(4);

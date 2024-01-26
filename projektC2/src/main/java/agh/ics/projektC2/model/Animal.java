@@ -19,7 +19,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
     private int deathDay = -1;
     private int plantsEaten = 0;
     private boolean dead = false;
-    private static final Random PRNG = new Random();
+    private static final Random PRNG = new Random(); // PRNG?
 
     public boolean isDead() {
         return dead;
@@ -114,7 +114,7 @@ public class Animal implements WorldElement, Comparable<Animal> {
     }
 
     @Override
-    public int compareTo(Animal otherAnimal) {
+    public int compareTo(Animal otherAnimal) { // nie czytelniej by wyszło, gdyby użyć
         int result = Integer.compare(this.getEnergy(),otherAnimal.getEnergy());
         if(result == 0) {
             result = Integer.compare(this.getAge(),otherAnimal.getAge());

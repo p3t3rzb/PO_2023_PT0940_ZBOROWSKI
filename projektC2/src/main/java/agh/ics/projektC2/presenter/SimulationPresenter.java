@@ -47,7 +47,7 @@ public class SimulationPresenter implements MapChangeListener {
         this.map = map;
     }
 
-    public void setSaveToCSV(boolean saveToCSV) {
+    public void setSaveToCSV(boolean saveToCSV) { // czy to zadanie presentera?
         this.saveToCSV = saveToCSV;
         try {
             csvWriter = new PrintWriter(new File("log.csv"));
@@ -127,7 +127,7 @@ public class SimulationPresenter implements MapChangeListener {
             preferredFields.setVisible(true);
             mostCommonGenome.setVisible(true);
         }
-    }
+    } // duża ta metoda
 
     public void showStats() {
         List<Vector2D> fields = new PositionGenerator(map.getCurrentBounds(),new HashSet<>()).getPositions();
@@ -143,7 +143,7 @@ public class SimulationPresenter implements MapChangeListener {
                 .toList();
 
         Map<String, Long> genomeCountMap = allGenomes.stream()
-                .collect(Collectors.groupingBy(g -> g, Collectors.counting()));
+                .collect(Collectors.groupingBy(g -> g, Collectors.counting())); // czy to zadanie presentera?
 
         Optional<Map.Entry<String, Long>> mostCommonGenomeEntry = genomeCountMap.entrySet().stream()
                 .max(Comparator.comparing(Map.Entry::getValue));
@@ -217,7 +217,7 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
 
-    public void onSaveConfigClicked(ActionEvent actionEvent) {
+    public void onSaveConfigClicked(ActionEvent actionEvent) { // czy to zadanie presentera?
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         File file = fileChooser.showOpenDialog(new Stage());
@@ -398,4 +398,4 @@ public class SimulationPresenter implements MapChangeListener {
             e.printStackTrace();
         }
     }
-}
+} // duża ta klasa
