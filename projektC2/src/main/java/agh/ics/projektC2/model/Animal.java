@@ -153,16 +153,6 @@ public class Animal implements WorldElement, Comparable<Animal> {
     }
 
     @Override
-    public String toString() {
-        return switch(orientation) {
-            case NORTH, NORTH_EAST -> "^";
-            case EAST, SOUTH_EAST -> ">";
-            case SOUTH, SOUTH_WEST -> "V";
-            case WEST, NORTH_WEST -> "<";
-        };
-    }
-
-    @Override
     public boolean isAt(Vector2D position) {
         return this.position.equals(position);
     }
@@ -195,10 +185,6 @@ public class Animal implements WorldElement, Comparable<Animal> {
         }
 
         age++;
-    }
-
-    public MapDirection getOrientation() {
-        return orientation;
     }
 
     @Override

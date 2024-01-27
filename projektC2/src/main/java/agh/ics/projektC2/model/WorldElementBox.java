@@ -6,30 +6,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 public class WorldElementBox {
     VBox vbox;
-    static final HashMap<String, Image> images = new HashMap<>();
+    private static final HashMap<String, Image> images = new HashMap<>();
 
     static {
-        String path = System.getProperty("user.dir") + "\\src\\main\\resources\\";
-        try {
-            images.put("water.png",new Image(new FileInputStream(path + "water.png")));
-            images.put("plant.png",new Image(new FileInputStream(path + "plant.png")));
-            images.put("up.png",new Image(new FileInputStream(path + "up.png")));
-            images.put("down.png",new Image(new FileInputStream(path + "down.png")));
-            images.put("right.png",new Image(new FileInputStream(path + "right.png")));
-            images.put("left.png",new Image(new FileInputStream(path + "left.png")));
-            images.put("upright.png",new Image(new FileInputStream(path + "upright.png")));
-            images.put("downleft.png",new Image(new FileInputStream(path + "downleft.png")));
-            images.put("rightdown.png",new Image(new FileInputStream(path + "rightdown.png")));
-            images.put("upleft.png",new Image(new FileInputStream(path + "upleft.png")));
-        } catch (FileNotFoundException e) {
-            System.out.println("Could not load graphic files");
-        }
+            images.put("water.png",new Image("water.png"));
+            images.put("plant.png",new Image("plant.png"));
+            images.put("up.png",new Image("up.png"));
+            images.put("down.png",new Image("down.png"));
+            images.put("right.png",new Image("right.png"));
+            images.put("left.png",new Image("left.png"));
+            images.put("upright.png",new Image("upright.png"));
+            images.put("downleft.png",new Image("downleft.png"));
+            images.put("rightdown.png",new Image("rightdown.png"));
+            images.put("upleft.png",new Image("upleft.png"));
     }
 
     public WorldElementBox(WorldElement element, WorldElement special) {
